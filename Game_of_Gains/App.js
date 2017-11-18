@@ -14,19 +14,17 @@ var TabBarExample = React.createClass(
     getInitialState: function()
     {
         return {
-            selectedTab: 'redTab',
-            notifCount: 0,
-            presses: 0,
+            selectedTab: 'redTab'
         };
     },
-    _renderContent: function(color: string, pageText: string, num?: number) {
+    _renderContent: function(color: string, pageText: string) {
         return (
             <View style={[styles.tabContent, {backgroundColor: color}]}>
                 <Text style={styles.tabText}>
                     {pageText}
                 </Text>
                 <Text style={styles.tabText}>
-                    {num} re-renders of the {pageText}
+                    This is the {pageText}
                 </Text>
             </View>
         );
@@ -43,7 +41,13 @@ var TabBarExample = React.createClass(
                         title="Blue Tab"
                         systemIcon="history"
                         selected={this.state.selectedTab === 'blueTab'}
-                        onPress={() => { this.setState({ selectedTab: 'blueTab', }); }}>
+                        onPress={() => {
+                            this.setState(
+                                {
+                                    selectedTab: 'blueTab'
+                                }
+                            );
+                        }}>
 
                         {this._renderContent('{rgb(20, 80, 180)}', 'Blue Tab')}
 
@@ -53,7 +57,13 @@ var TabBarExample = React.createClass(
                         title="Yellow Tab"
                         systemIcon="favorites"
                         selected={this.state.selectedTab === 'yellowTab'}
-                        onPress={() => { this.setState({ selectedTab: 'yellowTab', }); }}>
+                        onPress={() => {
+                            this.setState(
+                                {
+                                    selectedTab: 'yellowTab'
+                                }
+                            );
+                        }}>
 
                         {this._renderContent('{rgb(190, 180, 0)}', 'Yellow Tab')}
 
@@ -63,7 +73,13 @@ var TabBarExample = React.createClass(
                         title="Purple Tab"
                         systemIcon="downloads"
                         selected={this.state.selectedTab === 'purpleTab'}
-                        onPress={() => { this.setState({ selectedTab: 'purpleTab', }); }}>
+                        onPress={() => {
+                            this.setState(
+                                {
+                                    selectedTab: 'purpleTab'
+                                }
+                            );
+                        }}>
 
                         {this._renderContent('{rgb(160, 20, 180)}', 'Purple Tab')}
 
@@ -71,19 +87,30 @@ var TabBarExample = React.createClass(
 
                     <TabBarIOS.Item
                         systemIcon="contacts"
-                        badge={this.state.notifCount > 0 ? this.state.notifCount : undefined}
                         selected={this.state.selectedTab === 'redTab'}
-                        onPress={() => { this.setState({ selectedTab: 'redTab', notifCount: this.state.notifCount + 1, }); }}>
+                        onPress={() => {
+                            this.setState(
+                                {
+                                    selectedTab: 'redTab'
+                                }
+                            );
+                        }}>
 
-                        {this._renderContent('{rgb(240, 50, 50)}', 'Red Tab', this.state.notifCount)}
+                        {this._renderContent('{rgb(240, 50, 50)}', 'Red Tab')}
                     </TabBarIOS.Item>
 
                     <TabBarIOS.Item
                         systemIcon="search"
                         selected={this.state.selectedTab === 'greenTab'}
-                        onPress={() => { this.setState({ selectedTab: 'greenTab', presses: this.state.presses + 1 }); }}>
+                        onPress={() => {
+                            this.setState(
+                                {
+                                    selectedTab: 'greenTab',
+                                }
+                            );
+                        }}>
 
-                        {this._renderContent('{rgb(20, 240, 20)}', 'Green Tab', this.state.presses)}
+                        {this._renderContent('{rgb(20, 240, 20)}', 'Green Tab')}
                     </TabBarIOS.Item>
 
             </TabBarIOS>
