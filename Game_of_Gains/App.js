@@ -117,7 +117,7 @@ var TabBarExample = React.createClass(
                         icon= {{
                                 uri: leaderboard,
                                 scale: 3.5
-                        }
+                        }}
                         selected={this.state.selectedTab === 'greenTab'}
                         onPress={() => {
                             this.setState(
