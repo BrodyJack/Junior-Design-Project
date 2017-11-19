@@ -71,7 +71,7 @@ var TabBarExample = React.createClass(
                             );
                         }}>
 
-                        {this._renderContent('{rgb(190, 180, 0)}', 'Yellow Tab')}
+                        {this._renderContent('{rgb(190, 180, 0)}', 'Friends')}
 
                     </TabBarIOS.Item>
 
@@ -90,7 +90,7 @@ var TabBarExample = React.createClass(
                             );
                         }}>
 
-                        {this._renderContent('{rgb(160, 20, 180)}', 'Purple Tab')}
+                        {this._renderContent('{rgb(160, 20, 180)}', 'Home')}
 
                     </TabBarIOS.Item>
 
@@ -109,7 +109,7 @@ var TabBarExample = React.createClass(
                             );
                         }}>
 
-                        {this._renderContent('{rgb(240, 50, 50)}', 'Red Tab')}
+                        {this._renderContent('{rgb(240, 50, 50)}', 'Challenge')}
                     </TabBarIOS.Item>
 
                     <TabBarIOS.Item
@@ -127,7 +127,7 @@ var TabBarExample = React.createClass(
                             );
                         }}>
 
-                        {this._renderContent('{rgb(20, 240, 20)}', 'Green Tab')}
+                        {this._renderContent('{rgb(20, 240, 20)}', 'Leaderboard')}
                     </TabBarIOS.Item>
 
             </TabBarIOS>
