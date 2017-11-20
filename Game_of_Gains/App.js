@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactNative = require('react-native');
-var { StyleSheet, TabBarIOS, Text, View, } = ReactNative;
+var { StyleSheet, TabBarIOS, Text, View, NavigatorIOS} = ReactNative;
 
 var TabBarExample = React.createClass(
 {
@@ -14,19 +14,27 @@ var TabBarExample = React.createClass(
     getInitialState: function()
     {
         return {
-            selectedTab: 'redTab'
+            selectedTab: 'homeTab'
         };
     },
-    _renderContent: function(color: string, pageText: string) {
+    _renderContent: function() {
         return (
-            <View style={[styles.tabContent, {backgroundColor: color}]}>
-                <Text style={styles.tabText}>
-                    {pageText}
-                </Text>
-                <Text style={styles.tabText}>
-                    This is the {pageText}
-                </Text>
-            </View>
+            <NavigatorIOS
+                initialRoute={{
+                    title : 'Game of Gains',
+                    rightButtonTitle: 'Forward',
+                    leftButtonTitle: 'Back',
+                    component: React.createClass({
+                        render() {
+                            return (
+                                <View>
+                                    <Text>Hello!</Text>
+                                </View>
+                            );
+                        }
+                    })
+                }}
+            />
         );
     },
     render: function()
@@ -43,16 +51,16 @@ var TabBarExample = React.createClass(
                                 uri: events,
                                 scale: 3.5
                         }}
-                        selected={this.state.selectedTab === 'blueTab'}
+                        selected={this.state.selectedTab === 'eventsTab'}
                         onPress={() => {
                             this.setState(
                                 {
-                                    selectedTab: 'blueTab'
+                                    selectedTab: 'eventsTab'
                                 }
                             );
                         }}>
 
-                        {this._renderContent('{rgb(20, 80, 180)}', 'Events')}
+                        {this._renderContent()}
 
                     </TabBarIOS.Item>
 
@@ -62,16 +70,16 @@ var TabBarExample = React.createClass(
                                 uri: friends,
                                 scale: 3.5
                         }}
-                        selected={this.state.selectedTab === 'yellowTab'}
+                        selected={this.state.selectedTab === 'friendsTab'}
                         onPress={() => {
                             this.setState(
                                 {
-                                    selectedTab: 'yellowTab'
+                                    selectedTab: 'friendsTab'
                                 }
                             );
                         }}>
 
-                        {this._renderContent('{rgb(190, 180, 0)}', 'Friends')}
+                        {this._renderContent()}
 
                     </TabBarIOS.Item>
 
@@ -81,16 +89,16 @@ var TabBarExample = React.createClass(
                                 uri: home,
                                 scale: 3.5
                         }}
-                        selected={this.state.selectedTab === 'purpleTab'}
+                        selected={this.state.selectedTab === 'homeTab'}
                         onPress={() => {
                             this.setState(
                                 {
-                                    selectedTab: 'purpleTab'
+                                    selectedTab: 'homeTab'
                                 }
                             );
                         }}>
 
-                        {this._renderContent('{rgb(160, 20, 180)}', 'Home')}
+                        {this._renderContent()}
 
                     </TabBarIOS.Item>
 
@@ -100,16 +108,16 @@ var TabBarExample = React.createClass(
                                 uri: chal,
                                 scale: 3.5
                         }}
-                        selected={this.state.selectedTab === 'redTab'}
+                        selected={this.state.selectedTab === 'challengeTab'}
                         onPress={() => {
                             this.setState(
                                 {
-                                    selectedTab: 'redTab'
+                                    selectedTab: 'challengeTab'
                                 }
                             );
                         }}>
 
-                        {this._renderContent('{rgb(240, 50, 50)}', 'Challenge')}
+                        {this._renderContent()}
                     </TabBarIOS.Item>
 
                     <TabBarIOS.Item
@@ -118,16 +126,16 @@ var TabBarExample = React.createClass(
                                 uri: leaderboard,
                                 scale: 3.5
                         }}
-                        selected={this.state.selectedTab === 'greenTab'}
+                        selected={this.state.selectedTab === 'lbTab'}
                         onPress={() => {
                             this.setState(
                                 {
-                                    selectedTab: 'greenTab',
+                                    selectedTab: 'lbTab'
                                 }
                             );
                         }}>
 
-                        {this._renderContent('{rgb(20, 240, 20)}', 'Leaderboard')}
+                        {this._renderContent()}
                     </TabBarIOS.Item>
 
             </TabBarIOS>
