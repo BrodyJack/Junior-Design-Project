@@ -102,6 +102,7 @@ const RootTabs = TabNavigator({
 
 }, {
     initialRouteName: 'Home',
+    animationEnabled: true,
 });
 
 export default RootTabs;
