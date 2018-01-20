@@ -11,25 +11,25 @@ const EventsScreen = () => (
 
 const FriendsScreen = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
+      <Text>Friends Screen</Text>
     </View>
 );
 
 const HomeScreen = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Events Screen</Text>
+      <Text>Home Screen</Text>
     </View>
 );
 
 const ChallengesScreen = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Events Screen</Text>
+      <Text>Challenges Screen</Text>
     </View>
 );
 
 const LeaderboardScreen = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Events Screen</Text>
+      <Text>Leaderboard Screen</Text>
     </View>
 );
 
