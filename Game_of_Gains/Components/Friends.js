@@ -105,7 +105,8 @@ class FriendsScreen extends React.Component {
                                     }
                                     return returnValues;
                                 } else if (state.selectedOption.value == "recent") {
-                                    
+                                    alert("Recent");
+                                    return [];
                                 } else if (state.selectedOption.value == "suggested") {
                                     alert("Suggested Friends");
                                     return [];
