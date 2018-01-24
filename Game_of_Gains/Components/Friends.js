@@ -68,28 +68,58 @@ class FriendsScreen extends React.Component {
                         selectedTint= {'white'}
                         selectedBackgroundColor= {'#007AFF'}
                     />
-                    <Text>Selected option: {this.state.selectedOption.label || 'none'}</Text>
                     <SectionList
-                        sections={ function() {
-                                var returnValues = [];
-                                var names = {};
-                                for (var i = 0; i < friends.length; i++) {
-                                    var currFriend = friends[i].name;
-                                    var letterCategory = currFriend[0];
-                                    if (letterCategory in names) {
-                                        names[letterCategory].push(currFriend);
-                                    } else {
-                                        names[letterCategory] = [currFriend];
-                                    }                            
+                        sections={
+                            function(state) {
+                                if (state.selectedOption.value == "all") {
+                                    var returnValues = [];
+                                    var names = {};
+                                    for (var i = 0; i < friends.length; i++) {
+                                        var currFriend = friends[i];
+                                        var sortByFirstName = false;
+                                        var letterCategory;
+                                        if (sortByFirstName) {
+                                            letterCategory = currFriend.firstName[0];
+                                        } else {
+                                            letterCategory = currFriend.lastName[0];
+                                        }
+                                        if (letterCategory in names) {
+                                            names[letterCategory].push(currFriend.firstName + " " + currFriend.lastName);
+                                        } else {
+                                            names[letterCategory] = [currFriend.firstName + " " + currFriend.lastName];
+                                        }                            
+                                    }
+                                    var sortedNames = [];
+                                    for (var letter in names) {
+                                        sortedNames.push(letter);
+                                    }
+                                    sortedNames.sort();
+                                    var sortedDict = {};
+                                    for (var index in sortedNames) {
+                                        var letter = sortedNames[index]
+                                        sortedDict[letter] = names[letter];
+                                    }
+                                    for (var letter in sortedDict) {
+                                        sortedDict[letter].sort();
+                                        returnValues.push({title : letter, data: sortedDict[letter]})
+                                    }
+                                    return returnValues;
+                                } else if (state.selectedOption.value == "recent") {
+                                    
+                                } else if (state.selectedOption.value == "suggested") {
+                                    alert("Suggested Friends");
+                                    return [];
                                 }
-                                for (var letter in names) {
-                                    names[letter].sort();
-                                    returnValues.push({title : letter, data: names[letter]})
-                                }
-                                return returnValues;
-                        }()}
+                        }(this.state)}
                         
-                        renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+                        renderItem={({item}) => 
+                            <Text 
+                                style={styles.item}
+                                onPress={() => {
+                                    alert("You selected " + item);
+                                }}>
+                                {item}
+                            </Text>}
                         renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                         keyExtractor={(item, index) => index}
                     />
@@ -100,15 +130,26 @@ class FriendsScreen extends React.Component {
 }
 friends = [
         {
-            name: "Brandon Manuel",
+            firstName: "Brandon",
+            lastName: "Manuel"
         }, {
-            name: "Brody Johnstone",
+            firstName: "Brody",
+            lastName: "Johnstone"
         }, {
-            name: "Grayson Bianco",
+            firstName: "Grayson",
+            lastName: "Bianco"
         }, {
-            name: "Jessica Chen",
+            firstName: "Jessica",
+            lastName: "Chen"
         }, {
-            name: "Will Stith",
+            firstName: "Will",
+            lastName: "Stith"
+        }, {
+            firstName: "Bob",
+            lastName: "Smith"
+        }, {
+            firstName: "Brodie",
+            lastName: "Johnson"
         }
     ]
 const styles = StyleSheet.create({
