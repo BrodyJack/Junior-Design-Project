@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import NavigationBar from 'react-native-navbar';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
@@ -9,7 +9,7 @@ class FriendsScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedOption: {label: "All", value: "all"},
+            selectedOption: {label: "All", value: "all"}
         }   
     }
     static navigationOptions = {
@@ -69,10 +69,65 @@ class FriendsScreen extends React.Component {
                         selectedBackgroundColor= {'#007AFF'}
                     />
                     <Text>Selected option: {this.state.selectedOption.label || 'none'}</Text>
+                    <SectionList
+                        sections={ function() {
+                                var returnValues = [];
+                                var names = {};
+                                for (var i = 0; i < friends.length; i++) {
+                                    var currFriend = friends[i].name;
+                                    var letterCategory = currFriend[0];
+                                    if (letterCategory in names) {
+                                        names[letterCategory].push(currFriend);
+                                    } else {
+                                        names[letterCategory] = [currFriend];
+                                    }                            
+                                }
+                                for (var letter in names) {
+                                    names[letter].sort();
+                                    returnValues.push({title : letter, data: names[letter]})
+                                }
+                                return returnValues;
+                        }()}
+                        
+                        renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+                        renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+                        keyExtractor={(item, index) => index}
+                    />
                 </View>
             </View>
         );
     }
 }
-
+friends = [
+        {
+            name: "Brandon Manuel",
+        }, {
+            name: "Brody Johnstone",
+        }, {
+            name: "Grayson Bianco",
+        }, {
+            name: "Jessica Chen",
+        }, {
+            name: "Will Stith",
+        }
+    ]
+const styles = StyleSheet.create({
+    container: {
+     flex: 1
+    },
+    sectionHeader: {
+      paddingTop: 2,
+      paddingLeft: 10,
+      paddingRight: 10,
+      paddingBottom: 2,
+      fontSize: 18,
+      fontWeight: 'bold',
+      backgroundColor: 'rgba(247,247,247,1.0)',
+    },
+    item: {
+      padding: 10,
+      fontSize: 14,
+      height: 44,
+    },
+  })
 module.exports = FriendsScreen;
