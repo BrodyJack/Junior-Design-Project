@@ -9,7 +9,7 @@ class HomeScreen extends React.Component {
         tabBarLabel: 'Home',
         tabBarIcon: ({ tintColor, focused }) => (
             <Ionicons
-                name={focused ? 'ios-person' : 'ios-calendar-outline'}
+                name={focused ? 'ios-person' : 'ios-person-outline'}
                 size={26}
                 style={{ color: tintColor }}
             />
