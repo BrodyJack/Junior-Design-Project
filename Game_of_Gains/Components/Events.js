@@ -30,9 +30,8 @@ class EventsScreen extends React.Component {
                   sections={[
                     {title: 'Neighborhood Run!', data: ['Created by: Tim Arnold']},
                     {title: 'Spartan Race!', data: ['Created by: Spartan Race, Inc.']},
-                    {title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
                   ]}
-                  renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+                  renderItem={({item}) => <Text style={styles.item} onPress={() => alert('Event Details')}>{item}</Text>}
                   renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                   keyExtractor={(item, index) => index}
                 />
