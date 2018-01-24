@@ -27,6 +27,7 @@ const RootTabs = TabNavigator({
 }, {
     initialRouteName: 'Home',
     animationEnabled: true,
+    tabBarPosition: "bottom"
 });
 
 export default RootTabs;
