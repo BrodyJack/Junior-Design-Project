@@ -18,7 +18,7 @@ class EventsScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ flex: 1, marginLeft: 7, marginRight: 7 }}>
+            <View style={{ flex: 1 }}>
                 <NavigationBar
                     title= {{ title: "Events" }}
                     leftButton={{ title: "Settings", handler: () => alert('Settings') }}
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
       paddingBottom: 2,
       fontSize: 18,
       fontWeight: 'bold',
-      backgroundColor: 'rgba(255,0,0,1.0)',
+      backgroundColor: 'rgba(247,247,247,1.0)',
     },
     item: {
       padding: 10,

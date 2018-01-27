@@ -19,7 +19,7 @@ class HomeScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ flex: 1, marginLeft: 7, marginRight: 7 }}>
+            <View style={{ flex: 1 }}>
                 <NavigationBar
                     title= {{ title: "Game Of Gains" }}
                     leftButton={{ title: "Settings", handler: () => alert('Settings') }}
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     },
     sectionHeader: {
         paddingTop: 2,
-        paddingLeft: 0,
+        paddingLeft: 5,
         paddingRight: 10,
         paddingBottom: 2,
         fontSize: 22,
@@ -78,10 +78,12 @@ const styles = StyleSheet.create({
     },
     activityText: {
         justifyContent: "flex-start",
+        paddingLeft: 5
     },
     activityText1: {
         justifyContent: "flex-end",
-        color: 'rgba(169,169,169, 1)'
+        color: 'rgba(169,169,169, 1)',
+        paddingLeft: 5
     },
     activityBox: {
         flex: 1,

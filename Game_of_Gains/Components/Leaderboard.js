@@ -41,7 +41,7 @@ class LeaderboardScreen extends React.Component {
             });
         }
         return (
-            <View style={{ flex: 1, marginLeft: 7, marginRight: 7 }}>
+            <View style={{ flex: 1 }}>
                 <NavigationBar
                     title= {{ title: "Leaderboard" }}
                     leftButton={{ title: "Settings", handler: () => alert('Settings') }}
@@ -63,6 +63,7 @@ class LeaderboardScreen extends React.Component {
                         backTint= {'white'}
                         selectedTint= {'white'}
                         selectedBackgroundColor= {'#007AFF'}
+                        containerStyle={{ marginLeft: 5, marginRight: 5 }}
                     />
                 <SectionList
                         sections={

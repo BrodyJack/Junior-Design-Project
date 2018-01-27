@@ -10,6 +10,7 @@ import LeaderboardScreen from './Components/Leaderboard'
 import LandingScreen from './Components/Landing'
 import SignInScreen from './Components/SignIn'
 import SignUpScreen from './Components/SignUp'
+import SettingsScreen from './Components/Settings'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -32,6 +33,15 @@ const RootTabs = TabNavigator({
     animationEnabled: true,
     tabBarPosition: "bottom"
 });
+
+// const MainNav = StackNavigator({
+//     Root: {
+//         screen: RootTabs,
+//     },
+//     Settings: {
+//         screen: SettingsScreen,
+//     }
+// });
 
 const InitialNav = StackNavigator({
     Landing: {
