@@ -50,7 +50,6 @@ class ChallengesScreen extends React.Component {
                 <NavigationBar
                     title= {{ title: "Challenges" }}
                     leftButton={{ title: "Settings", handler: () => alert('Settings') }}
-                    rightButton={{ title: "Add Friend", handler: () => alert('Add Friend') }}
                     tintColor='rgba(247,247,247,1.0)'
                 />
                 <View style={{ flex: 1, marginLeft: 7, marginRight: 7}}>
