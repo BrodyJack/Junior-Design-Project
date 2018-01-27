@@ -21,12 +21,9 @@ class SettingsScreen extends React.Component {
         var bgColor = '#DCE3F4';
         return (
           <View style={{backgroundColor:'#EFEFF4',flex:1}}>
-            {/* <View style={{borderBottomWidth:1, backgroundColor:'#f7f7f8',borderColor:'#c8c7cc'}}>
-              <Text style={{alignSelf:'center',marginTop:30,marginBottom:10,fontWeight:'bold',fontSize:16}}>Settings</Text>
-            </View> */}
             <View style={{backgroundColor:'#EFEFF4',flex:1}}>
               <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
-                <SettingsList.Header headerStyle={{marginTop:15}}/>
+                <SettingsList.Header headerStyle={{marginTop:15}} headerText="Account"/>
                 <SettingsList.Item
                   icon={
                       <Image style={styles.imageStyle} source={require('./../img/airplane.png')}/>
@@ -35,60 +32,49 @@ class SettingsScreen extends React.Component {
                   switchState={this.state.switchValue}
                   switchOnValueChange={this.onValueChange}
                   hasNavArrow={false}
-                  title='Airplane Mode'
-                />
-                <SettingsList.Item
-                  icon={<Image style={styles.imageStyle} source={require('./../img/wifi.png')}/>}
-                  title='Wi-Fi'
-                  titleInfo='Bill Wi The Science Fi'
-                  titleInfoStyle={styles.titleInfoStyle}
-                  onPress={() => Alert.alert('Route to Wifi Page')}
+                  title='Use Email for Username'
                 />
                 <SettingsList.Item
                   icon={<Image style={styles.imageStyle} source={require('./../img/blutooth.png')}/>}
-                  title='Blutooth'
-                  titleInfo='Off'
+                  title='Email Verified'
+                  titleInfo='Yes'
+                  hasNavArrow={false}
                   titleInfoStyle={styles.titleInfoStyle}
                   onPress={() => Alert.alert('Route to Blutooth Page')}
                 />
-                <SettingsList.Item
-                  icon={<Image style={styles.imageStyle} source={require('./../img/cellular.png')}/>}
-                  title='Cellular'
-                  onPress={() => Alert.alert('Route To Cellular Page')}
-                />
-                <SettingsList.Item
-                  icon={<Image style={styles.imageStyle} source={require('./../img/hotspot.png')}/>}
-                  title='Personal Hotspot'
-                  titleInfo='Off'
-                  titleInfoStyle={styles.titleInfoStyle}
-                  onPress={() => Alert.alert('Route To Hotspot Page')}
-                />
-                <SettingsList.Header headerStyle={{marginTop:15}}/>
+                <SettingsList.Header headerStyle={{marginTop:15}} headerText="Leaderboard"/>
                 <SettingsList.Item
                   icon={<Image style={styles.imageStyle} source={require('./../img/notifications.png')}/>}
-                  title='Notifications'
-                  onPress={() => Alert.alert('Route To Notifications Page')}
+                  hasSwitch={true}
+                  switchState={this.state.switchValue}
+                  switchOnValueChange={this.onValueChange}
+                  hasNavArrow={false}
+                  title='Display as Anonymous'
                 />
                 <SettingsList.Item
                   icon={<Image style={styles.imageStyle} source={require('./../img/control.png')}/>}
-                  title='Control Center'
-                  onPress={() => Alert.alert('Route To Control Center Page')}
+                  hasSwitch={true}
+                  switchState={this.state.switchValue}
+                  switchOnValueChange={this.onValueChange}
+                  hasNavArrow={false}
+                  title='Public Profile'
                 />
-                <SettingsList.Item
-                  icon={<Image style={styles.imageStyle} source={require('./../img/dnd.png')}/>}
-                  title='Do Not Disturb'
-                  onPress={() => Alert.alert('Route To Do Not Disturb Page')}
-                />
-                <SettingsList.Header headerStyle={{marginTop:15}}/>
+                <SettingsList.Header headerStyle={{marginTop:15}} headerText="Social"/>
                 <SettingsList.Item
                   icon={<Image style={styles.imageStyle} source={require('./../img/general.png')}/>}
-                  title='General'
-                  onPress={() => Alert.alert('Route To General Page')}
+                  hasSwitch={true}
+                  switchState={this.state.switchValue}
+                  switchOnValueChange={this.onValueChange}
+                  hasNavArrow={false}
+                  title='Hide Account'
                 />
                 <SettingsList.Item
                   icon={<Image style={styles.imageStyle} source={require('./../img/display.png')}/>}
-                  title='Display & Brightness'
-                  onPress={() => Alert.alert('Route To Display Page')}
+                  hasSwitch={true}
+                  switchState={this.state.switchValue}
+                  switchOnValueChange={this.onValueChange}
+                  hasNavArrow={false}
+                  title='Viewable History'
                 />
               </SettingsList>
             </View>
