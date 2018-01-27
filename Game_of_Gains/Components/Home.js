@@ -1,31 +1,33 @@
 import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
-import NavigationBar from 'react-native-navbar';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 
 class HomeScreen extends React.Component {
-    static navigationOptions = {
-        tabBarLabel: 'Home',
-        tabBarIcon: ({ tintColor, focused }) => (
-            <Ionicons
-                name={focused ? 'ios-person' : 'ios-person-outline'}
-                size={26}
-                style={{ color: tintColor }}
-            />
-        ),
+    static navigationOptions = ({ navigation }) => {
+        return {
+            tabBarLabel: 'Home',
+            tabBarIcon: ({ tintColor, focused }) => (
+                <Ionicons
+                    name={focused ? 'ios-person' : 'ios-person-outline'}
+                    size={26}
+                    style={{ color: tintColor }}
+                />
+            ),
+            title: 'Home',
+            headerLeft: (
+                <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
+            ),
+            headerRight: (
+                <Button title="Log" onPress={() => navigation.navigate('Home')}/>
+            )
+        }
     };
 
 
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <NavigationBar
-                    title= {{ title: "Game Of Gains" }}
-                    leftButton={{ title: "Settings", handler: () => alert('Settings') }}
-                    rightButton={{ title: "Log Workout", handler: () => alert('Log Workout') }}
-                    tintColor='rgba(247,247,247,1.0)'
-                />
 
                 <Image style={{paddingBottom: 10}} source={require('../user.png')}/>
 
@@ -78,12 +80,14 @@ const styles = StyleSheet.create({
     },
     activityText: {
         justifyContent: "flex-start",
-        paddingLeft: 5
+        paddingLeft: 5,
+        paddingRight: 5,
     },
     activityText1: {
         justifyContent: "flex-end",
         color: 'rgba(169,169,169, 1)',
-        paddingLeft: 5
+        paddingLeft: 5,
+        paddingRight: 5,
     },
     activityBox: {
         flex: 1,

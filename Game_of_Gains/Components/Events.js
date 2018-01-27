@@ -1,30 +1,32 @@
 import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
-import NavigationBar from 'react-native-navbar';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 
 class EventsScreen extends React.Component {
-    static navigationOptions = {
-        tabBarLabel: 'Events',
-        tabBarIcon: ({ tintColor, focused }) => (
-        <Ionicons
-            name={focused ? 'ios-calendar' : 'ios-calendar-outline'}
-            size={26}
-            style={{ color: tintColor }}
-        />
-        ),
+    static navigationOptions = ({ navigation }) => {
+        return {
+            tabBarLabel: 'Events',
+            tabBarIcon: ({ tintColor, focused }) => (
+            <Ionicons
+                name={focused ? 'ios-calendar' : 'ios-calendar-outline'}
+                size={26}
+                style={{ color: tintColor }}
+            />
+            ),
+            title: 'Events',
+            headerLeft: (
+                <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
+            ),
+            headerRight: (
+                <Button title="+" onPress={() => navigation.navigate('Home')}/>
+            )
+        }
     };
 
     render() {
         return (
             <View style={{ flex: 1 }}>
-                <NavigationBar
-                    title= {{ title: "Events" }}
-                    leftButton={{ title: "Settings", handler: () => alert('Settings') }}
-                    rightButton={{ title: "Make Event", handler: () => alert('Event Creation') }}
-                    tintColor='rgba(247,247,247,1.0)'
-                />
                 <View style={styles.container}>
                 <SectionList
                   sections={[

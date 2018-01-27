@@ -34,14 +34,14 @@ const RootTabs = TabNavigator({
     tabBarPosition: "bottom"
 });
 
-// const MainNav = StackNavigator({
-//     Root: {
-//         screen: RootTabs,
-//     },
-//     Settings: {
-//         screen: SettingsScreen,
-//     }
-// });
+const MainNav = StackNavigator({
+    Root: {
+        screen: RootTabs,
+    },
+    Settings: {
+        screen: SettingsScreen,
+    }
+});
 
 const InitialNav = StackNavigator({
     Landing: {
@@ -54,7 +54,7 @@ const InitialNav = StackNavigator({
         screen: SignInScreen
     },
     MainNav: {
-        screen: RootTabs
+        screen: MainNav
     },
 }, {
     headerMode: 'none'

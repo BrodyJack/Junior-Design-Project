@@ -9,8 +9,8 @@ class SettingsScreen extends React.Component {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
                 <Button
-                    onPress={() => this.props.navigation.navigate('Home')}
-                    title="Go to home"
+                    onPress={() => alert("Jessica has no shame")}
+                    title="Test"
                 />
             </View>
         );

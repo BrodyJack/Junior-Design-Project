@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
-import NavigationBar from 'react-native-navbar';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons'
 
@@ -12,15 +11,24 @@ class FriendsScreen extends React.Component {
             selectedOption: {label: "All", value: "all"}
         }   
     }
-    static navigationOptions = {
-        tabBarLabel: 'Friends',
-        tabBarIcon: ({ tintColor, focused }) => (
-        <Ionicons
-            name={focused ? 'ios-contacts' : 'ios-contacts-outline'}
-            size={26}
-            style={{ color: tintColor }}
-        />
-        ),
+    static navigationOptions = ({ navigation }) => {
+        return {
+            tabBarLabel: 'Friends',
+            tabBarIcon: ({ tintColor, focused }) => (
+            <Ionicons
+                name={focused ? 'ios-contacts' : 'ios-contacts-outline'}
+                size={26}
+                style={{ color: tintColor }}
+            />
+            ),
+            title: 'Friends',
+            headerLeft: (
+                <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
+            ),
+            headerRight: (
+                <Button title="Add Friend" onPress={() => navigation.navigate('Home')}/>
+            )
+        }
     };
 
     render() {
@@ -45,12 +53,6 @@ class FriendsScreen extends React.Component {
         }
         return (
             <View style={{ flex: 1 }}>
-                <NavigationBar
-                    title= {{ title: "Friends" }}
-                    leftButton={{ title: "Settings", handler: () => alert('Settings') }}
-                    rightButton={{ title: "Add Friend", handler: () => alert('Add Friend') }}
-                    tintColor='rgba(247,247,247,1.0)'
-                />
                 <View style={{ flex: 1 }}>
                     <SegmentedControls 
                         options={ options }
