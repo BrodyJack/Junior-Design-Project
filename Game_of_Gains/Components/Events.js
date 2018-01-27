@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
       paddingBottom: 2,
       fontSize: 18,
       fontWeight: 'bold',
-      backgroundColor: 'rgba(247,247,247,1.0)',
+      backgroundColor: 'rgba(255,0,0,1.0)',
     },
     item: {
       padding: 10,

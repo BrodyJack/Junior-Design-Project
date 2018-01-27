@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
-import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
+import { TabNavigator, StackNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import EventsScreen from './Components/Events'
 import FriendsScreen from './Components/Friends'
 import HomeScreen from './Components/Home'
 import ChallengesScreen from './Components/Challenges'
 import LeaderboardScreen from './Components/Leaderboard'
+import LandingScreen from './Components/Landing'
+import SignInScreen from './Components/SignIn'
+import SignUpScreen from './Components/SignUp'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -30,4 +33,21 @@ const RootTabs = TabNavigator({
     tabBarPosition: "bottom"
 });
 
-export default RootTabs;
+const InitialNav = StackNavigator({
+    Landing: {
+        screen: LandingScreen
+    },
+    SignUp: {
+        screen: SignUpScreen
+    },
+    SignIn: {
+        screen: SignInScreen
+    },
+    MainNav: {
+        screen: RootTabs
+    },
+}, {
+    headerMode: 'none'
+});
+
+export default InitialNav;
