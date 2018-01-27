@@ -45,7 +45,6 @@ class LeaderboardScreen extends React.Component {
                 <NavigationBar
                     title= {{ title: "Leaderboard" }}
                     leftButton={{ title: "Settings", handler: () => alert('Settings') }}
-                    rightButton={{ title: "Do Something", handler: () => alert('Did something') }}
                     tintColor='rgba(247,247,247,1.0)'
                 />
                 <View style={styles.container}>
