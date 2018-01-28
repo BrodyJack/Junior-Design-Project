@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 
@@ -7,7 +7,7 @@ class LandingScreen extends React.Component {
     
     render() {
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <View style={styles.page}>
                 <Button
                     onPress={() => this.props.navigation.navigate('MainNav')}
                     title="Sign In (Test)"
@@ -16,5 +16,14 @@ class LandingScreen extends React.Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white'
+    }
+});
 
 module.exports = LandingScreen;

@@ -11,6 +11,7 @@ import LandingScreen from './Components/Landing'
 import SignInScreen from './Components/SignIn'
 import SignUpScreen from './Components/SignUp'
 import SettingsScreen from './Components/Settings'
+import EventDetailsScreen from './Components/EventDetails'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -40,6 +41,9 @@ const MainNav = StackNavigator({
     },
     Settings: {
         screen: SettingsScreen,
+    },
+    EventDetails: {
+        screen: EventDetailsScreen,
     }
 });
 

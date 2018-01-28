@@ -51,7 +51,7 @@ class ChallengesScreen extends React.Component {
             });
         }
         return (
-            <View style={{ flex: 1 }}>
+            <View style={styles.page}>
                 <View style={{ flex: 1 }}>
                     <SegmentedControls
                         options={ options }
@@ -144,6 +144,10 @@ challenges = [
         }
     ]
 const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
     container: {
      flex: 1
     },

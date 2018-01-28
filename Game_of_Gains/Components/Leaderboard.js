@@ -46,7 +46,7 @@ class LeaderboardScreen extends React.Component {
             });
         }
         return (
-            <View style={{ flex: 1 }}>
+            <View style={styles.page}>
                 <View style={styles.container}>
                 <SegmentedControls 
                         options={ options }
@@ -175,6 +175,10 @@ globalBoard = [
 ]
 
 const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
     container: {
      flex: 1
     },

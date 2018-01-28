@@ -27,7 +27,7 @@ class HomeScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={styles.page}>
 
                 <Image style={{paddingBottom: 10}} source={require('../user.png')}/>
 
@@ -61,6 +61,10 @@ const ActivityItem = (props) => {
 const listOfActivities = ["push-ups", "pull-ups", "sit-ups"];
 
 const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
     container: {
         flex: 1
     },
