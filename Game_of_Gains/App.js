@@ -13,6 +13,7 @@ import SignUpScreen from './Components/SignUp'
 import SettingsScreen from './Components/Settings'
 import EventDetailsScreen from './Components/EventDetails'
 import EventCreationScreen from './Components/EventCreation'
+import AddFriendScreen from './Components/AddFriend'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -48,6 +49,9 @@ const MainNav = StackNavigator({
     },
     EventCreation: {
         screen: EventCreationScreen
+    },
+    AddFriend: {
+        screen: AddFriendScreen
     }
 });
 
