@@ -2,9 +2,28 @@ import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
+import * as firebase from 'firebase';
 
 class HomeScreen extends React.Component {
-    static navigationOptions = ({ navigation }) => {
+
+    componentDidMount() {
+        this.props.navigation.setParams({ doLogout: this.logout });
+    }
+
+    async logout(navigation) {
+        try {
+            console.log(firebase);
+            await firebase.auth().signOut();
+            console.log('Logged out!');
+            console.log(firebase);
+            // How do we route back to InitialNav?
+        } catch (error) {
+            console.log(error.toString());
+        }
+    }
+
+    static navigationOptions = ({ navigation }) => {  
+
         return {
             tabBarLabel: 'Home',
             tabBarIcon: ({ tintColor, focused }) => (
@@ -19,7 +38,7 @@ class HomeScreen extends React.Component {
                 <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
             ),
             headerRight: (
-                <Button title="Log" onPress={() => navigation.navigate('Home')}/>
+                <Button title="Log Out" onPress={() => {navigation.state.params.doLogout(navigation)}}/>
             )
         }
     };

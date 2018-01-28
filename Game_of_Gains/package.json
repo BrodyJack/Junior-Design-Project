@@ -21,6 +21,7 @@
   "dependencies": {
     "@expo/vector-icons": "^6.2.2",
     "expo": "^21.0.0",
+    "firebase": "^4.9.0",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.48.4",
     "react-native-elements": "^0.19.0",

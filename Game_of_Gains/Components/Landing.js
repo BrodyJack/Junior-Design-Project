@@ -2,8 +2,20 @@ import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
+import * as firebase from 'firebase';
+
+firebase.initializeApp({
+    apiKey: "AIzaSyCVqL1WyvpMckhWxVauDbTvnB6pus-L4OY",
+    authDomain: "game-of-gains.firebaseapp.com",
+    databaseURL: "https://game-of-gains.firebaseio.com",
+    storageBucket: "game-of-gains.appspot.com"
+});
 
 class LandingScreen extends React.Component {
+
+    componentDidMount() {
+        console.log(firebase);
+    }
     
     render() {
         return (
