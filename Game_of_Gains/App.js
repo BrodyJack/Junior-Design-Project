@@ -12,6 +12,7 @@ import SignInScreen from './Components/SignIn'
 import SignUpScreen from './Components/SignUp'
 import SettingsScreen from './Components/Settings'
 import EventDetailsScreen from './Components/EventDetails'
+import EventCreationScreen from './Components/EventCreation'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -44,6 +45,9 @@ const MainNav = StackNavigator({
     },
     EventDetails: {
         screen: EventDetailsScreen,
+    },
+    EventCreation: {
+        screen: EventCreationScreen
     }
 });
 
