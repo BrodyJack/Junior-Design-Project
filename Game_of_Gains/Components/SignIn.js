@@ -1,10 +1,19 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
+import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
 
-class LandingScreen extends React.Component {
+class SignInScreen extends React.Component {
+
+    static navigationOptions = {header: null};
+
+    resetToHome = NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({ routeName: 'Root'})
+        ]
+    })
 
     async login(email, pass) {
         try {
@@ -12,7 +21,7 @@ class LandingScreen extends React.Component {
                 .signInWithEmailAndPassword(email, pass);
 
             console.log("Logged In!");
-            this.props.navigation.navigate('MainNav');
+            this.props.navigation.dispatch(this.resetToHome);
         } catch (error) {
             console.log(error.toString());
         }
@@ -39,4 +48,4 @@ const styles = StyleSheet.create({
     }
 });
 
-module.exports = LandingScreen;
+module.exports = SignInScreen;

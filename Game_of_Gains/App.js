@@ -37,7 +37,16 @@ const RootTabs = TabNavigator({
     tabBarPosition: "bottom"
 });
 
-const MainNav = StackNavigator({
+const InitialNav = StackNavigator({
+    Landing: {
+        screen: LandingScreen
+    },
+    SignUp: {
+        screen: SignUpScreen
+    },
+    SignIn: {
+        screen: SignInScreen
+    },
     Root: {
         screen: RootTabs,
     },
@@ -53,23 +62,8 @@ const MainNav = StackNavigator({
     AddFriend: {
         screen: AddFriendScreen
     }
-});
-
-const InitialNav = StackNavigator({
-    Landing: {
-        screen: LandingScreen
-    },
-    SignUp: {
-        screen: SignUpScreen
-    },
-    SignIn: {
-        screen: SignInScreen
-    },
-    MainNav: {
-        screen: MainNav
-    },
 }, {
-    headerMode: 'none'
+    headerMode: 'float'
 });
 
 export default InitialNav;

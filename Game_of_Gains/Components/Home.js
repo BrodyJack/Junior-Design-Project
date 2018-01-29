@@ -1,22 +1,31 @@
 import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
-import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
+import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
 
 class HomeScreen extends React.Component {
 
+
+    // React Navigation? More like extreme aggravation
+    // Just ask me
+    // - Brody
     componentDidMount() {
-        this.props.navigation.setParams({ doLogout: this.logout });
+        this.props.navigation.setParams({ doLogout: this.logout, resetToLanding: this.resetToHome });
     }
+
+    resetToHome = NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({ routeName: 'Landing'})
+        ]
+    })
 
     async logout(navigation) {
         try {
-            console.log(firebase);
             await firebase.auth().signOut();
             console.log('Logged out!');
-            console.log(firebase);
-            // How do we route back to InitialNav?
+            navigation.dispatch(navigation.state.params.resetToLanding);
         } catch (error) {
             console.log(error.toString());
         }
