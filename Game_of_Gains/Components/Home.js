@@ -1,31 +1,61 @@
 import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
-import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
-import NavigationBar from 'react-native-navbar';
+import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
+import * as firebase from 'firebase';
 
 class HomeScreen extends React.Component {
-    static navigationOptions = {
-        tabBarLabel: 'Home',
-        tabBarIcon: ({ tintColor, focused }) => (
-            <Ionicons
-                name={focused ? 'ios-person' : 'ios-person-outline'}
-                size={26}
-                style={{ color: tintColor }}
-            />
-        ),
+
+
+    // React Navigation? More like extreme aggravation
+    // Just ask me
+    // - Brody
+    componentDidMount() {
+        this.props.navigation.setParams({ doLogout: this.logout, resetToLanding: this.resetToHome });
+    }
+
+    resetToHome = NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({ routeName: 'Landing'})
+        ]
+    })
+
+    async logout(navigation) {
+        try {
+            await firebase.auth().signOut();
+            console.log('Logged out!');
+            navigation.dispatch(navigation.state.params.resetToLanding);
+        } catch (error) {
+            console.log(error.toString());
+        }
+    }
+
+    static navigationOptions = ({ navigation }) => {  
+
+        return {
+            tabBarLabel: 'Home',
+            tabBarIcon: ({ tintColor, focused }) => (
+                <Ionicons
+                    name={focused ? 'ios-person' : 'ios-person-outline'}
+                    size={26}
+                    style={{ color: tintColor }}
+                />
+            ),
+            title: 'Home',
+            headerLeft: (
+                <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
+            ),
+            headerRight: (
+                <Button title="Log Out" onPress={() => {navigation.state.params.doLogout(navigation)}}/>
+            )
+        }
     };
 
 
     render() {
         return (
-            <View style={{ flex: 1, marginLeft: 7, marginRight: 7 }}>
-                <NavigationBar
-                    title= {{ title: "Game Of Gains" }}
-                    leftButton={{ title: "Settings", handler: () => alert('Settings') }}
-                    rightButton={{ title: "Log Workout", handler: () => alert('Log Workout') }}
-                    tintColor='rgba(247,247,247,1.0)'
-                />
+            <View style={styles.page}>
 
                 <Image style={{paddingBottom: 10}} source={require('../user.png')}/>
 
@@ -59,12 +89,16 @@ const ActivityItem = (props) => {
 const listOfActivities = ["push-ups", "pull-ups", "sit-ups"];
 
 const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
     container: {
         flex: 1
     },
     sectionHeader: {
         paddingTop: 2,
-        paddingLeft: 0,
+        paddingLeft: 5,
         paddingRight: 10,
         paddingBottom: 2,
         fontSize: 22,
@@ -78,10 +112,14 @@ const styles = StyleSheet.create({
     },
     activityText: {
         justifyContent: "flex-start",
+        paddingLeft: 5,
+        paddingRight: 5,
     },
     activityText1: {
         justifyContent: "flex-end",
-        color: 'rgba(169,169,169, 1)'
+        color: 'rgba(169,169,169, 1)',
+        paddingLeft: 5,
+        paddingRight: 5,
     },
     activityBox: {
         flex: 1,

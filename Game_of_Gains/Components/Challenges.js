@@ -2,7 +2,6 @@
 import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
-import NavigationBar from 'react-native-navbar';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons'
 
@@ -14,15 +13,21 @@ class ChallengesScreen extends React.Component {
         }
     }
 
-    static navigationOptions = {
-        tabBarLabel: 'Challenges',
-        tabBarIcon: ({ tintColor, focused }) => (
-        <Ionicons
-            name={focused ? 'ios-contacts' : 'ios-contacts-outline'}
-            size={26}
-            style={{ color: tintColor }}
-        />
-        ),
+    static navigationOptions = ({ navigation }) => {
+        return {
+            tabBarLabel: 'Challenges',
+            tabBarIcon: ({ tintColor, focused }) => (
+            <Ionicons
+                name={focused ? 'ios-contacts' : 'ios-contacts-outline'}
+                size={26}
+                style={{ color: tintColor }}
+            />
+            ),
+            title: 'Challenges',
+            headerLeft: (
+                <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
+            ),
+        }
     };
 
     render() {
@@ -46,13 +51,8 @@ class ChallengesScreen extends React.Component {
             });
         }
         return (
-            <View style={{ flex: 1, marginLeft: 7, marginRight: 7}}>
-                <NavigationBar
-                    title= {{ title: "Challenges" }}
-                    leftButton={{ title: "Settings", handler: () => alert('Settings') }}
-                    tintColor='rgba(247,247,247,1.0)'
-                />
-                <View style={{ flex: 1, marginLeft: 7, marginRight: 7}}>
+            <View style={styles.page}>
+                <View style={{ flex: 1 }}>
                     <SegmentedControls
                         options={ options }
                         onSelection={ setSelectedOption.bind(this) }
@@ -68,6 +68,7 @@ class ChallengesScreen extends React.Component {
                         backTint= {'white'}
                         selectedTint= {'white'}
                         selectedBackgroundColor= {'#007AFF'}
+                        containerStyle={{ marginLeft: 5, marginRight: 5 }}
                     />
                     <SectionList
                         sections={
@@ -143,6 +144,10 @@ challenges = [
         }
     ]
 const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
     container: {
      flex: 1
     },

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
-import NavigationBar from 'react-native-navbar';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons'
 
@@ -13,15 +12,21 @@ class LeaderboardScreen extends React.Component {
             selectedOption: {label: "Friends", value: "friends"}
         }   
     }
-    static navigationOptions = {
-        tabBarLabel: 'Leaderboard',
-        tabBarIcon: ({ tintColor, focused }) => (
-        <Ionicons
-            name={focused ? 'ios-clipboard' : 'ios-clipboard-outline'}
-            size={26}
-            style={{ color: tintColor }}
-        />
-        ),
+    static navigationOptions = ({ navigation }) => {
+        return {
+            tabBarLabel: 'Leaderboard',
+            tabBarIcon: ({ tintColor, focused }) => (
+            <Ionicons
+                name={focused ? 'ios-clipboard' : 'ios-clipboard-outline'}
+                size={26}
+                style={{ color: tintColor }}
+            />
+            ),
+            title: 'Leaderboard',
+            headerLeft: (
+                <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
+            ),
+        }
     };
 
     render() {
@@ -41,12 +46,7 @@ class LeaderboardScreen extends React.Component {
             });
         }
         return (
-            <View style={{ flex: 1, marginLeft: 7, marginRight: 7 }}>
-                <NavigationBar
-                    title= {{ title: "Leaderboard" }}
-                    leftButton={{ title: "Settings", handler: () => alert('Settings') }}
-                    tintColor='rgba(247,247,247,1.0)'
-                />
+            <View style={styles.page}>
                 <View style={styles.container}>
                 <SegmentedControls 
                         options={ options }
@@ -63,6 +63,7 @@ class LeaderboardScreen extends React.Component {
                         backTint= {'white'}
                         selectedTint= {'white'}
                         selectedBackgroundColor= {'#007AFF'}
+                        containerStyle={{ marginLeft: 5, marginRight: 5 }}
                     />
                 <SectionList
                         sections={
@@ -174,6 +175,10 @@ globalBoard = [
 ]
 
 const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        backgroundColor: 'white'
+    },
     container: {
      flex: 1
     },
