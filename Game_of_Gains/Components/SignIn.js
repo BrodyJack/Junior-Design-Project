@@ -1,10 +1,18 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button, StyleSheet, TextInput, Image, KeyboardAvoidingView } from 'react-native';
 import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
 
 class SignInScreen extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            userEmail: "",
+            userPass: ""
+        }
+    }
 
     static navigationOptions = {header: null};
 
@@ -29,12 +37,26 @@ class SignInScreen extends React.Component {
     
     render() {
         return (
-            <View style={styles.page}>
-                <Button
-                    onPress={() => this.login('brodyjackj@gmail.com', '123456')}
-                    title="Sign In (Test)"
+            <KeyboardAvoidingView style={styles.page} behavior="padding">
+                <Image source={require('./../img/dab.jpg')}/>
+                <Text>Email</Text>
+                <TextInput
+                    placeholder="you@gatech.edu" 
+                    style={{borderBottomWidth: 1, width: 350, margin: 10}}
+                    onChangeText={(text) => this.setState({userEmail: text})}
                 />
-            </View>
+                <Text>Password</Text>
+                <TextInput 
+                    placeholder="password" 
+                    secureTextEntry={true} 
+                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
+                    onChangeText={(text) => this.setState({userPass: text})}
+                />
+                <Button
+                    onPress={() => this.login(this.state.userEmail, this.state.userPass)}
+                    title="Sign In"
+                />
+            </KeyboardAvoidingView>
         );
     }
 }
