@@ -41,19 +41,15 @@ class EventsScreen extends React.Component {
 
     listenForEvents(itemsRef) {
         itemsRef.on('value', (snap) => {
-            console.log(snap.val());
             var items = [];
             snap.forEach((child) => {
                 items.push(child);
             });
-            console.log('----');
-            console.log(items);
 
             this.setState({
                 dataSource: items
             });
-            console.log('----');
-            console.log(this.state.dataSource);
+
         });
     }
 
@@ -91,8 +87,8 @@ class EventsScreen extends React.Component {
                           var display = [];
                           if (state.dataSource != null) {
                             state.dataSource.forEach((item) => {
-                                console.log(item.val().title);
-                                display.push({title: item.val().title, data: [item.val().creator]});
+                                console.log(item.val().contactDetails.display);
+                                display.push({title: item.val().eventName, data: [item.val().contactDetails.display]});
                             });
                           } else {
                               display.push({ title: "None", data: ["None"]});
