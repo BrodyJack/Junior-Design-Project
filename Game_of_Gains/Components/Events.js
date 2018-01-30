@@ -3,11 +3,17 @@ import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons';
+import * as firebase from 'firebase';
 
 class EventsScreen extends React.Component {
 
+    componentDidMount() {
+        this.listenForEvents(this.itemsRef);
+    }
+    
     constructor(props) {
         super(props);
+        this.itemsRef = firebase.database().ref('events/');
         this.state = {
             selectedOption: {label: "Near", value: "Events Near You"}
         }   
@@ -32,6 +38,24 @@ class EventsScreen extends React.Component {
             )
         }
     };
+
+    listenForEvents(itemsRef) {
+        itemsRef.on('value', (snap) => {
+            console.log(snap.val());
+            var items = [];
+            snap.forEach((child) => {
+                items.push(child);
+            });
+            console.log('----');
+            console.log(items);
+
+            this.setState({
+                dataSource: items
+            });
+            console.log('----');
+            console.log(this.state.dataSource);
+        });
+    }
 
     render() {
 
@@ -64,23 +88,22 @@ class EventsScreen extends React.Component {
                 <SectionList
                   sections={
                       function(state) {
-                          if (state.selectedOption.label === "Near") {
-                            return [
-                                {title: 'Neighborhood Run!', data: ['Created by: Tim Arnold']},
-                                {title: 'Spartan Race!', data: ['Created by: Spartan Race, Inc.']},
-                            ]
+                          var display = [];
+                          if (state.dataSource != null) {
+                            state.dataSource.forEach((item) => {
+                                console.log(item.val().title);
+                                display.push({title: item.val().title, data: [item.val().creator]});
+                            });
                           } else {
-                            return [
-                                {title: 'Wander Aimlessly!', data: ['Created by: Brody Johnstone']},
-                                {title: 'Pretend to Exercise!', data: ['Created by: Brodie Johnson']},
-                            ]
+                              display.push({ title: "None", data: ["None"]});
                           }
+                          return display;
                       }(this.state)}
                   renderItem={({item, section}) => 
                     <Text 
                         style={styles.item} 
                         onPress={() => this.props.navigation.navigate('EventDetails', { name: section.title, creator: item })}>
-                            {item}
+                            Created by: {item}
                     </Text>}
                   renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                   keyExtractor={(item, index) => index}
