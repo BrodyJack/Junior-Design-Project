@@ -7,7 +7,7 @@ import { Card, ListItem, Button } from 'react-native-elements';
 class EventDetailsScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: navigation.state.params.name,
+            title: "Event Details",
         }
     }; 
 
@@ -15,16 +15,28 @@ class EventDetailsScreen extends React.Component {
         // Example, playing with cards
         return (
             <Card
-            title='HELLO WORLD'
+            title={this.props.navigation.state.params.reference.eventName}
             image={require('../img/user.png')}>
             <Text style={{marginBottom: 10}}>
-                The idea with React Native Elements is more about component structure than actual design.
+                Creator: {this.props.navigation.state.params.reference.contactDetails.display}
+            </Text>
+            <Text style={{marginBottom: 10}}>
+                Date: {this.props.navigation.state.params.reference.eventDate}
+            </Text>
+            <Text style={{marginBottom: 10}}>
+                Location: {this.props.navigation.state.params.reference.eventLocation}
+            </Text>
+            <Text style={{marginBottom: 10}}>
+                Details: {this.props.navigation.state.params.reference.eventDetails}
+            </Text>
+            <Text style={{marginBottom: 10}}>
+                # Going: {this.props.navigation.state.params.reference.participants.length}
             </Text>
             <Button
                 icon={{name: 'code'}}
                 backgroundColor='#03A9F4'
                 buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                title='VIEW NOW' />
+                title='RSVP' />
             </Card>
         );
     }

@@ -88,7 +88,7 @@ class EventsScreen extends React.Component {
                           if (state.dataSource != null) {
                             state.dataSource.forEach((item) => {
                                 console.log(item.val().contactDetails.display);
-                                display.push({title: item.val().eventName, data: [item.val().contactDetails.display]});
+                                display.push({title: item.val().eventName, reference: item.val(), data: [item.val().contactDetails.display]});
                             });
                           } else {
                               display.push({ title: "None", data: ["None"]});
@@ -98,7 +98,7 @@ class EventsScreen extends React.Component {
                   renderItem={({item, section}) => 
                     <Text 
                         style={styles.item} 
-                        onPress={() => this.props.navigation.navigate('EventDetails', { name: section.title, creator: item })}>
+                        onPress={() => this.props.navigation.navigate('EventDetails', { name: section.title, reference: section.reference })}>
                             Created by: {item}
                     </Text>}
                   renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
