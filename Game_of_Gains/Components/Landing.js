@@ -14,10 +14,6 @@ firebase.initializeApp({
 class LandingScreen extends React.Component {
 
     static navigationOptions = {header: null};
-
-    componentDidMount() {
-        console.log(firebase);
-    }
     
     render() {
         return (
