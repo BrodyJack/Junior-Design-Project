@@ -87,7 +87,6 @@ class EventsScreen extends React.Component {
                           var display = [];
                           if (state.dataSource != null) {
                             state.dataSource.forEach((item) => {
-                                console.log(item.val().contactDetails.display);
                                 display.push({title: item.val().eventName, reference: item.val(), data: [item.val().contactDetails.display]});
                             });
                           } else {
