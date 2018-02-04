@@ -119,16 +119,15 @@ class FriendsScreen extends React.Component {
                                 - figure out why friend object is only {"added": "1517683295385"}
                                   instead of {"wVw3fL6UfihGi41wGbJMPaxtLCU2": ("added": "1517683295385")}
                                 **/
-                                console.log("My friends: " + JSON.stringify(state.currentUserFriends));
                                 if (state.currentUserFriends != null) {
                                     state.currentUserFriends.forEach(function(item) {
                                         friends.push({
                                             firstName: item.val().firstName,
-                                            lastName: item.val().lastName
+                                            lastName: item.val().lastName,
+                                            added: item.val().added
                                         });
                                     })
                                 }
-                                console.log("Source: " + state.dataSource);
                                 
                                 if (state.selectedOption.value == "all") {
                                     var returnValues = [];
@@ -166,10 +165,21 @@ class FriendsScreen extends React.Component {
                                         sortedDict[letter].sort();
                                         returnValues.push({title : letter, data: sortedDict[letter]})
                                     }
+                                    console.log("Return values: " + JSON.stringify(returnValues));
                                     return returnValues;
                                 } else if (state.selectedOption.value == "recent") {
-                                    alert("Recent");
-                                    return [];
+                                    returnValues = [];
+                                    console.log("Friends: " + JSON.stringify(friends));
+                                    friends.sort(function(a, b) {
+                                        return (parseInt(a.added) - parseInt(b.added));
+                                    })
+                                    friends.forEach(function(friend) {
+                                        fullName = friend.firstName + " " + friend.lastName
+                                        console.log("Full: " + fullName);
+                                        returnValues.push({data: [fullName]});
+                                    });
+                                    console.log("Return values: " + JSON.stringify(returnValues));
+                                    return returnValues;
                                 } else if (state.selectedOption.value == "suggested") {
                                     alert("Suggested Friends");
                                     return [];
