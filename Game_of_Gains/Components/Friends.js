@@ -3,13 +3,22 @@ import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons'
+import * as firebase from 'firebase';
 
 class FriendsScreen extends React.Component {
+    
+    componentDidMount() {
+        this.listenForEvents("users", this.itemsRef);
+        this.listenForEvents("friends", this.myFriendsRef);
+    }
+    
     constructor(props) {
         super(props);
+        this.itemsRef = firebase.database().ref('users/');
+        this.myFriendsRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/friends/');
         this.state = {
             selectedOption: {label: "All", value: "all"}
-        }   
+        }
     }
     static navigationOptions = ({ navigation }) => {
         return {
@@ -30,7 +39,37 @@ class FriendsScreen extends React.Component {
             )
         }
     };
+    
+    listenForEvents(type, ref) {
+        if (type == "users") {
+            console.log("ItemsRef: " + ref);
+            ref.on('value', (snap) => {
+                var items = [];
+                snap.forEach((child) => {
+                    items.push(child);
+                });
 
+                this.setState({
+                    dataSource: items
+                });
+
+            });
+        } else if (type == "friends") {
+            console.log("FriendsRef: " + ref);
+            ref.on('value', (snap) => {
+                var items = [];
+                snap.forEach((child) => {
+                    items.push(child);
+                });
+
+                this.setState({
+                    currentUserFriends: items
+                });
+
+            });
+        }
+    }
+    
     render() {
         options = [
             {
@@ -74,9 +113,30 @@ class FriendsScreen extends React.Component {
                     <SectionList
                         sections={
                             function(state) {
+                                friends = [];
+                                
+                                /**TODO: 
+                                - figure out why friend object is only {"added": "1517683295385"}
+                                  instead of {"wVw3fL6UfihGi41wGbJMPaxtLCU2": ("added": "1517683295385")}
+                                **/
+                                console.log("My friends: " + JSON.stringify(state.currentUserFriends));
+                                if (state.currentUserFriends != null) {
+                                    state.currentUserFriends.forEach(function(item) {
+                                        friends.push({
+                                            firstName: item.val().firstName,
+                                            lastName: item.val().lastName
+                                        });
+                                    })
+                                }
+                                console.log("Source: " + state.dataSource);
+                                
                                 if (state.selectedOption.value == "all") {
                                     var returnValues = [];
                                     var names = {};
+                                    
+                                    friends.forEach(function(item) {
+                                        console.log(item);
+                                    })
                                     for (var i = 0; i < friends.length; i++) {
                                         var currFriend = friends[i];
                                         var sortByFirstName = false;
@@ -132,30 +192,30 @@ class FriendsScreen extends React.Component {
         );
     }
 }
-friends = [
-        {
-            firstName: "Brandon",
-            lastName: "Manuel"
-        }, {
-            firstName: "Brody",
-            lastName: "Johnstone"
-        }, {
-            firstName: "Grayson",
-            lastName: "Bianco"
-        }, {
-            firstName: "Jessica",
-            lastName: "Chen"
-        }, {
-            firstName: "Will",
-            lastName: "Stith"
-        }, {
-            firstName: "Bob",
-            lastName: "Smith"
-        }, {
-            firstName: "Brodie",
-            lastName: "Johnson"
-        }
-    ]
+// friends = [
+//         {
+//             firstName: "Brandon",
+//             lastName: "Manuel"
+//         }, {
+//             firstName: "Brody",
+//             lastName: "Johnstone"
+//         }, {
+//             firstName: "Grayson",
+//             lastName: "Bianco"
+//         }, {
+//             firstName: "Jessica",
+//             lastName: "Chen"
+//         }, {
+//             firstName: "Will",
+//             lastName: "Stith"
+//         }, {
+//             firstName: "Bob",
+//             lastName: "Smith"
+//         }, {
+//             firstName: "Brodie",
+//             lastName: "Johnson"
+//         }
+//     ]
 const styles = StyleSheet.create({
     page: {
         flex: 1,

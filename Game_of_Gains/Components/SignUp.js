@@ -29,7 +29,14 @@ class SignUpScreen extends React.Component {
                 .createUserWithEmailAndPassword(email, pass);
             console.log("Account created");
             userInfo = firebase.auth().currentUser;
-            firebase.database().ref('users/' + userInfo.uid + '/').set({
+            uid = userInfo.uid;
+            firebase.database().ref('users/' + uid + '/').set({
+                friends: {
+                    [uid]: {
+                        added: Date.now().toString(),
+                        displayName: userInfo.displayName != null ? userInfo.displayName : "null"
+                    }
+                },
                 displayName: userInfo.displayName != null ? userInfo.displayName : "null",
                 email: userInfo.email
             });
