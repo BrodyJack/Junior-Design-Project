@@ -57,10 +57,15 @@ class FriendsScreen extends React.Component {
         } else if (type == "friends") {
             ref.on('value', (snap) => {
                 var items = [];
+                console.log("MY LOG: " + JSON.stringify(snap.val()));
                 snap.forEach((child) => {
-                    items.push(child);
+                    items.push({
+                        [child.key]: child
+                    })
                 });
 
+                console.log("ITEMS!!: " + JSON.stringify(items));
+                
                 this.setState({
                     currentUserFriends: items
                 });
