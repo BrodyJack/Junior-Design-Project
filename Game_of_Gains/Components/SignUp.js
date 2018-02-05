@@ -32,6 +32,15 @@ class SignUpScreen extends React.Component {
             userInfo = firebase.auth().currentUser;
             firebase.database().ref('users/' + userInfo.uid + '/').set({
                 displayName: userInfo.displayName == null ? username : "null",
+            uid = userInfo.uid;
+            firebase.database().ref('users/' + uid + '/').set({
+                friends: {
+                    [uid]: {
+                        added: Date.now().toString(),
+                        displayName: userInfo.displayName == null ? username : "null",
+                    }
+                },
+                displayName: userInfo.displayName == null ? username : "null",
                 email: userInfo.email
             });
             this.props.navigation.dispatch(this.resetToHome);
