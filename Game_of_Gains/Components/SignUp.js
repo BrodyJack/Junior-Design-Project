@@ -10,7 +10,8 @@ class SignUpScreen extends React.Component {
         super(props);
         this.state = {
             userEmail: "",
-            userPass: ""
+            userPass: "",
+            userName: ""
         }
     }
 
@@ -23,21 +24,23 @@ class SignUpScreen extends React.Component {
         ]
     })
 
-    async signup(email, pass) {
+    async signup(email, pass, username) {
         try {
             await firebase.auth()
                 .createUserWithEmailAndPassword(email, pass);
             console.log("Account created");
             userInfo = firebase.auth().currentUser;
+            firebase.database().ref('users/' + userInfo.uid + '/').set({
+                displayName: userInfo.displayName == null ? username : "null",
             uid = userInfo.uid;
             firebase.database().ref('users/' + uid + '/').set({
                 friends: {
                     [uid]: {
                         added: Date.now().toString(),
-                        displayName: userInfo.displayName != null ? userInfo.displayName : "null"
+                        displayName: userInfo.displayName == null ? username : "null",
                     }
                 },
-                displayName: userInfo.displayName != null ? userInfo.displayName : "null",
+                displayName: userInfo.displayName == null ? username : "null",
                 email: userInfo.email
             });
             this.props.navigation.dispatch(this.resetToHome);
@@ -51,19 +54,25 @@ class SignUpScreen extends React.Component {
                 <Image source={require('./../img/dab.jpg')}/>
                 <Text>Email</Text>
                 <TextInput
-                    placeholder="you@gatech.edu" 
+                    placeholder="you@gatech.edu"
                     style={{borderBottomWidth: 1, width: 350, margin: 10}}
                     onChangeText={(text) => this.setState({userEmail: text})}
                 />
                 <Text>Password</Text>
-                <TextInput 
-                    placeholder="password" 
-                    secureTextEntry={true} 
+                <TextInput
+                    placeholder="password"
+                    secureTextEntry={true}
                     style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
                     onChangeText={(text) => this.setState({userPass: text})}
                 />
+                <TextInput
+                    placeholder="username"
+                    secureTextEntry={true}
+                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
+                    onChangeText={(text) => this.setState({userName: text})}
+                />
                 <Button
-                    onPress={() => this.signup(this.state.userEmail, this.state.userPass)}
+                    onPress={() => this.signup(this.state.userEmail, this.state.userPass, this.state.userName)}
                     title="Sign Up"
                 />
             </KeyboardAvoidingView>
