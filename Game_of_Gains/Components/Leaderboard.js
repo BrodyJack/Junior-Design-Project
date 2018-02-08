@@ -3,15 +3,24 @@ import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons'
-
+import * as firebase from 'firebase';
 
 class LeaderboardScreen extends React.Component {
+    
+    componentDidMount() {
+        this.listenForEvents("friends", this.friends);
+        this.listenForEvents("users", this.users);
+    }
+
     constructor(props) {
         super(props);
+        this.friends = firebase.database().ref("users/uid1/friends/");
+        this.users = firebase.database().ref("users/");
         this.state = {
             selectedOption: {label: "Friends", value: "friends"}
-        }   
+        } 
     }
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarLabel: 'Leaderboard',
@@ -28,6 +37,50 @@ class LeaderboardScreen extends React.Component {
             ),
         }
     };
+
+    listenForEvents(type, data) {
+        if (type == "friends") {
+            console.log("friend listen");
+            data.once('value', (snap) => {
+                var items = [];
+                snap.forEach((child) => {
+                    var childRef = firebase.database().ref("users/" + child.key + "/");
+                    childRef.once('value', (user) => {
+                        var item = {
+                            name: user.val().displayName,
+                            allTimeScore: user.val().exerciseInfo.pointsAllTime
+                        };
+                        console.log("item: " + item.name + " " + item.allTimeScore);
+                        items.push(item);
+                    }
+                 )
+                });
+
+                this.setState({
+                    friendData: items
+                });
+
+            });
+        } else if (type == "users") {
+            console.log("users listen");
+            data.once('value', (snap) => {
+                var items = [];
+                snap.forEach((child) => {
+                    if (child.key == "uid1" || child.key == "uid2" || child.key == "uid3" || child.key == "uid4") {
+                        var item = {
+                            name: child.val().displayName,
+                            allTimeScore: child.val().exerciseInfo.pointsAllTime
+                        };
+                        items.push(item);
+                    }
+                });
+
+                this.setState({
+                    userData: items
+                });
+            });
+        }
+    }
 
     render() {
         options = [
@@ -68,13 +121,21 @@ class LeaderboardScreen extends React.Component {
                 <SectionList
                         sections={
                             function(state) {
-                                var list;
+                                var list = [];
                                 var titleName;
                                 if (state.selectedOption.value == "friends") {
-                                    list = friends;
+                                    console.log("friend selected");
+                                    if (state.friendData != undefined) {
+                                        console.log("friendData used");
+                                        list = state.friendData;
+                                    }
                                     titleName = "Friends Leaderboard";
                                 } else if (state.selectedOption.value == "global") {
-                                    list = globalBoard;
+                                    console.log("global selected");
+                                    if (state.userData != undefined) {
+                                        console.log("userData used");
+                                        list = state.userData;
+                                    }
                                     titleName = "Global Leaderboard";
                                 }
                                 var returnValues = [];
@@ -87,13 +148,13 @@ class LeaderboardScreen extends React.Component {
                                     var maxScore = 0;
                                     var idxToAdd = 0;
                                     for (var i = 0; i < list.length; i++) {
-                                        if (!isSorted[i] && list[i].score > maxScore) {
-                                            maxScore = list[i].score;
+                                        if (!isSorted[i] && list[i].allTimeScore > maxScore) {
+                                            maxScore = list[i].allTimeScore;
                                             idxToAdd = i;
                                         }
                                     }
                                     var toAdd = list[idxToAdd];
-                                    sortedData.push(toAdd.firstName + " " + toAdd.lastName + ": " + toAdd.score);
+                                    sortedData.push(toAdd.name + ": " + toAdd.allTimeScore);
                                     isSorted[idxToAdd] = true;
                                 }
                                 returnValues.push({title : titleName, data: sortedData})
@@ -117,62 +178,6 @@ class LeaderboardScreen extends React.Component {
         );
     }
 }
-
-friends = [
-    {
-        firstName: "Brandon",
-        lastName: "Manuel",
-        score: 10
-    }, {
-        firstName: "Brody",
-        lastName: "Johnstone",
-        score: 20
-    }, {
-        firstName: "Grayson",
-        lastName: "Bianco",
-        score: 30
-    }, {
-        firstName: "Jessica",
-        lastName: "Chen",
-        score: 40
-    }, {
-        firstName: "Will",
-        lastName: "Stith",
-        score: 50
-    }, {
-        firstName: "Bob",
-        lastName: "Smith",
-        score: 60
-    }, {
-        firstName: "Brodie",
-        lastName: "Johnson",
-        score: 70
-    }
-]
-
-globalBoard = [
-    {
-        firstName: "Saitama",
-        lastName: "",
-        score: 1000000
-    }, {
-        firstName: "Goku",
-        lastName: "",
-        score: 9001
-    }, {
-        firstName: "Super",
-        lastName: "Man",
-        score: 1000
-    }, {
-        firstName: "Buff",
-        lastName: "Guy",
-        score: 100
-    }, {
-        firstName: "Wimpy",
-        lastName: "Guy",
-        score: 20
-    }
-]
 
 const styles = StyleSheet.create({
     page: {
