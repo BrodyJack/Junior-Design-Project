@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
-import { SegmentedControls } from 'react-native-radio-buttons'
+import { SegmentedControls } from 'react-native-radio-buttons';
 import * as firebase from 'firebase';
 
 class LeaderboardScreen extends React.Component {
@@ -35,12 +35,18 @@ class LeaderboardScreen extends React.Component {
             headerLeft: (
                 <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
             ),
+            headerRight: (
+                <Ionicons 
+                    name='ios-options'
+                    size={26}
+                    onPress={() => alert('options')}
+                />
+            )
         }
     };
 
     listenForEvents(type, data) {
         if (type == "friends") {
-            console.log("friend listen");
             data.once('value', (snap) => {
                 var items = [];
                 snap.forEach((child) => {
@@ -48,9 +54,10 @@ class LeaderboardScreen extends React.Component {
                     childRef.once('value', (user) => {
                         var item = {
                             name: user.val().displayName,
-                            allTimeScore: user.val().exerciseInfo.pointsAllTime
+                            pointsAllTime: user.val().exerciseInfo.pointsAllTime,
+                            pointsWeek: user.val().exerciseInfo.pointsWeek,
+                            pointsToday: user.val().exerciseInfo.pointsToday
                         };
-                        console.log("item: " + item.name + " " + item.allTimeScore);
                         items.push(item);
                     }
                  )
@@ -62,14 +69,15 @@ class LeaderboardScreen extends React.Component {
 
             });
         } else if (type == "users") {
-            console.log("users listen");
             data.once('value', (snap) => {
                 var items = [];
                 snap.forEach((child) => {
                     if (child.key == "uid1" || child.key == "uid2" || child.key == "uid3" || child.key == "uid4") {
                         var item = {
                             name: child.val().displayName,
-                            allTimeScore: child.val().exerciseInfo.pointsAllTime
+                            pointsAllTime: child.val().exerciseInfo.pointsAllTime,
+                            pointsWeek: child.val().exerciseInfo.pointsWeek,
+                            pointsToday: child.val().exerciseInfo.pointsToday
                         };
                         items.push(item);
                     }
@@ -118,50 +126,47 @@ class LeaderboardScreen extends React.Component {
                         selectedBackgroundColor= {'#007AFF'}
                         containerStyle={{ marginLeft: 5, marginRight: 5 }}
                     />
-                <SectionList
-                        sections={
+                <FlatList
+                        data={
                             function(state) {
                                 var list = [];
-                                var titleName;
                                 if (state.selectedOption.value == "friends") {
                                     console.log("friend selected");
                                     if (state.friendData != undefined) {
                                         console.log("friendData used");
                                         list = state.friendData;
                                     }
-                                    titleName = "Friends Leaderboard";
                                 } else if (state.selectedOption.value == "global") {
                                     console.log("global selected");
                                     if (state.userData != undefined) {
                                         console.log("userData used");
                                         list = state.userData;
                                     }
-                                    titleName = "Global Leaderboard";
                                 }
-                                var returnValues = [];
                                 var sortedData = [];
                                 var isSorted = [];
                                 for (var i = 0; i < list.length; i++) {
                                     isSorted.push(false);
                                 }
-                                while (sortedData.length != list.length) {
+                                while (sortedData.length != list.length * 2) {
                                     var maxScore = 0;
                                     var idxToAdd = 0;
                                     for (var i = 0; i < list.length; i++) {
-                                        if (!isSorted[i] && list[i].allTimeScore > maxScore) {
-                                            maxScore = list[i].allTimeScore;
+                                        if (!isSorted[i] && list[i].pointsAllTime > maxScore) {
+                                            maxScore = list[i].pointsAllTime;
                                             idxToAdd = i;
                                         }
                                     }
                                     var toAdd = list[idxToAdd];
-                                    sortedData.push(toAdd.name + ": " + toAdd.allTimeScore);
+                                    sortedData.push(toAdd.name);
+                                    sortedData.push(toAdd.pointsAllTime);
                                     isSorted[idxToAdd] = true;
                                 }
-                                returnValues.push({title : titleName, data: sortedData})
-                                return returnValues;
+                                return sortedData;
                             
                             }(this.state)}
-                        
+                        horizontal={false}
+                        numColumns={2}
                         renderItem={({item}) => 
                             <Text 
                                 style={styles.item}
@@ -170,7 +175,6 @@ class LeaderboardScreen extends React.Component {
                                 }}>
                                 {item}
                             </Text>}
-                        renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                         keyExtractor={(item, index) => index}
                     />
               </View>
@@ -179,6 +183,8 @@ class LeaderboardScreen extends React.Component {
     }
 }
 
+const {height, width} = Dimensions.get('window');
+const itemWidth = width/2;
 const styles = StyleSheet.create({
     page: {
         flex: 1,
@@ -200,6 +206,7 @@ const styles = StyleSheet.create({
       padding: 10,
       fontSize: 14,
       height: 44,
+      width: itemWidth
     },
   })
 
