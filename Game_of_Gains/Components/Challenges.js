@@ -102,11 +102,61 @@ class ChallengesScreen extends React.Component {
                                     }
                                     return returnValues;
                                 } else if (state.selectedOption.value == "daily") {
-                                    alert("Daily Challenges");
-                                    return [];
+                                  var returnValues = [];
+                                  var names = {};
+                                  for (var i = 0; i < challenges.length; i++) {
+                                      var currChallenge = challenges[i];
+                                      var letterCategory;
+                                      letterCategory = currChallenge.name[0];
+                                      if (letterCategory in names && currChallenge.type == "daily") {
+                                        names[letterCategory].push(currChallenge.name);
+                                      } else if (currChallenge.type == "daily") {
+                                        names[letterCategory] = [currChallenge.name];
+                                      }
+                                  }
+                                  var sortedNames = [];
+                                  for (var letter in names) {
+                                      sortedNames.push(letter);
+                                  }
+                                  sortedNames.sort();
+                                  var sortedDict = {};
+                                  for (var index in sortedNames) {
+                                      var letter = sortedNames[index]
+                                      sortedDict[letter] = names[letter];
+                                  }
+                                  for (var letter in sortedDict) {
+                                      sortedDict[letter].sort();
+                                      returnValues.push({title : letter, data: sortedDict[letter]})
+                                  }
+                                  return returnValues;
                                 } else if (state.selectedOption.value == "weekly") {
-                                    alert("Weekly Challenges");
-                                    return [];
+                                    var returnValues = [];
+                                    var names = {};
+                                    for (var i = 0; i < challenges.length; i++) {
+                                        var currChallenge = challenges[i];
+                                        var letterCategory;
+                                        letterCategory = currChallenge.name[0];
+                                        if (letterCategory in names && currChallenge.type == "weekly") {
+                                          names[letterCategory].push(currChallenge.name);
+                                        } else if (currChallenge.type == "weekly") {
+                                          names[letterCategory] = [currChallenge.name];
+                                        }
+                                    }
+                                    var sortedNames = [];
+                                    for (var letter in names) {
+                                        sortedNames.push(letter);
+                                    }
+                                    sortedNames.sort();
+                                    var sortedDict = {};
+                                    for (var index in sortedNames) {
+                                        var letter = sortedNames[index]
+                                        sortedDict[letter] = names[letter];
+                                    }
+                                    for (var letter in sortedDict) {
+                                        sortedDict[letter].sort();
+                                        returnValues.push({title : letter, data: sortedDict[letter]})
+                                    }
+                                    return returnValues;
                                 }
                         }(this.state)}
 
@@ -128,19 +178,26 @@ class ChallengesScreen extends React.Component {
 
 challenges = [
         {
-            name: "Challenge 1",
+            name: "Run 5 miles",
+            type: "weekly",
         }, {
-            name: "Challenge 2",
+            name: "Do 10 pushups",
+            type: "daily",
         }, {
-            name: "Challenge 3",
+            name: "Go up a rank in leaderboard",
+            type: "weekly",
         }, {
-            name: "Challenge 4",
+            name: "Do 100 Crunches",
+            type: "weekly",
         }, {
-            name: "Challenge 5",
+            name: "Do 25 Squats",
+            type: "daily",
         }, {
-            name: "Challenge 6",
+            name: "Do 30 Curlups",
+            type: "daily",
         }, {
-            name: "Challenge 7",
+            name: "Get swole",
+            type: "daily",
         }
     ]
 const styles = StyleSheet.create({
