@@ -36,7 +36,7 @@ class FriendsScreen extends React.Component {
                 <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
             ),
             headerRight: (
-                <Button title="Add Friend" onPress={() => navigation.navigate('AddFriend')}/>
+                <Button title="Add" onPress={() => navigation.navigate('AddFriend')}/>
             )
         }
     };
