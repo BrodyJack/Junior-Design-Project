@@ -8,8 +8,8 @@ import * as firebase from 'firebase';
 class FriendsScreen extends React.Component {
     
     componentDidMount() {
-        this.listenForEvents("users", this.itemsRef);
-        this.listenForEvents("friends", this.myFriendsRef);
+        this.listenForEvents("users", this.itemsRef, this.props.navigation);
+        this.listenForEvents("friends", this.myFriendsRef, this.props.navigation);
     }
     
     constructor(props) {
@@ -36,12 +36,13 @@ class FriendsScreen extends React.Component {
                 <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
             ),
             headerRight: (
-                <Button title="Add" onPress={() => navigation.navigate('AddFriend')}/>
+                <Button title="Add" onPress={() => navigation.navigate('AddFriend', {prevState: navigation.state})}/>
             )
         }
     };
     
-    listenForEvents(type, ref) {
+    listenForEvents(type, ref, navigation) {
+        // TODO set navigation state as well as local state and pass navigation state param to navigation.navigate
         if (type == "users") {
             ref.on('value', (snap) => {
                 var items = [];
@@ -52,6 +53,7 @@ class FriendsScreen extends React.Component {
                 this.setState({
                     dataSource: items
                 });
+                navigation.state.users = items;
 
             });
         } else if (type == "friends") {
@@ -66,7 +68,7 @@ class FriendsScreen extends React.Component {
                 this.setState({
                     currentUserFriends: items
                 });
-
+                navigation.state.currFriends = items
             });
         }
     }

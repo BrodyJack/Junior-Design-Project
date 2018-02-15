@@ -7,15 +7,14 @@ import * as firebase from 'firebase';
 
 class AddFriendScreen extends React.Component {
 
-    componentDidMount() {
-        this.listenForEvents(this.itemsRef);
-    }
 
     constructor(props) {
         super(props);
-        this.itemsRef = firebase.database().ref('users/');
         this.state = {
-            search: ""
+            search: "",
+            users: this.props.navigation.state.params.prevState.users,
+            friends: this.props.navigation.state.params.prevState.currFriends,
+            currentUserId: firebase.auth().currentUser.uid
         };
     }
 
@@ -24,20 +23,6 @@ class AddFriendScreen extends React.Component {
             title: 'Add Friend'
         }
     };
-
-    listenForEvents(ref) {
-        ref.on('value', (snap) => {
-                var items = [];
-                snap.forEach((child) => {
-                    items.push(child);
-                });
-
-                this.setState({
-                    users: items
-                });
-
-        });
-    }
 
 
 
@@ -51,14 +36,26 @@ class AddFriendScreen extends React.Component {
                 <Text style={{textAlign: 'center', paddingTop: 50}}>{function(state) {
                     returnString = "";
                     users = state.users;
+                    friends = state.friends;
                     if (users == undefined || state.search == "") {
                         return "";
                     }
                     users.forEach(function(item) {
-                        console.log("Name: " + item.val()["displayName"]);
-                        console.log("State.search: " + state.search);
-                        if (item.val()["displayName"].toUpperCase().includes(state.search.toUpperCase())) {
-                            returnString += item.val()["displayName"] + "\n";
+                        if (item.key != state.currentUserId) {
+                            
+                            if (item.val()["displayName"].toUpperCase().includes(state.search.toUpperCase())) {
+                                isFriend = false;
+                                friends.forEach(function(friend) {
+                                    if (item.key == Object.keys(friend)[0]) {
+                                        isFriend = true;
+                                    }
+                                });
+                                if (isFriend) {
+                                    returnString += item.val()["displayName"] + " - is already Friend\n";
+                                } else {
+                                    returnString += item.val()["displayName"] + "\n";
+                                }
+                            }
                         }
                     });
                     return returnString;
