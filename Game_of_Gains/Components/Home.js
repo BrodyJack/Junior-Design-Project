@@ -1,16 +1,19 @@
 import React from 'react';
-import { View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
+import { AsyncStorage, View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
 import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
-
+import './Global.js';
 class HomeScreen extends React.Component {
-
-
     // React Navigation? More like extreme aggravation
     // Just ask me
     // - Brody
+    constructor(props) {
+        super(props);
+        this.load = this.load.bind(this);
+    }
     componentDidMount() {
+        this.load();
         this.props.navigation.setParams({ doLogout: this.logout, resetToLanding: this.resetToHome });
     }
 
@@ -20,6 +23,19 @@ class HomeScreen extends React.Component {
             NavigationActions.navigate({ routeName: 'Landing'})
         ]
     })
+
+    load() {
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                console.log(user);
+                firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
+                    global.username = (snapshot.val() && snapshot.val().displayName) || 'Anonymous';
+                });
+            } else {
+                console.log('fail');
+            }
+        });
+    }
 
     async logout(navigation) {
         try {
@@ -31,7 +47,7 @@ class HomeScreen extends React.Component {
         }
     }
 
-    static navigationOptions = ({ navigation }) => {  
+    static navigationOptions = ({ navigation }) => {
 
         return {
             tabBarLabel: 'Home',
@@ -52,7 +68,6 @@ class HomeScreen extends React.Component {
         }
     };
 
-
     render() {
         return (
             <View style={styles.page}>
@@ -60,7 +75,7 @@ class HomeScreen extends React.Component {
                 <Image style={{paddingBottom: 10}} source={require('../user.png')}/>
 
                 <Image style={{paddingBottom: 10}} source={require('../Graph.png')}/>
-
+                <Text>{global.username || ''}</Text>
                 <SectionList stickySectionHeadersEnabled={true}
                   sections={[
                     {title: 'Recent Activities', data: ['Brody', 'Grayson', 'Will', 'Brandon', 'Jessica', 'Mary']},
@@ -90,7 +105,7 @@ const listOfActivities = ["push-ups", "pull-ups", "sit-ups"];
 
 const styles = StyleSheet.create({
     page: {
-        flex: 1,
+        //flex: 1,
         backgroundColor: 'white'
     },
     container: {
