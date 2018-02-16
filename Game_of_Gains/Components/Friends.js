@@ -8,17 +8,17 @@ import * as firebase from 'firebase';
 class FriendsScreen extends React.Component {
     
     componentDidMount() {
-        this.listenForEvents("users", this.itemsRef);
-        this.listenForEvents("friends", this.myFriendsRef);
+        this.listenForEvents("users", this.itemsRef, this.props.navigation);
+        this.listenForEvents("friends", this.myFriendsRef, this.props.navigation);
     }
     
     constructor(props) {
         super(props);
         this.itemsRef = firebase.database().ref('users/');
         this.myFriendsRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/friends/');
-        console.log("Friends ref: " + this.myFriendsRef);
         this.state = {
-            selectedOption: {label: "All", value: "all"}
+            selectedOption: {label: "All", value: "all"},
+            currentUserId: firebase.auth().currentUser.uid
         }
     }
     static navigationOptions = ({ navigation }) => {
@@ -36,12 +36,13 @@ class FriendsScreen extends React.Component {
                 <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
             ),
             headerRight: (
-                <Button title="Add Friend" onPress={() => navigation.navigate('AddFriend')}/>
+                <Button title="Add" onPress={() => navigation.navigate('AddFriend', {prevState: navigation.state})}/>
             )
         }
     };
     
-    listenForEvents(type, ref) {
+    listenForEvents(type, ref, navigation) {
+        // TODO set navigation state as well as local state and pass navigation state param to navigation.navigate
         if (type == "users") {
             ref.on('value', (snap) => {
                 var items = [];
@@ -52,19 +53,22 @@ class FriendsScreen extends React.Component {
                 this.setState({
                     dataSource: items
                 });
+                navigation.state.users = items;
 
             });
         } else if (type == "friends") {
             ref.on('value', (snap) => {
                 var items = [];
                 snap.forEach((child) => {
-                    items.push(child);
+                    items.push({
+                        [child.key]: child
+                    })
                 });
-
+                                                
                 this.setState({
                     currentUserFriends: items
                 });
-
+                navigation.state.currFriends = items
             });
         }
     }
@@ -116,27 +120,20 @@ class FriendsScreen extends React.Component {
                                     return [];
                                 }
                                 friends = [];
-                                
-                                /**TODO: 
-                                - figure out why friend object is only {"added": "1517683295385"}
-                                  instead of {"wVw3fL6UfihGi41wGbJMPaxtLCU2": ("added": "1517683295385")}
-                                **/
-                                console.log("Friends stringified: " + JSON.stringify(state.currentUserFriends));
-                                console.log("Friends: " + state.currentUserFriends);
-                                state.currentUserFriends.forEach(function(item) {
-                                    console.log("Ind friend: " + item);
-                                    console.log("Ind friend stringified: " + JSON.stringify(item));
-                                    console.log("Ind friend keys: " + Object.keys(item));
-                                });
                                 if (state.currentUserFriends != null) {
                                     state.currentUserFriends.forEach(function(item) {
-                                        friends.push({
-                                            displayName: item.val().displayName,
-                                            added: item.val().added
-                                        });
+                                        var currFriendId = Object.keys(item)[0];
+                                        if (currFriendId != state.currentUserId) {
+                                            friends.push({
+                                                displayName: item[currFriendId].val()["displayName"],
+                                                added: item[currFriendId].val()["added"]
+                                            });
+                                        }
                                     })
                                 }
-                                
+                                if (friends.length == 0) {
+                                    return [];
+                                }
                                 if (state.selectedOption.value == "all") {
                                     var returnValues = [];
                                     var names = {};
@@ -201,30 +198,7 @@ class FriendsScreen extends React.Component {
         );
     }
 }
-// friends = [
-//         {
-//             firstName: "Brandon",
-//             lastName: "Manuel"
-//         }, {
-//             firstName: "Brody",
-//             lastName: "Johnstone"
-//         }, {
-//             firstName: "Grayson",
-//             lastName: "Bianco"
-//         }, {
-//             firstName: "Jessica",
-//             lastName: "Chen"
-//         }, {
-//             firstName: "Will",
-//             lastName: "Stith"
-//         }, {
-//             firstName: "Bob",
-//             lastName: "Smith"
-//         }, {
-//             firstName: "Brodie",
-//             lastName: "Johnson"
-//         }
-//     ]
+
 const styles = StyleSheet.create({
     page: {
         flex: 1,
