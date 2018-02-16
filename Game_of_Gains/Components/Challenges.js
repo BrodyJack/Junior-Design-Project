@@ -4,10 +4,18 @@ import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons'
+import * as firebase from 'firebase';
 
 class ChallengesScreen extends React.Component {
-    constructor(props) {
+
+  componentDidMount() {
+      this.listenForChallenges(this.itemsRef);
+      this.listenForUsers(this.infoRef);
+  }
+  constructor(props) {
         super(props);
+        this.itemsRef = firebase.database().ref('challenges/');
+        this.infoRef = firebase.database().ref('users/uid1'); //firebase.auth().currentUser.uid
         this.state = {
             selectedOption: {label: "All", value: "all"}
         }
@@ -29,6 +37,33 @@ class ChallengesScreen extends React.Component {
             ),
         }
     };
+
+    listenForChallenges(itemsRef) {
+        itemsRef.on('value', (snap) => {
+            var items = [];
+            snap.forEach((child) => {
+                items.push(child);
+            });
+
+            this.setState({
+                dataSource: items
+            });
+
+        });
+    }
+
+    listenForUsers(infoRef) {
+        infoRef.on('value', (snap) => {
+            var info = [];
+            snap.forEach((child) => {
+                info.push(child);
+            });
+
+            this.setState({
+                userSource: info
+            });
+        });
+    }
 
     render() {
         options = [
@@ -71,78 +106,59 @@ class ChallengesScreen extends React.Component {
                         containerStyle={{ marginLeft: 5, marginRight: 5 }}
                     />
                     <SectionList
-                        sections={
-                            function(state) {
-                                if (state.selectedOption.value == "all") {
-                                    var returnValues = [];
-                                    var names = {};
-                                    for (var i = 0; i < challenges.length; i++) {
-                                        var currChallenge = challenges[i];
-                                        var letterCategory;
-                                        letterCategory = currChallenge.name[0];
-                                        if (letterCategory in names) {
-                                          names[letterCategory].push(currChallenge.name);
-                                        } else {
-                                          names[letterCategory] = [currChallenge.name];
-                                        }
+                      sections={
+                        function(state) {
+                            var returnValues = [];
+                            var names = {};
+                            if (state.dataSource != null) {
+                              state.dataSource.forEach((item) => {
+                                if ((item.val().challengeType == state.selectedOption.value) || ("all" == state.selectedOption.value)) {
+                                    var letterCategory = item.val().challengeName[0];
+                                    if (letterCategory in names) {
+                                      names[letterCategory].push(item.val());
+                                    } else {
+                                      names[letterCategory] = [item.val()];
                                     }
-                                    var sortedNames = [];
-                                    for (var letter in names) {
-                                        sortedNames.push(letter);
-                                    }
-                                    sortedNames.sort();
-                                    var sortedDict = {};
-                                    for (var index in sortedNames) {
-                                        var letter = sortedNames[index]
-                                        sortedDict[letter] = names[letter];
-                                    }
-                                    for (var letter in sortedDict) {
-                                        sortedDict[letter].sort();
-                                        returnValues.push({title : letter, data: sortedDict[letter]})
-                                    }
-                                    return returnValues;
-                                } else if (state.selectedOption.value == "daily") {
-                                    alert("Daily Challenges");
-                                    return [];
-                                } else if (state.selectedOption.value == "weekly") {
-                                    alert("Weekly Challenges");
-                                    return [];
                                 }
-                        }(this.state)}
+                              });
+                            } else {
+                                // Hope this never happens
+                            }
+                            var sortedNames = [];
+                            for (var letter in names) {
+                                sortedNames.push(letter);
+                            }
+                            sortedNames.sort();
 
-                        renderItem={({item}) =>
-                            <Text
-                                style={styles.item}
-                                onPress={() => {
-                                    alert("You selected " + item);
-                                }}>
-                                {item}
-                            </Text>}
-                            renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}                        keyExtractor={(item, index) => index}
-                    />
+                            var sortedDict = {};
+                            for (var index in sortedNames) {
+                                var letter = sortedNames[index]
+                                sortedDict[letter] = names[letter];
+                            }
+
+                            for (var letter in sortedDict) {
+                                sortedDict[letter].sort();
+                                returnValues.push({title : letter, data: sortedDict[letter]})
+                            }
+                            return returnValues;
+                        }(this.state)}
+                    renderItem={({item, section}) =>
+                      <Text
+                          style={styles.item}
+                            onPress={() => {
+                                alert("Current: " + this.state.userSource[0].val().pointsToday);
+                            }}>
+                            {item.challengeName}
+                      </Text>}
+                    renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+                    keyExtractor={(item, index) => index}
+                  />
                 </View>
             </View>
         );
     }
 }
 
-challenges = [
-        {
-            name: "Challenge 1",
-        }, {
-            name: "Challenge 2",
-        }, {
-            name: "Challenge 3",
-        }, {
-            name: "Challenge 4",
-        }, {
-            name: "Challenge 5",
-        }, {
-            name: "Challenge 6",
-        }, {
-            name: "Challenge 7",
-        }
-    ]
 const styles = StyleSheet.create({
     page: {
         flex: 1,
