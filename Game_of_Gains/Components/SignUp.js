@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, TextInput, Image, KeyboardAvoidingView } from 'react-native';
+import { AsyncStorage, View, Text, Button, StyleSheet, TextInput, Image, KeyboardAvoidingView } from 'react-native';
 import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
-
 class SignUpScreen extends React.Component {
 
     constructor(props) {
@@ -30,19 +29,36 @@ class SignUpScreen extends React.Component {
                 .createUserWithEmailAndPassword(email, pass);
             console.log("Account created");
             userInfo = firebase.auth().currentUser;
-            firebase.database().ref('users/' + userInfo.uid + '/').set({
-                displayName: userInfo.displayName == null ? username : "null",
             uid = userInfo.uid;
             firebase.database().ref('users/' + uid + '/').set({
+                createdEvents: ['null'],
+                displayName: userInfo.displayName == null ? username : userInfo.displayName,
+                email: userInfo.email,
+                exerciseInfo: {
+                    exercises: {
+                        crunch: {
+                            pointsAllTime: 100,
+                            pointsPer: '1/5',
+                            pointsToday: 10,
+                            pointsWeek: 20
+                        }
+                    },
+                    favoriteExercises: ['crunch', 'pullup'],
+                    pointsAllTime: 1000,
+                    pointsToday: 10,
+                    pointsWeek: 100,
+                    savedRoutines: ['Monday', 'Abs Day']
+                },
                 friends: {
                     [uid]: {
                         added: Date.now().toString(),
-                        displayName: userInfo.displayName == null ? username : "null",
+                        displayName: userInfo.displayName == null ? username : userInfo.displayName,
                     }
                 },
-                displayName: userInfo.displayName == null ? username : "null",
-                email: userInfo.email
+                joinedChallenges: ['null'],
+                joinedEvents: ['null']
             });
+            global.username = username;
             this.props.navigation.dispatch(this.resetToHome);
         } catch (error) {
             console.log(error.toString());
@@ -62,12 +78,12 @@ class SignUpScreen extends React.Component {
                 <TextInput
                     placeholder="password"
                     secureTextEntry={true}
-                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
+                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 10}}
                     onChangeText={(text) => this.setState({userPass: text})}
                 />
+                <Text>User Name</Text>
                 <TextInput
                     placeholder="username"
-                    secureTextEntry={true}
                     style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
                     onChangeText={(text) => this.setState({userName: text})}
                 />
