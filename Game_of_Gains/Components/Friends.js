@@ -198,30 +198,7 @@ class FriendsScreen extends React.Component {
         );
     }
 }
-// friends = [
-//         {
-//             firstName: "Brandon",
-//             lastName: "Manuel"
-//         }, {
-//             firstName: "Brody",
-//             lastName: "Johnstone"
-//         }, {
-//             firstName: "Grayson",
-//             lastName: "Bianco"
-//         }, {
-//             firstName: "Jessica",
-//             lastName: "Chen"
-//         }, {
-//             firstName: "Will",
-//             lastName: "Stith"
-//         }, {
-//             firstName: "Bob",
-//             lastName: "Smith"
-//         }, {
-//             firstName: "Brodie",
-//             lastName: "Johnson"
-//         }
-//     ]
+
 const styles = StyleSheet.create({
     page: {
         flex: 1,
