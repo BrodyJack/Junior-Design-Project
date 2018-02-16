@@ -15,7 +15,7 @@ class ChallengesScreen extends React.Component {
   constructor(props) {
         super(props);
         this.itemsRef = firebase.database().ref('challenges/');
-        this.infoRef = firebase.database().ref('users/uid1'); //firebase.auth().currentUser.uid
+        this.infoRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid); //'users/uid1'
         this.state = {
             selectedOption: {label: "All", value: "all"}
         }
