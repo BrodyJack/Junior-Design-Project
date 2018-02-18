@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
+import { AsyncStorage, View, Text, Button, SectionList, StyleSheet, Image, Dimensions, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
@@ -102,11 +102,11 @@ class HomeScreen extends React.Component {
                 />
             </View>
             */
-
+            <ScrollView>
             <Grid>
             <Row size={25}>
             <Col>
-                <Card onPress={() => console.log("hmm")} title="Exercises">
+                <Card title="Exercises">
                 {
                     users.map((u, i) => {
                     return (
@@ -194,6 +194,7 @@ class HomeScreen extends React.Component {
             </Col>
             </Row>
             </Grid>
+            </ScrollView>
             
         );
     }
