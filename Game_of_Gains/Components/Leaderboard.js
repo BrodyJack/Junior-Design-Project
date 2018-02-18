@@ -1,17 +1,27 @@
 import React from 'react';
-import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
-import { SegmentedControls } from 'react-native-radio-buttons'
-
+import { SegmentedControls } from 'react-native-radio-buttons';
+import * as firebase from 'firebase';
 
 class LeaderboardScreen extends React.Component {
+    
+    componentDidMount() {
+        this.listenForEvents("friends", this.friends);
+        this.listenForEvents("users", this.users);
+    }
+
     constructor(props) {
         super(props);
+        this.currentUserId = firebase.auth().currentUser.uid;
+        this.friends = firebase.database().ref("users/" + this.currentUserId + "/friends/");
+        this.users = firebase.database().ref("users/");
         this.state = {
             selectedOption: {label: "Friends", value: "friends"}
-        }   
+        } 
     }
+
     static navigationOptions = ({ navigation }) => {
         return {
             tabBarLabel: 'Leaderboard',
@@ -26,8 +36,58 @@ class LeaderboardScreen extends React.Component {
             headerLeft: (
                 <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
             ),
+            headerRight: (
+                <Ionicons 
+                    name='ios-options'
+                    size={26}
+                    onPress={() => alert('options')}
+                />
+            )
         }
     };
+
+    listenForEvents(type, data) {
+        if (type == "friends") {
+            data.once('value', (snap) => {
+                var items = [];
+                snap.forEach((child) => {
+                    var childRef = firebase.database().ref("users/" + child.key + "/");
+                    childRef.once('value', (user) => {
+                        var item = {
+                            name: user.val().displayName,
+                            pointsAllTime: user.val().exerciseInfo.pointsAllTime,
+                            pointsWeek: user.val().exerciseInfo.pointsWeek,
+                            pointsToday: user.val().exerciseInfo.pointsToday
+                        };
+                        items.push(item);
+                    }
+                 )
+                });
+
+                this.setState({
+                    friendData: items
+                });
+
+            });
+        } else if (type == "users") {
+            data.once('value', (snap) => {
+                var items = [];
+                snap.forEach((child) => {
+                    var item = {
+                        name: child.val().displayName,
+                        pointsAllTime: child.val().exerciseInfo.pointsAllTime,
+                        pointsWeek: child.val().exerciseInfo.pointsWeek,
+                        pointsToday: child.val().exerciseInfo.pointsToday
+                    };
+                    items.push(item);
+                });
+
+                this.setState({
+                    userData: items
+                });
+            });
+        }
+    }
 
     render() {
         options = [
@@ -65,42 +125,43 @@ class LeaderboardScreen extends React.Component {
                         selectedBackgroundColor= {'#007AFF'}
                         containerStyle={{ marginLeft: 5, marginRight: 5 }}
                     />
-                <SectionList
-                        sections={
+                <FlatList
+                        data={
                             function(state) {
-                                var list;
-                                var titleName;
+                                var list = [];
                                 if (state.selectedOption.value == "friends") {
-                                    list = friends;
-                                    titleName = "Friends Leaderboard";
+                                    if (state.friendData != undefined) {
+                                        list = state.friendData;
+                                    }
                                 } else if (state.selectedOption.value == "global") {
-                                    list = globalBoard;
-                                    titleName = "Global Leaderboard";
+                                    if (state.userData != undefined) {
+                                        list = state.userData;
+                                    }
                                 }
-                                var returnValues = [];
                                 var sortedData = [];
                                 var isSorted = [];
                                 for (var i = 0; i < list.length; i++) {
                                     isSorted.push(false);
                                 }
-                                while (sortedData.length != list.length) {
+                                while (sortedData.length != list.length * 2) {
                                     var maxScore = 0;
                                     var idxToAdd = 0;
                                     for (var i = 0; i < list.length; i++) {
-                                        if (!isSorted[i] && list[i].score > maxScore) {
-                                            maxScore = list[i].score;
+                                        if (!isSorted[i] && list[i].pointsAllTime > maxScore) {
+                                            maxScore = list[i].pointsAllTime;
                                             idxToAdd = i;
                                         }
                                     }
                                     var toAdd = list[idxToAdd];
-                                    sortedData.push(toAdd.firstName + " " + toAdd.lastName + ": " + toAdd.score);
+                                    sortedData.push(toAdd.name);
+                                    sortedData.push(toAdd.pointsAllTime);
                                     isSorted[idxToAdd] = true;
                                 }
-                                returnValues.push({title : titleName, data: sortedData})
-                                return returnValues;
+                                return sortedData;
                             
                             }(this.state)}
-                        
+                        horizontal={false}
+                        numColumns={2}
                         renderItem={({item}) => 
                             <Text 
                                 style={styles.item}
@@ -109,7 +170,6 @@ class LeaderboardScreen extends React.Component {
                                 }}>
                                 {item}
                             </Text>}
-                        renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                         keyExtractor={(item, index) => index}
                     />
               </View>
@@ -118,62 +178,8 @@ class LeaderboardScreen extends React.Component {
     }
 }
 
-friends = [
-    {
-        firstName: "Brandon",
-        lastName: "Manuel",
-        score: 10
-    }, {
-        firstName: "Brody",
-        lastName: "Johnstone",
-        score: 20
-    }, {
-        firstName: "Grayson",
-        lastName: "Bianco",
-        score: 30
-    }, {
-        firstName: "Jessica",
-        lastName: "Chen",
-        score: 40
-    }, {
-        firstName: "Will",
-        lastName: "Stith",
-        score: 50
-    }, {
-        firstName: "Bob",
-        lastName: "Smith",
-        score: 60
-    }, {
-        firstName: "Brodie",
-        lastName: "Johnson",
-        score: 70
-    }
-]
-
-globalBoard = [
-    {
-        firstName: "Saitama",
-        lastName: "",
-        score: 1000000
-    }, {
-        firstName: "Goku",
-        lastName: "",
-        score: 9001
-    }, {
-        firstName: "Super",
-        lastName: "Man",
-        score: 1000
-    }, {
-        firstName: "Buff",
-        lastName: "Guy",
-        score: 100
-    }, {
-        firstName: "Wimpy",
-        lastName: "Guy",
-        score: 20
-    }
-]
-
+const {height, width} = Dimensions.get('window');
+const itemWidth = width/2;
 const styles = StyleSheet.create({
     page: {
         flex: 1,
@@ -195,6 +201,7 @@ const styles = StyleSheet.create({
       padding: 10,
       fontSize: 14,
       height: 44,
+      width: itemWidth
     },
   })
 
