@@ -3,6 +3,7 @@ import { View, Text, Button, SectionList, StyleSheet, TextInput, KeyboardAvoidin
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
+import './Global.js';
 
 class EventCreationScreen extends React.Component {
 
@@ -15,7 +16,7 @@ class EventCreationScreen extends React.Component {
             eventLocation: "",
             participants: [],
             contactDetails: {
-                display: "(not yet implemented)",
+                display: global.username,
                 uid: ""
             },
             requireRSVP: false

@@ -41,13 +41,19 @@ class EventsScreen extends React.Component {
 
     listenForEvents(itemsRef) {
         itemsRef.on('value', (snap) => {
-            var items = [];
+            var allEvents = [];
+            var ownedEvents = [];
+
             snap.forEach((child) => {
-                items.push(child);
+                if (child.val().contactDetails.uid == firebase.auth().currentUser.uid) {
+                    ownedEvents.push(child);
+                }
+                allEvents.push(child);
             });
 
             this.setState({
-                dataSource: items
+                allEvents: allEvents,
+                ownedEvents: ownedEvents
             });
 
         });
@@ -84,13 +90,20 @@ class EventsScreen extends React.Component {
                 <SectionList
                   sections={
                       function(state) {
+                          console.log(state.selectedOption);
+                          var dataSource;
+                           if (state.selectedOption.label == 'Near') {
+                               dataSource = state.allEvents;
+                           } else {
+                               dataSource = state.ownedEvents;
+                           }
                           var display = [];
-                          if (state.dataSource != null) {
-                            state.dataSource.forEach((item) => {
+                          if (dataSource == null || dataSource == []) {
+                            display.push({ title: "No Events!", data: ["None"]});
+                          } else {
+                            dataSource.forEach((item) => {
                                 display.push({title: item.val().eventName, reference: item.val(), data: [item.val().contactDetails.display]});
                             });
-                          } else {
-                              display.push({ title: "None", data: ["None"]});
                           }
                           return display;
                       }(this.state)}
