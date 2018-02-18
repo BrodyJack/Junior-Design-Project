@@ -42,7 +42,6 @@ class FriendsScreen extends React.Component {
     };
     
     listenForEvents(type, ref, navigation) {
-        // TODO set navigation state as well as local state and pass navigation state param to navigation.navigate
         if (type == "users") {
             ref.on('value', (snap) => {
                 var items = [];
