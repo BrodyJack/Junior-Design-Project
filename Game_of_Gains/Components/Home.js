@@ -83,8 +83,10 @@ class HomeScreen extends React.Component {
             }
            ];
 
+        wwidth = Dimensions.get('window').width;
+
         return (
-            <View style={styles.page}>
+            /*<View style={styles.page}>
 
                 <Image style={{paddingBottom: 10}} source={require('../user.png')}/>
 
@@ -99,11 +101,12 @@ class HomeScreen extends React.Component {
                   keyExtractor={(item, index) => index}
                 />
             </View>
+            */
 
-            /*<Grid>
+            <Grid>
             <Row size={25}>
             <Col>
-                <Card title="CARD WITH DIVIDER">
+                <Card onPress={() => console.log("hmm")} title="Exercises">
                 {
                     users.map((u, i) => {
                     return (
@@ -121,7 +124,7 @@ class HomeScreen extends React.Component {
                 </Card>
             </Col>
             <Col>
-                <Card title="CARD WITH DIVIDER">
+                <Card title="Recent Activity">
                 {
                     users.map((u, i) => {
                     return (
@@ -139,9 +142,22 @@ class HomeScreen extends React.Component {
                 </Card>
             </Col>
             </Row>
-            <Row size={75}>
+            <Row size={50}>
+                <Col>
+                    <Card title="Progress Chart" containerStyle={{height: 275}}>
+                        <View>
+                            <Image
+                                resizeMode='stretch'
+                                source={require('./../img/simplegraph.png')}
+                                style={{width: wwidth - 70, height: 200}}
+                            />
+                        </View>
+                    </Card>
+                </Col>
+            </Row>
+            <Row size={25}>
             <Col>
-                <Card title="CARD WITH DIVIDER">
+                <Card title="Notifications">
                 {
                     users.map((u, i) => {
                     return (
@@ -159,7 +175,7 @@ class HomeScreen extends React.Component {
                 </Card>
             </Col>
             <Col>
-                <Card title="CARD WITH DIVIDER">
+                <Card title="?">
                 {
                     users.map((u, i) => {
                     return (
@@ -178,7 +194,7 @@ class HomeScreen extends React.Component {
             </Col>
             </Row>
             </Grid>
-            */
+            
         );
     }
 }
