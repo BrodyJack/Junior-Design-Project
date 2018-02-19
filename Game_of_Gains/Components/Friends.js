@@ -58,16 +58,19 @@ class FriendsScreen extends React.Component {
         } else if (type == "friends") {
             ref.on('value', (snap) => {
                 var items = [];
-                snap.forEach((child) => {
-                    items.push({
-                        [child.key]: child
-                    })
-                });
-                                                
+                // snap.forEach((child) => {
+                //     items.push({
+                //         [child.key]: child
+                //     })
+                // });
+                // 
+                snap.val().forEach(function(friendObj) {
+                    items.push(friendObj);
+                })
                 this.setState({
                     currentUserFriends: items
                 });
-                navigation.state.currFriends = items
+                navigation.state.currFriends = items;
             });
         }
     }
@@ -124,8 +127,8 @@ class FriendsScreen extends React.Component {
                                         var currFriendId = Object.keys(item)[0];
                                         if (currFriendId != state.currentUserId) {
                                             friends.push({
-                                                displayName: item[currFriendId].val()["displayName"],
-                                                added: item[currFriendId].val()["added"]
+                                                displayName: item[currFriendId]["displayName"],
+                                                added: item[currFriendId]["added"]
                                             });
                                         }
                                     })

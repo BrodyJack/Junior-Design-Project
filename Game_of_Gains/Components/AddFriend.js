@@ -32,14 +32,13 @@ class AddFriendScreen extends React.Component {
                 displayName: item.val().displayName
             }
         };
-        console.log("BRODY: " + JSON.stringify(toPush));
         friendData.push(toPush);
-        console.log("Friend data: " + JSON.stringify(friendData));
         var updates = {};
-        updates['users/' + state.currentUserId + '/friends/'] = toPush;
+        updates['users/' + state.currentUserId + '/friends/'] = friendData;
         try {
             firebase.database().ref().update(updates);
             // firebase.database().ref('users/' + state.currentUserId + '/friends/').set(toPush);
+            Alert.alert("Added Friend", "You have added " + item.val()["displayName"] + " as a friend!");
             this.props.navigation.goBack();
         } catch (error) {
             console.log(error.toString());
