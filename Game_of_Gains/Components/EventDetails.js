@@ -35,7 +35,7 @@ class EventDetailsScreen extends React.Component {
             var participants = snapshot.val();
             if (participants.includes(firebase.auth().currentUser.uid)) {
                 // User is already participating
-                console.log('what is happening');
+                Alert.alert('Oops!', 'You have already joined this event')
                 return;
             }
             participants.push(firebase.auth().currentUser.uid);
@@ -49,7 +49,11 @@ class EventDetailsScreen extends React.Component {
                     firebase.database().ref(userPath).set(updated);
             });
 
+
         });
+
+        Alert.alert('Success!', 'You joined ' + this.props.navigation.state.params.reference.eventName);
+
     }
 
     render() {
