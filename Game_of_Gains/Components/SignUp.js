@@ -50,12 +50,12 @@ class SignUpScreen extends React.Component {
                     pointsWeek: 100,
                     savedRoutines: ['Monday', 'Abs Day']
                 },
-                friends: {
-                    [uid]: {
-                        added: Date.now().toString(),
-                        displayName: userInfo.displayName == null ? username : userInfo.displayName,
-                    }
-                },
+                friends: [{
+                        [uid]: {
+                            added: Date.now().toString(),
+                            displayName: userInfo.displayName == null ? username : userInfo.displayName,
+                        }
+                }],
                 joinedChallenges: ['null'],
                 joinedEvents: ['null']
             });

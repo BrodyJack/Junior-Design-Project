@@ -50,8 +50,9 @@ class LeaderboardScreen extends React.Component {
         if (type == "friends") {
             data.once('value', (snap) => {
                 var items = [];
-                snap.forEach((child) => {
-                    var childRef = firebase.database().ref("users/" + child.key + "/");
+                snap.val().forEach((child) => {
+                    key = Object.keys(child)[0];
+                    var childRef = firebase.database().ref("users/" + key + "/");
                     childRef.once('value', (user) => {
                         var item = {
                             name: user.val().displayName,
