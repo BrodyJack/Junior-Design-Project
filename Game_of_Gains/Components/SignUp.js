@@ -1,5 +1,6 @@
 import React from 'react';
-import { AsyncStorage, View, Text, Button, StyleSheet, TextInput, Image, KeyboardAvoidingView } from 'react-native';
+import { AsyncStorage, View, Text, StyleSheet, TextInput, Image, KeyboardAvoidingView } from 'react-native';
+import { Button } from 'react-native-elements';
 import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
@@ -67,31 +68,47 @@ class SignUpScreen extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.page} behavior="padding">
-                <Image source={require('./../img/dab.jpg')}/>
-                <Text>Email</Text>
+                <Image style={{width: wwidth - 100, height: wwidth - 100, marginBottom: 50 }} source={require('./../img/template_icon.png')}/>
                 <TextInput
-                    placeholder="you@gatech.edu"
-                    style={{borderBottomWidth: 1, width: 350, margin: 10}}
+                    placeholder="Email"
+                    style={{borderWidth: 1, borderRadius: 5, borderColor: 'white', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20}}
                     onChangeText={(text) => this.setState({userEmail: text})}
                 />
-                <Text>Password</Text>
                 <TextInput
-                    placeholder="password"
+                    placeholder="Password"
                     secureTextEntry={true}
-                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 10}}
+                    style={{borderWidth: 1, borderRadius: 5, borderColor: 'white', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20}}
                     onChangeText={(text) => this.setState({userPass: text})}
                 />
-                <Text>User Name</Text>
                 <TextInput
-                    placeholder="username"
-                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
+                    placeholder="Display Name"
+                    style={{borderWidth: 1, borderRadius: 5, borderColor: 'white', width: wwidth - 80, height: 35, backgroundColor: 'white'}}
                     onChangeText={(text) => this.setState({userName: text})}
                 />
                 <Button
-                    onPress={() => this.signup(this.state.userEmail, this.state.userPass, this.state.userName)}
                     title="Sign Up"
+                    loadingProps={{ size: "large", color: "rgba(111, 202, 186, 1)" }}
+                    textStyle={{ fontWeight: "700" }}
+                    onPress={() => this.signup(this.state.userEmail, this.state.userPass, this.state.userName)}
+                    buttonStyle={{
+                        backgroundColor: "rgba(35, 192, 144, 1)",
+                        width: 300,
+                        height: 45,
+                        borderColor: "transparent",
+                        borderWidth: 0,
+                        borderRadius: 5,
+                        marginTop: 40
+                    }}
                 />
             </KeyboardAvoidingView>
+            
+            /*<TextInput
+            placeholder="Password"
+            secureTextEntry={true}
+            style={{borderWidth: 1, borderRadius: 5, borderColor: 'white', width: wwidth - 80, height: 35, backgroundColor: 'white'}}
+            onChangeText={(text) => this.setState({userPass: text})}
+            />
+            */
         );
     }
 }
@@ -101,7 +118,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'rgba(47, 76, 112, 1)'
     }
 });
 

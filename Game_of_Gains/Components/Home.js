@@ -1,5 +1,7 @@
 import React from 'react';
 import { AsyncStorage, View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
+import { Card } from 'react-native-elements';
+import { Col, Row, Grid } from 'react-native-easy-grid';
 import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
@@ -69,6 +71,18 @@ class HomeScreen extends React.Component {
     };
 
     render() {
+
+        const users = [
+            {
+               name: 'brynn',
+               avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'brody',
+                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            }
+           ];
+
         return (
             <View style={styles.page}>
 
@@ -85,6 +99,86 @@ class HomeScreen extends React.Component {
                   keyExtractor={(item, index) => index}
                 />
             </View>
+
+            /*<Grid>
+            <Row size={25}>
+            <Col>
+                <Card title="CARD WITH DIVIDER">
+                {
+                    users.map((u, i) => {
+                    return (
+                        <View key={i} style={styles.user}>
+                        <Image
+                            style={styles.image}
+                            resizeMode="cover"
+                            source={{ uri: u.avatar }}
+                        />
+                        <Text style={styles.name}>{u.name}</Text>
+                        </View>
+                    );
+                    })
+                }
+                </Card>
+            </Col>
+            <Col>
+                <Card title="CARD WITH DIVIDER">
+                {
+                    users.map((u, i) => {
+                    return (
+                        <View key={i} style={styles.user}>
+                        <Image
+                            style={styles.image}
+                            resizeMode="cover"
+                            source={{ uri: u.avatar }}
+                        />
+                        <Text style={styles.name}>{u.name}</Text>
+                        </View>
+                    );
+                    })
+                }
+                </Card>
+            </Col>
+            </Row>
+            <Row size={75}>
+            <Col>
+                <Card title="CARD WITH DIVIDER">
+                {
+                    users.map((u, i) => {
+                    return (
+                        <View key={i} style={styles.user}>
+                        <Image
+                            style={styles.image}
+                            resizeMode="cover"
+                            source={{ uri: u.avatar }}
+                        />
+                        <Text style={styles.name}>{u.name}</Text>
+                        </View>
+                    );
+                    })
+                }
+                </Card>
+            </Col>
+            <Col>
+                <Card title="CARD WITH DIVIDER">
+                {
+                    users.map((u, i) => {
+                    return (
+                        <View key={i} style={styles.user}>
+                        <Image
+                            style={styles.image}
+                            resizeMode="cover"
+                            source={{ uri: u.avatar }}
+                        />
+                        <Text style={styles.name}>{u.name}</Text>
+                        </View>
+                    );
+                    })
+                }
+                </Card>
+            </Col>
+            </Row>
+            </Grid>
+            */
         );
     }
 }

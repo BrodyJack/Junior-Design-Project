@@ -24,7 +24,28 @@ class AddFriendScreen extends React.Component {
         }
     };
 
+    async addNewFriend(item, state) {
+        friendData = state.friends;
+        toPush = {
+            [item.key]: {
+                added: Date.now().toString(),
+                displayName: item.val().displayName
+            }
+        };
+        console.log("BRODY: " + JSON.stringify(toPush));
+        friendData.push(toPush);
+        console.log("Friend data: " + JSON.stringify(friendData));
+        var updates = {};
+        updates['users/' + state.currentUserId + '/friends/'] = toPush;
+        try {
+            firebase.database().ref().update(updates);
+            // firebase.database().ref('users/' + state.currentUserId + '/friends/').set(toPush);
+            this.props.navigation.goBack();
+        } catch (error) {
+            console.log(error.toString());
+        }
 
+    }
 
     render() {
         return (
@@ -37,7 +58,7 @@ class AddFriendScreen extends React.Component {
                     users = state.users;
                     friends = state.friends;
                     if (users == undefined || state.search == "") {
-                        return [];
+                        return [{data: ["Search for new friends!"]}];
                     }
                     returnFriends = [];
                     var nonFriends = {
@@ -60,18 +81,18 @@ class AddFriendScreen extends React.Component {
                                 });
                                 if (isFriend) {
                                     if (prevFriends.data == undefined) {
-                                        prevFriends.data = [item.val()["displayName"]];
+                                        prevFriends.data = [item];
                                     } else {
                                         prevFriends.data.push(
-                                            item.val()["displayName"]
+                                            item
                                         );
                                     }
                                 } else {
                                     if (nonFriends.data == undefined) {
-                                        nonFriends.data = [item.val()["displayName"]];
+                                        nonFriends.data = [item];
                                     } else {
                                         nonFriends.data.push(
-                                            item.val()["displayName"]
+                                            item
                                         );
                                     }
                                 }
@@ -90,25 +111,26 @@ class AddFriendScreen extends React.Component {
                     <Text 
                         style={styles.item}
                         onPress={() => {
-                            if (section.title == "Not Friends") {
-                                Alert.alert(
-                                  'Add Friend?',
-                                  'Are you sure you want to add ' + item + ' as a friend?',
-                                  [
-                                      //TODO: actually add a friend here if the user selects yes
-                                    {text: 'Yes', onPress: () => Alert.alert("Confirmed", "You added " + item + " as a friend!")},
-                                    {text: 'No', onPress: () => Alert.alert("Cancelled", "You did not add " + item + " as a friend"), style: 'cancel'}
-                                  ],
-                                  { cancelable: false }
-                                )
-                            } else if (section.title == "Already Friends") {
-                                Alert.alert(
-                                    'Already Friends',
-                                    'You are already friends with ' + item
-                                )
+                            if (section != null) {
+                                if (section.title == "Not Friends") {
+                                    Alert.alert(
+                                      'Add Friend?',
+                                      'Are you sure you want to add ' + item.val()["displayName"] + ' as a friend?',
+                                      [
+                                        {text: 'Yes', onPress: () => this.addNewFriend(item, this.state)},
+                                        {text: 'No', onPress: () => Alert.alert("Cancelled", "You did not add " + item.val()["displayName"] + " as a friend"), style: 'cancel'}
+                                      ],
+                                      { cancelable: false }
+                                    )
+                                } else if (section.title == "Already Friends") {
+                                    Alert.alert(
+                                        'Already Friends',
+                                        'You are already friends with ' + item.val()["displayName"]
+                                    )
+                                }
                             }
                         }}>
-                        {item}
+                        {item.val == undefined ? "Search for users to add as new friends!" : item.val()["displayName"]}
                     </Text>}
                 renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                 keyExtractor={(item, index) => index}
