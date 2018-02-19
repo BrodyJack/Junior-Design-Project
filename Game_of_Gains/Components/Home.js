@@ -74,12 +74,13 @@ class HomeScreen extends React.Component {
 
         const users = [
             {
-               name: 'brynn',
-               avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+               name: 'brandon',
             },
             {
                 name: 'brody',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'jessica',
             }
            ];
 
@@ -105,7 +106,7 @@ class HomeScreen extends React.Component {
             <ScrollView>
             <Grid>
             <Row size={25}>
-            <Col>
+            <Col onPress={() => console.log('Tapped!')}>
                 <Card title="Exercises">
                 {
                     users.map((u, i) => {
@@ -123,7 +124,7 @@ class HomeScreen extends React.Component {
                 }
                 </Card>
             </Col>
-            <Col>
+            <Col onPress={() => console.log('Tapped!')}>
                 <Card title="Recent Activity">
                 {
                     users.map((u, i) => {
@@ -143,7 +144,7 @@ class HomeScreen extends React.Component {
             </Col>
             </Row>
             <Row size={50}>
-                <Col>
+                <Col onPress={() => console.log('Tapped!')}>
                     <Card title="Progress Chart" containerStyle={{height: 275}}>
                         <View>
                             <Image
@@ -156,7 +157,7 @@ class HomeScreen extends React.Component {
                 </Col>
             </Row>
             <Row size={25}>
-            <Col>
+            <Col onPress={() => console.log('Tapped!')}>
                 <Card title="Notifications">
                 {
                     users.map((u, i) => {
@@ -174,8 +175,8 @@ class HomeScreen extends React.Component {
                 }
                 </Card>
             </Col>
-            <Col>
-                <Card title="?">
+            <Col onPress={() => console.log('Tapped!')}>
+                <Card title="Profile">
                 {
                     users.map((u, i) => {
                     return (
