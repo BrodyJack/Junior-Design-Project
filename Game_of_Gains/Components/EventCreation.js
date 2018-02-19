@@ -29,6 +29,12 @@ class EventCreationScreen extends React.Component {
         eventKey = Date.now().toString() + Math.floor(Math.random() * 1000);
         try {
             firebase.database().ref('events/' + eventKey + '/').set(state);
+            userPath = '/users/' + firebase.auth().currentUser.uid + '/createdEvents/';
+            firebase.database().ref(userPath).once('value', function(snapshot) {
+                updatedCreated = snapshot.val();
+                updatedCreated.push(eventKey);
+                firebase.database().ref(userPath).set(updatedCreated);
+            });
             this.props.navigation.goBack();
         } catch (error) {
             console.log(error.toString());

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, View, Text, Button, SectionList, StyleSheet, Image, Dimensions } from 'react-native';
+import { AsyncStorage, View, Text, Button, SectionList, StyleSheet, Image, Dimensions, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
@@ -74,17 +74,20 @@ class HomeScreen extends React.Component {
 
         const users = [
             {
-               name: 'brynn',
-               avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+               name: 'brandon',
             },
             {
                 name: 'brody',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+            },
+            {
+                name: 'jessica',
             }
            ];
 
+        wwidth = Dimensions.get('window').width;
+
         return (
-            <View style={styles.page}>
+            /*<View style={styles.page}>
 
                 <Image style={{paddingBottom: 10}} source={require('../user.png')}/>
 
@@ -99,11 +102,12 @@ class HomeScreen extends React.Component {
                   keyExtractor={(item, index) => index}
                 />
             </View>
-
-            /*<Grid>
+            */
+            <ScrollView>
+            <Grid>
             <Row size={25}>
-            <Col>
-                <Card title="CARD WITH DIVIDER">
+            <Col onPress={() => console.log('Tapped!')}>
+                <Card title="Exercises">
                 {
                     users.map((u, i) => {
                     return (
@@ -120,8 +124,8 @@ class HomeScreen extends React.Component {
                 }
                 </Card>
             </Col>
-            <Col>
-                <Card title="CARD WITH DIVIDER">
+            <Col onPress={() => console.log('Tapped!')}>
+                <Card title="Recent Activity">
                 {
                     users.map((u, i) => {
                     return (
@@ -139,9 +143,22 @@ class HomeScreen extends React.Component {
                 </Card>
             </Col>
             </Row>
-            <Row size={75}>
-            <Col>
-                <Card title="CARD WITH DIVIDER">
+            <Row size={50}>
+                <Col onPress={() => console.log('Tapped!')}>
+                    <Card title="Progress Chart" containerStyle={{height: 275}}>
+                        <View>
+                            <Image
+                                resizeMode='stretch'
+                                source={require('./../img/simplegraph.png')}
+                                style={{width: wwidth - 70, height: 200}}
+                            />
+                        </View>
+                    </Card>
+                </Col>
+            </Row>
+            <Row size={25}>
+            <Col onPress={() => console.log('Tapped!')}>
+                <Card title="Notifications">
                 {
                     users.map((u, i) => {
                     return (
@@ -158,8 +175,8 @@ class HomeScreen extends React.Component {
                 }
                 </Card>
             </Col>
-            <Col>
-                <Card title="CARD WITH DIVIDER">
+            <Col onPress={() => this.props.navigation.navigate('Profile')}>
+                <Card title="Profile">
                 {
                     users.map((u, i) => {
                     return (
@@ -178,7 +195,8 @@ class HomeScreen extends React.Component {
             </Col>
             </Row>
             </Grid>
-            */
+            </ScrollView>
+            
         );
     }
 }

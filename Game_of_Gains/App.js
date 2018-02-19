@@ -14,6 +14,7 @@ import SettingsScreen from './Components/Settings'
 import EventDetailsScreen from './Components/EventDetails'
 import EventCreationScreen from './Components/EventCreation'
 import AddFriendScreen from './Components/AddFriend'
+import ProfileScreen from './Components/Profile'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -61,6 +62,9 @@ const InitialNav = StackNavigator({
     },
     AddFriend: {
         screen: AddFriendScreen
+    },
+    Profile: {
+        screen: ProfileScreen
     }
 }, {
     headerMode: 'float'

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements';
-import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
+import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
 
@@ -15,8 +15,31 @@ firebase.initializeApp({
 class LandingScreen extends React.Component {
 
     static navigationOptions = {header: null};
+
+    resetToHome = NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({ routeName: 'Root'})
+        ]
+    });
+
+    componentDidMount() {
+        this.props.navigation.setParams({ resetToLanding: this.resetToHome });
+    }
     
     render() {
+
+        test = 0
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                console.log('can skip login');
+            } else {
+                console.log('cannot skip login');
+                console.log(user);
+                test = 1
+            }
+        });
+        console.log(test);
 
         wwidth = Dimensions.get('window').width;
 
