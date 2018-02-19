@@ -175,7 +175,7 @@ class HomeScreen extends React.Component {
                 }
                 </Card>
             </Col>
-            <Col onPress={() => console.log('Tapped!')}>
+            <Col onPress={() => this.props.navigation.navigate('Profile')}>
                 <Card title="Profile">
                 {
                     users.map((u, i) => {
