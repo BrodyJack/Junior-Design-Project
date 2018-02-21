@@ -146,7 +146,7 @@ class ChallengesScreen extends React.Component {
                       <Text
                           style={styles.item}
                             onPress={() => {
-                                alert("Current: " + this.state.userSource[0].val().pointsToday);
+                                alert("Current: " + this.state.userSource.val().pointsToday);
                             }}>
                             {item.challengeName}
                       </Text>}

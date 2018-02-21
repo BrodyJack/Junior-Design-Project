@@ -6,12 +6,12 @@ import { SegmentedControls } from 'react-native-radio-buttons'
 import * as firebase from 'firebase';
 
 class FriendsScreen extends React.Component {
-    
+
     componentDidMount() {
         this.listenForEvents("users", this.itemsRef);
         this.listenForEvents("friends", this.myFriendsRef);
     }
-    
+
     constructor(props) {
         super(props);
         this.itemsRef = firebase.database().ref('users/');
@@ -40,7 +40,7 @@ class FriendsScreen extends React.Component {
             )
         }
     };
-    
+
     listenForEvents(type, ref) {
         if (type == "users") {
             ref.on('value', (snap) => {
@@ -68,7 +68,7 @@ class FriendsScreen extends React.Component {
             });
         }
     }
-    
+
     render() {
         options = [
             {
@@ -92,7 +92,7 @@ class FriendsScreen extends React.Component {
         return (
             <View style={styles.page}>
                 <View style={{ flex: 1 }}>
-                    <SegmentedControls 
+                    <SegmentedControls
                         options={ options }
                         onSelection={ setSelectedOption.bind(this) }
                         selectedOption={ this.state.selectedOption }
@@ -102,7 +102,7 @@ class FriendsScreen extends React.Component {
                               return false;
                             }
                             return a.label === b.label
-                        }}                        
+                        }}
                         tint={'#007AFF'}
                         backTint= {'white'}
                         selectedTint= {'white'}
@@ -116,8 +116,8 @@ class FriendsScreen extends React.Component {
                                     return [];
                                 }
                                 friends = [];
-                                
-                                /**TODO: 
+
+                                /**TODO:
                                 - figure out why friend object is only {"added": "1517683295385"}
                                   instead of {"wVw3fL6UfihGi41wGbJMPaxtLCU2": ("added": "1517683295385")}
                                 **/
@@ -136,7 +136,7 @@ class FriendsScreen extends React.Component {
                                         });
                                     })
                                 }
-                                
+
                                 if (state.selectedOption.value == "all") {
                                     var returnValues = [];
                                     var names = {};
@@ -153,7 +153,7 @@ class FriendsScreen extends React.Component {
                                             names[letterCategory].push(currFriend.displayName);
                                         } else {
                                             names[letterCategory] = [currFriend.displayName];
-                                        }                            
+                                        }
                                     }
                                     var sortedNames = [];
                                     for (var letter in names) {
@@ -184,9 +184,9 @@ class FriendsScreen extends React.Component {
                                     return [];
                                 }
                         }(this.state)}
-                        
-                        renderItem={({item}) => 
-                            <Text 
+
+                        renderItem={({item}) =>
+                            <Text
                                 style={styles.item}
                                 onPress={() => {
                                     alert("You selected " + item);
