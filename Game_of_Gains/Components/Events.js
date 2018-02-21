@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, SectionList, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Button, SectionList, StyleSheet, ScrollView, RefreshControl } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
@@ -16,7 +16,8 @@ class EventsScreen extends React.Component {
         super(props);
         this.itemsRef = firebase.database().ref('events/');
         this.state = {
-            selectedOption: {label: "Near", value: "Events Near You"}
+            selectedOption: {label: "Near", value: "Events Near You"},
+            refreshing: false
         }   
     }
 
@@ -60,6 +61,20 @@ class EventsScreen extends React.Component {
         });
     }
 
+    refresh() {
+        this.setState({
+            refreshing: true
+        });
+        // I hate JavaScript
+        // Note to self: this might be the solution to persistent login!
+        setTimeout(function(theThis) {
+            console.log('Done refreshing');
+            theThis.setState({
+                refreshing: false
+            })
+        }, 2000, this);
+    }
+
     render() {
 
         function setSelectedOption(selectedOption){
@@ -98,10 +113,17 @@ class EventsScreen extends React.Component {
                     selectedBackgroundColor= {'#007AFF'}
                     containerStyle={{ margin: 5 }}
                 />
-                <ScrollView>
+                <ScrollView
+                    refreshControl={
+                        // Just an example! In actuality we'd reload the data, but for now, spin for 2s //
+                        <RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this.refresh.bind(this)}
+                        />
+                    }
+                >
                 <Card containerStyle={{padding: 0}}>
                     {
-
                         dataSource.map((u, i) => {
 
                         return (
