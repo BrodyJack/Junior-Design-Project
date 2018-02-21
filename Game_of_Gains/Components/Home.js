@@ -1,6 +1,6 @@
 import React from 'react';
 import { AsyncStorage, View, Text, Button, SectionList, StyleSheet, Image, Dimensions, ScrollView } from 'react-native';
-import { Card } from 'react-native-elements';
+import { Card, ListItem } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
@@ -106,7 +106,7 @@ class HomeScreen extends React.Component {
             <ScrollView>
             <Grid>
             <Row size={25}>
-            <Col onPress={() => console.log('Tapped!')}>
+            <Col onPress={() => this.props.navigation.navigate('Exercises')}>
                 <Card title="Exercises">
                 {
                     users.map((u, i) => {
@@ -124,7 +124,7 @@ class HomeScreen extends React.Component {
                 }
                 </Card>
             </Col>
-            <Col onPress={() => console.log('Tapped!')}>
+            <Col onPress={() => this.props.navigation.navigate('RecentActivity')}>
                 <Card title="Recent Activity">
                 {
                     users.map((u, i) => {
@@ -157,7 +157,7 @@ class HomeScreen extends React.Component {
                 </Col>
             </Row>
             <Row size={25}>
-            <Col onPress={() => console.log('Tapped!')}>
+            <Col onPress={() => this.props.navigation.navigate('Notifications')}>
                 <Card title="Notifications">
                 {
                     users.map((u, i) => {

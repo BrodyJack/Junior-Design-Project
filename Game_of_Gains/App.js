@@ -15,6 +15,9 @@ import EventDetailsScreen from './Components/EventDetails'
 import EventCreationScreen from './Components/EventCreation'
 import AddFriendScreen from './Components/AddFriend'
 import ProfileScreen from './Components/Profile'
+import NotificationsScreen from './Components/Notifications'
+import ExercisesScreen from './Components/Exercises'
+import RecentActivityScreen from './Components/RecentActivity'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -65,6 +68,15 @@ const InitialNav = StackNavigator({
     },
     Profile: {
         screen: ProfileScreen
+    },
+    Notifications: {
+        screen: NotificationsScreen
+    },
+    Exercises: {
+        screen: ExercisesScreen
+    },
+    RecentActivity: {
+        screen: RecentActivityScreen
     }
 }, {
     headerMode: 'float'

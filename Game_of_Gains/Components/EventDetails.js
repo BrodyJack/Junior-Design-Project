@@ -49,11 +49,8 @@ class EventDetailsScreen extends React.Component {
                     firebase.database().ref(userPath).set(updated);
             });
 
-
+            Alert.alert('Success!', 'You joined ' + this.props.navigation.state.params.reference.eventName);
         });
-
-        Alert.alert('Success!', 'You joined ' + this.props.navigation.state.params.reference.eventName);
-
     }
 
     render() {

@@ -6,11 +6,11 @@ import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
 
-class ProfileScreen extends React.Component {
+class RecentActivityScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'Profile',
+            title: 'Recent Activity',
         }
     }
     
@@ -109,4 +109,4 @@ const styles = StyleSheet.create({
     }
 });
 
-module.exports = ProfileScreen;
+module.exports = RecentActivityScreen;

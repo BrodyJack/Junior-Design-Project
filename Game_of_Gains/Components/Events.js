@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
+import { View, Text, Button, SectionList, StyleSheet, ScrollView } from 'react-native';
+import { Card, ListItem } from 'react-native-elements';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons';
@@ -67,6 +68,16 @@ class EventsScreen extends React.Component {
             });
         }
 
+        var dataSource;
+
+        if (this.state.selectedOption.label == 'Near' && this.state.allEvents != null) {
+            dataSource = this.state.allEvents;
+        } else if (this.state.selectedOption.label == 'Owned' && this.state.ownedEvents != null) {
+            dataSource = this.state.ownedEvents;
+        } else {
+            dataSource = [];
+        }
+
         return (
             <View style={styles.page}>
                 <View style={styles.container}>
@@ -87,35 +98,25 @@ class EventsScreen extends React.Component {
                     selectedBackgroundColor= {'#007AFF'}
                     containerStyle={{ margin: 5 }}
                 />
-                <SectionList
-                  sections={
-                      function(state) {
-                          console.log(state.selectedOption);
-                          var dataSource;
-                           if (state.selectedOption.label == 'Near') {
-                               dataSource = state.allEvents;
-                           } else {
-                               dataSource = state.ownedEvents;
-                           }
-                          var display = [];
-                          if (dataSource == null || dataSource == []) {
-                            display.push({ title: "No Events!", data: ["None"]});
-                          } else {
-                            dataSource.forEach((item) => {
-                                display.push({title: item.val().eventName, eventKey: item.key, reference: item.val(), data: [item.val().contactDetails.display]});
-                            });
-                          }
-                          return display;
-                      }(this.state)}
-                  renderItem={({item, section}) => 
-                    <Text 
-                        style={styles.item} 
-                        onPress={() => this.props.navigation.navigate('EventDetails', { name: section.title, reference: section.reference, eventKey: section.eventKey })}>
-                            Created by: {item}
-                    </Text>}
-                  renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-                  keyExtractor={(item, index) => index}
-                />
+                <ScrollView>
+                <Card containerStyle={{padding: 0}}>
+                    {
+
+                        dataSource.map((u, i) => {
+
+                        return (
+                            <ListItem
+                            key={i}
+                            roundAvatar
+                            title={u.val().eventName}
+                            avatar={require('./../img/user.png')}
+                            onPress={() => this.props.navigation.navigate('EventDetails', { name: u.val().eventName, reference: u.val(), eventKey: u.key })}
+                            />
+                        );
+                        })
+                    }
+                </Card>
+                </ScrollView>
               </View>
             </View>
         );
