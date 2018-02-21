@@ -16,30 +16,18 @@ class LandingScreen extends React.Component {
 
     static navigationOptions = {header: null};
 
-    resetToHome = NavigationActions.reset({
-        index: 0,
-        actions: [
-            NavigationActions.navigate({ routeName: 'Root'})
-        ]
-    });
+    // resetToHome = NavigationActions.reset({
+    //     index: 0,
+    //     actions: [
+    //         NavigationActions.navigate({ routeName: 'Root'})
+    //     ]
+    // });
 
-    componentDidMount() {
-        this.props.navigation.setParams({ resetToLanding: this.resetToHome });
-    }
+    // componentDidMount() {
+    //     this.props.navigation.setParams({ resetToLanding: this.resetToHome });
+    // }
     
     render() {
-
-        test = 0
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                console.log('can skip login');
-            } else {
-                console.log('cannot skip login');
-                console.log(user);
-                test = 1
-            }
-        });
-        console.log(test);
 
         wwidth = Dimensions.get('window').width;
 
