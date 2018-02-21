@@ -1,17 +1,42 @@
 import React from 'react';
 import { View, Text, Button, Image, StyleSheet, Alert } from 'react-native';
-import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
+import { TabNavigator, NavigationActions } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import SettingsList from 'react-native-settings-list';
+import * as firebase from 'firebase';
 
 class SettingsScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'Settings',
+            headerRight: (
+                <Button title="Log Out" onPress={() => {navigation.state.params.doLogout(navigation)}}/>
+            )
         }
     }
-    
+
+    componentDidMount() {
+        this.props.navigation.setParams({ doLogout: this.logout, resetToLanding: this.resetToHome });
+    }
+
+    resetToHome = NavigationActions.reset({
+        index: 0,
+        actions: [
+            NavigationActions.navigate({ routeName: 'Landing'})
+        ]
+    })
+
+    async logout(navigation) {
+        try {
+            await firebase.auth().signOut();
+            console.log('Logged out!');
+            navigation.dispatch(navigation.state.params.resetToLanding);
+        } catch (error) {
+            console.log(error.toString());
+        }
+    }
+
     constructor(){
         super();
         this.onValueChange = this.onValueChange.bind(this);

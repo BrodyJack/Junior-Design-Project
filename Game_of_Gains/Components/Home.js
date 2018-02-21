@@ -16,15 +16,7 @@ class HomeScreen extends React.Component {
     }
     componentDidMount() {
         this.load();
-        this.props.navigation.setParams({ doLogout: this.logout, resetToLanding: this.resetToHome });
     }
-
-    resetToHome = NavigationActions.reset({
-        index: 0,
-        actions: [
-            NavigationActions.navigate({ routeName: 'Landing'})
-        ]
-    })
 
     load() {
         firebase.auth().onAuthStateChanged(function(user) {
@@ -39,15 +31,7 @@ class HomeScreen extends React.Component {
         });
     }
 
-    async logout(navigation) {
-        try {
-            await firebase.auth().signOut();
-            console.log('Logged out!');
-            navigation.dispatch(navigation.state.params.resetToLanding);
-        } catch (error) {
-            console.log(error.toString());
-        }
-    }
+
 
     static navigationOptions = ({ navigation }) => {
 
@@ -65,7 +49,7 @@ class HomeScreen extends React.Component {
                 <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
             ),
             headerRight: (
-                <Button title="Log Out" onPress={() => {navigation.state.params.doLogout(navigation)}}/>
+                <Button title="Quick Log" onPress={() => {navigation.navigate('Exercises')}}/>
             )
         }
     };
@@ -196,7 +180,7 @@ class HomeScreen extends React.Component {
             </Row>
             </Grid>
             </ScrollView>
-            
+
         );
     }
 }
