@@ -66,6 +66,33 @@ class SignInScreen extends React.Component {
                         marginTop: 40
                     }}
                     />
+                <View style={{flex: 1, flexDirection: 'row', marginTop: 150}}>
+                    <Button
+                        title="Brody"
+                        textStyle={{ fontSize: 10 }}
+                        onPress={() => this.login('brodyjackj@gmail.com', '123456')}
+                    />
+                    <Button
+                        title="Brandon"
+                        textStyle={{ fontSize: 10 }}
+                        onPress={() => this.login('', '')}
+                    />
+                    <Button
+                        title="Jessica"
+                        textStyle={{ fontSize: 10 }}
+                        onPress={() => this.login('', '')}
+                    />
+                    <Button
+                        title="Will"
+                        textStyle={{ fontSize: 10 }}
+                        onPress={() => this.login('', '')}
+                    />
+                    <Button
+                        title="Grayson"
+                        textStyle={{ fontSize: 10 }}
+                        onPress={() => this.login('', '')}
+                    />
+                </View>
             </KeyboardAvoidingView>
         );
     }

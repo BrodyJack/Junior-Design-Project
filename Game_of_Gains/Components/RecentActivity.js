@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, Alert, TouchableHighlight, ScrollView, FlatList} from 'react-native';
 import { Card, ListItem, Button } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import IconBadge from 'react-native-icon-badge';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
@@ -16,6 +17,9 @@ class RecentActivityScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            BadgeCount: 0
+        }
     }
 
     render() {
@@ -32,71 +36,27 @@ class RecentActivityScreen extends React.Component {
            ];
 
         return (
-            <ScrollView>
-            <Grid>
-                <Row>
-                <Col onPress={() => console.log('attach something useful')}>
-                    {/*// implemented without image with header*/}
-                    <Card title="CARD WITH DIVIDER">
-                    {
-                        users.map((u, i) => {
-                        return (
-                            <View key={i} style={styles.user}>
-                            <Image
-                                style={styles.image}
-                                resizeMode="cover"
-                                source={{ uri: u.avatar }}
-                            />
-                            <Text style={styles.name}>{u.name}</Text>
-                            </View>
-                        );
-                        })
-                    }
-                    </Card>
-                </Col>
-                </Row>
-
-                <Row>
-                <Col>
-                    {/*// implemented without image without header, using ListItem component*/}
-                    <Card containerStyle={{padding: 0}}>
-                    {
-                        users.map((u, i) => {
-                        return (
-                            <ListItem
-                            key={i}
-                            roundAvatar
-                            title={u.name}
-                            avatar={{uri:u.avatar}}
-                            onPress={() => console.log(u.name)}
-                            />
-                        );
-                        })
-                    }
-                    </Card>
-                </Col>
-                </Row>
-
-                <Row>
-                <Col onPress={() => console.log('attach something useful')}>
-                     {/*// implemented with Text and Button as children*/}
-                    <Card
-                    title='HELLO WORLD'
-                    image={require('./../img/user.png')}>
-                    <Text style={{marginBottom: 10}}>
-                        The idea with React Native Elements is more about component structure than actual design.
-                    </Text>
-                    <Button
-                        icon={{name: 'code'}}
-                        backgroundColor='#03A9F4'
-                        buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                        title='VIEW NOW' />
-                    </Card>
-                </Col>
-                </Row>
-            </Grid>
-            </ScrollView>
-
+            <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',}}>
+            <IconBadge
+                MainElement={
+                <Card title="test"/>
+                    
+                }
+                BadgeElement={
+                <Text style={{color:'#FFFFFF'}}>{this.state.BadgeCount}</Text>
+                }
+                IconBadgeStyle={
+                {width:20,
+                height:20,
+                backgroundColor: '#FF00EE'}
+                }
+                Hidden={this.state.BadgeCount==0}
+                />
+            <Button
+                title="Increment"
+                onPress={() => this.setState(prevState => { return { BadgeCount: prevState.BadgeCount+1};})}
+            />
+            </View>
         );
     }
 }

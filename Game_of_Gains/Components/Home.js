@@ -7,32 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin 
 import * as firebase from 'firebase';
 import './Global.js';
 class HomeScreen extends React.Component {
-    // React Navigation? More like extreme aggravation
-    // Just ask me
-    // - Brody
-    constructor(props) {
-        super(props);
-        this.load = this.load.bind(this);
-    }
-    componentDidMount() {
-        this.load();
-    }
-
-    load() {
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                console.log(user);
-                firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
-                    global.username = (snapshot.val() && snapshot.val().displayName) || 'Anonymous';
-                });
-            } else {
-                console.log('fail');
-            }
-        });
-    }
-
-
-
+    
     static navigationOptions = ({ navigation }) => {
 
         return {
@@ -71,22 +46,6 @@ class HomeScreen extends React.Component {
         wwidth = Dimensions.get('window').width;
 
         return (
-            /*<View style={styles.page}>
-
-                <Image style={{paddingBottom: 10}} source={require('../user.png')}/>
-
-                <Image style={{paddingBottom: 10}} source={require('../Graph.png')}/>
-                <Text>{global.username || ''}</Text>
-                <SectionList stickySectionHeadersEnabled={true}
-                  sections={[
-                    {title: 'Recent Activities', data: ['Brody', 'Grayson', 'Will', 'Brandon', 'Jessica', 'Mary']},
-                  ]}
-                  renderItem={({item}) => <ActivityItem style={styles.item} text1={item} />}
-                  renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-                  keyExtractor={(item, index) => index}
-                />
-            </View>
-            */
             <ScrollView>
             <Grid>
             <Row size={25}>
@@ -109,7 +68,7 @@ class HomeScreen extends React.Component {
                 </Card>
             </Col>
             <Col onPress={() => this.props.navigation.navigate('RecentActivity')}>
-                <Card title="Recent Activity">
+                <Card title="Friends Feed">
                 {
                     users.map((u, i) => {
                     return (
@@ -185,19 +144,19 @@ class HomeScreen extends React.Component {
     }
 }
 
-const ActivityItem = (props) => {
-    return (
-        <View>
-            <View style={styles.activityBox}>
-                <Text style={styles.activityText}>{props.text1}</Text>
-                <Text style={styles.activityText1}>{props.text1.length}pts</Text>
-            </View>
-            <Text style={styles.activityText1}>{listOfActivities[props.text1.length % 3]}</Text>
-        </View>
-    );
-};
+// const ActivityItem = (props) => {
+//     return (
+//         <View>
+//             <View style={styles.activityBox}>
+//                 <Text style={styles.activityText}>{props.text1}</Text>
+//                 <Text style={styles.activityText1}>{props.text1.length}pts</Text>
+//             </View>
+//             <Text style={styles.activityText1}>{listOfActivities[props.text1.length % 3]}</Text>
+//         </View>
+//     );
+// };
 
-const listOfActivities = ["push-ups", "pull-ups", "sit-ups"];
+// const listOfActivities = ["push-ups", "pull-ups", "sit-ups"];
 
 const styles = StyleSheet.create({
     page: {
