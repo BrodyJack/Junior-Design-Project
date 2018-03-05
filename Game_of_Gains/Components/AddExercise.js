@@ -51,20 +51,20 @@ class AddExercise extends React.Component {
                     <KeyboardAvoidingView>
                         <TextInput
                             keyboardType="numeric"
-                            defaultValue={this.state.reps.toString()}
+                            defaultValue={this.state.reps}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                            onChangeText={(text) => this.setState({reps: text})}
                         />
                         <Text style={styles.cardText}>Weight</Text>
                         <TextInput
                             keyboardType="numeric"
-                            defaultValue={this.state.weight.toString()}
+                            defaultValue={this.state.weight}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({weight: parseInt(text)})}
+                            onChangeText={(text) => this.setState({weight: text})}
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25} marginBottom={25}
-                        onPress={() => alert("pressed")}/>
+                        onPress={() => alert(this.state.weight + ", " + this.state.name)}/>
                     <Text></Text>
                     <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={75}
                         onPress={() => this.props.navigation.goBack()}/>
