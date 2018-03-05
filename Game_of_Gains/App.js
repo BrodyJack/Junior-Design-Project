@@ -18,6 +18,7 @@ import ProfileScreen from './Components/Profile'
 import NotificationsScreen from './Components/Notifications'
 import ExercisesScreen from './Components/Exercises'
 import RecentActivityScreen from './Components/RecentActivity'
+import AddExercise from './Components/AddExercise'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -74,6 +75,9 @@ const InitialNav = StackNavigator({
     },
     Exercises: {
         screen: ExercisesScreen
+    },
+    AddExercise: {
+        screen: AddExercise
     },
     RecentActivity: {
         screen: RecentActivityScreen

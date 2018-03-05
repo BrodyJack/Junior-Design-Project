@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, StyleSheet, Alert, TouchableHighlight, ScrollView, FlatList} from 'react-native';
 import { Card, ListItem, Button } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import SquareGrid from "react-native-square-grid";
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
@@ -44,32 +43,36 @@ class ExercisesScreen extends React.Component {
             <ScrollView>
             <Grid>
                 <Row>
-                <Col onPress={() => console.log('attach something useful')}>
+                <Col>
                     {/*// implemented without image with header*/}
                     <Card title="Quick Picks">
                     {
                         <Grid>
                             <Row>
-                            <Col>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Push-Up', reps: 10, type: 'body', weight: null})}>
                                 <Card>
                                     <Text style={styles.cardText}>Push-Up</Text>
+                                    <Text style={styles.cardText1}>10 Reps</Text>
                                 </Card>
                             </Col>
-                            <Col>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Pull-Up', reps: 15, type: 'body', weight: null})}>
                                 <Card>
                                     <Text style={styles.cardText}>Pull-Up</Text>
+                                    <Text style={styles.cardText1}>15 Reps</Text>
                                 </Card>
                             </Col>
                             </Row>
                             <Row>
-                            <Col>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Sit-Up', reps: 15, type: 'body', weight: null})}>
                                 <Card>
                                     <Text style={styles.cardText}>Sit-Up</Text>
+                                    <Text style={styles.cardText1}>15 Reps</Text>
                                 </Card>
                             </Col>
-                            <Col>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Bench Press', reps: 15, type: 'weight', weight: 150})}>
                                 <Card>
                                     <Text style={styles.cardText}>Bench Press</Text>
+                                    <Text style={styles.cardText1}>15 Reps</Text>
                                 </Card>
                             </Col>
                             </Row>
@@ -112,6 +115,10 @@ const styles = StyleSheet.create({
     },
     cardText: {
         textAlign: 'center'
+    },
+    cardText1: {
+        textAlign: 'center',
+        color: 'gray'
     },
     quickPick: {
 

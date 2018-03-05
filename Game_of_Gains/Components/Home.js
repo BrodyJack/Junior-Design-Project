@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin 
 import * as firebase from 'firebase';
 import './Global.js';
 class HomeScreen extends React.Component {
-    
+
     static navigationOptions = ({ navigation }) => {
 
         return {
