@@ -9,7 +9,7 @@ import * as firebase from 'firebase';
 class AddExercise extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'AddExercise',
+            title: 'Log Exercise',
         }
     }
 
@@ -31,12 +31,17 @@ class AddExercise extends React.Component {
                     <Text style={styles.cardText}>Reps</Text>
                     <KeyboardAvoidingView>
                         <TextInput
+                            keyboardType="numeric"
                             defaultValue={this.state.reps.toString()}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
                             onChangeText={(text) => this.setState({reps: parseInt(text)})}
                         />
                     </KeyboardAvoidingView>
-                    <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25}/>
+                    <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25}
+                        onPress={() => alert("pressed")}/>
+                    <Text></Text>
+                    <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={75}
+                        onPress={() => this.props.navigation.goBack()}/>
                 </Card>
             );
         } else if (this.state.type == 'weight') {
@@ -45,19 +50,24 @@ class AddExercise extends React.Component {
                     <Text style={styles.cardText}>Reps</Text>
                     <KeyboardAvoidingView>
                         <TextInput
+                            keyboardType="numeric"
                             defaultValue={this.state.reps.toString()}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
                             onChangeText={(text) => this.setState({reps: parseInt(text)})}
                         />
                         <Text style={styles.cardText}>Weight</Text>
                         <TextInput
+                            keyboardType="numeric"
                             defaultValue={this.state.weight.toString()}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
                             onChangeText={(text) => this.setState({weight: parseInt(text)})}
                         />
                     </KeyboardAvoidingView>
-                    <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25}
+                    <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25} marginBottom={25}
                         onPress={() => alert("pressed")}/>
+                    <Text></Text>
+                    <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={75}
+                        onPress={() => this.props.navigation.goBack()}/>
                 </Card>
             );
         }
