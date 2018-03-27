@@ -15,7 +15,7 @@ class ChallengesScreen extends React.Component {
   constructor(props) {
         super(props);
         this.itemsRef = firebase.database().ref('challenges/');
-        this.infoRef = firebase.database().ref('users/uid1'); //firebase.auth().currentUser.uid
+        this.infoRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid); //firebase.auth().currentUser.uid
         this.state = {
             selectedOption: {label: "All", value: "all"}
         }
@@ -146,7 +146,7 @@ class ChallengesScreen extends React.Component {
                       <Text
                           style={styles.item}
                             onPress={() => {
-                                alert("Current: " + this.state.userSource[0].val().pointsToday);
+                                alert("Challenge View!");
                             }}>
                             {item.challengeName}
                       </Text>}
