@@ -7,7 +7,6 @@ import * as firebase from 'firebase';
 
 class AddFriendScreen extends React.Component {
 
-
     constructor(props) {
         super(props);
         this.state = {
@@ -25,18 +24,34 @@ class AddFriendScreen extends React.Component {
     };
 
     async addNewFriend(item, state) {
+
+        firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/displayName').once('value', (snap) => {
+            console.log(JSON.stringify(snap));
+            this.setState({
+                displayName: snap.val()
+            })
+        });
+
+        console.log(this.state.displayName);
+
         friendData = state.friends;
+        nowDate = Date.now().toString();
         toPush = {
             [item.key]: {
-                added: Date.now().toString(),
+                added: nowDate,
                 displayName: item.val().displayName
             }
         };
         friendData.push(toPush);
         var updates = {};
         updates['users/' + state.currentUserId + '/friends/'] = friendData;
+
+        var updateNotifications = {};
+        updateNotifications['users/' + item.key + '/notifications/'] = {[nowDate]: {details: this.state.displayName + " followed you!"}};
+        console.log(item.key);
         try {
             firebase.database().ref().update(updates);
+            firebase.database().ref().update(updateNotifications);
             // firebase.database().ref('users/' + state.currentUserId + '/friends/').set(toPush);
             Alert.alert("Added Friend", "You have added " + item.val()["displayName"] + " as a friend!");
             this.props.navigation.goBack();

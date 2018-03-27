@@ -103,7 +103,7 @@ class HomeScreen extends React.Component {
             <Col onPress={() => this.props.navigation.navigate('Notifications')}>
                 <Card title="Notifications">
                 {
-                    users.map((u, i) => {
+                    [].map((u, i) => {
                     return (
                         <View key={i} style={styles.user}>
                         <Image

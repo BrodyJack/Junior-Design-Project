@@ -14,92 +14,75 @@ class NotificationsScreen extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.listenForNotifications("notifications", this.notificationsRef, this.props.navigation);
+    }
+
     constructor(props) {
         super(props);
+        this.notificationsRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/notifications/');
+        this.state = {
+            dataSource: []
+        }
+    }
+
+    listenForNotifications(type, ref, navigation) {
+        ref.on('value', (snap) => {
+            var items = [];
+            if (snap != null) {
+                snap.forEach((child) => {
+                    items.push(child);
+                });
+
+                this.setState({
+                    dataSource: items
+                });
+            }
+        })
     }
 
     render() {
 
-        const users = [
-            {
-               name: 'brynn',
-               avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brody',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+        dataSource = this.state.dataSource;
+        console.log(dataSource);
+        if (dataSource.length == 0) {
+            return (
+                <Card containerStyle={{padding: 0}}>
+                {
+                    ["No notifications!"].map((u, i) => {
+                    return (
+                        <ListItem
+                        key={i}
+                        roundAvatar
+                        title={u}
+                        />
+                    );
+                    })
+                }
+                </Card>
+            );
+         } else {
+                return (
+                    <ScrollView>
+                        <Card containerStyle={{padding: 0}}>
+                        {
+                            dataSource.map((u, i) => {
+                            return (
+                                <ListItem
+                                key={i}
+                                roundAvatar
+                                title={u.val().details}
+                                onPress={() => firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/notifications/' + u.key).remove()}
+                                />
+                            );
+                            })
+                        }
+                        </Card>
+                    </ScrollView>
+                );
             }
-           ];
-
-        return (
-            <ScrollView>
-            <Grid>
-                <Row>
-                <Col onPress={() => console.log('attach something useful')}>
-                    {/*// implemented without image with header*/}
-                    <Card title="CARD WITH DIVIDER">
-                    {
-                        users.map((u, i) => {
-                        return (
-                            <View key={i} style={styles.user}>
-                            <Image
-                                style={styles.image}
-                                resizeMode="cover"
-                                source={{ uri: u.avatar }}
-                            />
-                            <Text style={styles.name}>{u.name}</Text>
-                            </View>
-                        );
-                        })
-                    }
-                    </Card>
-                </Col>
-                </Row>
-
-                <Row>
-                <Col>
-                    {/*// implemented without image without header, using ListItem component*/}
-                    <Card containerStyle={{padding: 0}}>
-                    {
-                        users.map((u, i) => {
-                        return (
-                            <ListItem
-                            key={i}
-                            roundAvatar
-                            title={u.name}
-                            avatar={{uri:u.avatar}}
-                            onPress={() => console.log(u.name)}
-                            />
-                        );
-                        })
-                    }
-                    </Card>
-                </Col>
-                </Row>
-
-                <Row>
-                <Col onPress={() => console.log('attach something useful')}>
-                     {/*// implemented with Text and Button as children*/}
-                    <Card
-                    title='HELLO WORLD'
-                    image={require('./../img/user.png')}>
-                    <Text style={{marginBottom: 10}}>
-                        The idea with React Native Elements is more about component structure than actual design.
-                    </Text>
-                    <Button
-                        icon={{name: 'code'}}
-                        backgroundColor='#03A9F4'
-                        buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                        title='VIEW NOW' />
-                    </Card>
-                </Col>
-                </Row>
-            </Grid>
-            </ScrollView>
-
-        );
+        }
     }
-}
 
 const styles = StyleSheet.create({
     sheet: {
