@@ -70,15 +70,10 @@ class HomeScreen extends React.Component {
             <Col onPress={() => this.props.navigation.navigate('RecentActivity')}>
                 <Card title="Friends Feed">
                 {
-                    users.map((u, i) => {
+                    ["See what your friends are up to!"].map((u, i) => {
                     return (
                         <View key={i} style={styles.user}>
-                        <Image
-                            style={styles.image}
-                            resizeMode="cover"
-                            source={{ uri: u.avatar }}
-                        />
-                        <Text style={styles.name}>{u.name}</Text>
+                        <Text style={styles.name}>{u}</Text>
                         </View>
                     );
                     })
@@ -103,15 +98,10 @@ class HomeScreen extends React.Component {
             <Col onPress={() => this.props.navigation.navigate('Notifications')}>
                 <Card title="Notifications">
                 {
-                    [].map((u, i) => {
+                    ["See what's happened since you last checked in!"].map((u, i) => {
                     return (
                         <View key={i} style={styles.user}>
-                        <Image
-                            style={styles.image}
-                            resizeMode="cover"
-                            source={{ uri: u.avatar }}
-                        />
-                        <Text style={styles.name}>{u.name}</Text>
+                        <Text style={styles.name}>{u}</Text>
                         </View>
                     );
                     })
