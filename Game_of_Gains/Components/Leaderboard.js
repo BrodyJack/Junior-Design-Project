@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
+import { Card, ListItem } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons';
 import * as firebase from 'firebase';
@@ -48,22 +49,25 @@ class LeaderboardScreen extends React.Component {
 
     listenForEvents(type, data) {
         if (type == "friends") {
-            data.once('value', (snap) => {
+            data.on('value', (snap) => {
                 var items = [];
-                snap.val().forEach((child) => {
-                    key = Object.keys(child)[0];
-                    var childRef = firebase.database().ref("users/" + key + "/");
-                    childRef.once('value', (user) => {
-                        var item = {
-                            name: user.val().displayName,
-                            pointsAllTime: user.val().exerciseInfo.pointsAllTime,
-                            pointsWeek: user.val().exerciseInfo.pointsWeek,
-                            pointsToday: user.val().exerciseInfo.pointsToday
-                        };
-                        items.push(item);
-                    }
-                 )
-                });
+                if (snap != null && snap.val() != null) {
+
+                    snap.val().forEach((child) => {
+                        key = Object.keys(child)[0];
+                        var childRef = firebase.database().ref("users/" + key + "/");
+                        childRef.once('value', (user) => {
+                            var item = {
+                                name: user.val().displayName,
+                                pointsAllTime: user.val().exerciseInfo.pointsAllTime,
+                                pointsWeek: user.val().exerciseInfo.pointsWeek,
+                                pointsToday: user.val().exerciseInfo.pointsToday
+                            };
+                            items.push(item);
+                        }
+                    )
+                    });
+                }
 
                 this.setState({
                     friendData: items
@@ -71,7 +75,7 @@ class LeaderboardScreen extends React.Component {
 
             });
         } else if (type == "users") {
-            data.once('value', (snap) => {
+            data.on('value', (snap) => {
                 var items = [];
                 snap.forEach((child) => {
                     var item = {
@@ -101,11 +105,49 @@ class LeaderboardScreen extends React.Component {
                 value: 'global'
             },
         ]
+
         function setSelectedOption(selectedOption){
             this.setState({
                 selectedOption
             });
         }
+
+        var list = [];
+        if (this.state.selectedOption.value == "friends") {
+            if (this.state.friendData != undefined) {
+                list = this.state.friendData;
+            }
+        } else if (this.state.selectedOption.value == "global") {
+            if (this.state.userData != undefined) {
+                list = this.state.userData;
+            }
+        }
+        var sortedData = [];
+        var isSorted = [];
+        for (var i = 0; i < list.length; i++) {
+            isSorted.push(false);
+        }
+        while (sortedData.length != list.length * 2) {
+            var maxScore = 0;
+            var idxToAdd = 0;
+            for (var i = 0; i < list.length; i++) {
+                if (!isSorted[i] && list[i].pointsAllTime > maxScore) {
+                    maxScore = list[i].pointsAllTime;
+                    idxToAdd = i;
+                }
+            }
+            var toAdd = list[idxToAdd];
+            sortedData.push(toAdd.name);
+            sortedData.push(toAdd.pointsAllTime);
+            isSorted[idxToAdd] = true;
+        }
+        dataSource = [];
+        for (var i = 0; i < list.length; i += 2) {
+            dataSource.push({name: sortedData[i], points: sortedData[i+1]});
+        }
+        
+        // sortedData is the finalized data
+
         return (
             <View style={styles.page}>
                 <View style={styles.container}>
@@ -126,53 +168,39 @@ class LeaderboardScreen extends React.Component {
                         selectedBackgroundColor= {'#007AFF'}
                         containerStyle={{ marginLeft: 5, marginRight: 5 }}
                     />
-                <FlatList
-                        data={
-                            function(state) {
-                                var list = [];
-                                if (state.selectedOption.value == "friends") {
-                                    if (state.friendData != undefined) {
-                                        list = state.friendData;
-                                    }
-                                } else if (state.selectedOption.value == "global") {
-                                    if (state.userData != undefined) {
-                                        list = state.userData;
-                                    }
-                                }
-                                var sortedData = [];
-                                var isSorted = [];
-                                for (var i = 0; i < list.length; i++) {
-                                    isSorted.push(false);
-                                }
-                                while (sortedData.length != list.length * 2) {
-                                    var maxScore = 0;
-                                    var idxToAdd = 0;
-                                    for (var i = 0; i < list.length; i++) {
-                                        if (!isSorted[i] && list[i].pointsAllTime > maxScore) {
-                                            maxScore = list[i].pointsAllTime;
-                                            idxToAdd = i;
-                                        }
-                                    }
-                                    var toAdd = list[idxToAdd];
-                                    sortedData.push(toAdd.name);
-                                    sortedData.push(toAdd.pointsAllTime);
-                                    isSorted[idxToAdd] = true;
-                                }
-                                return sortedData;
-                            
-                            }(this.state)}
+                <ScrollView>
+                <Card containerStyle={{padding: 0}}>
+                    {
+                        dataSource.map((u, i) => {
+
+                        return (
+                            <ListItem
+                            key={i}
+                            roundAvatar
+                            title={u.name}
+                            subtitle={u.points}
+                            avatar={require('./../img/user.png')}
+                            onPress={() => alert('hi')}
+                            />
+                        );
+                        })
+                    }
+                </Card>
+                </ScrollView>
+                {/*<FlatList
+                        data={sortedData}
                         horizontal={false}
                         numColumns={2}
                         renderItem={({item}) => 
-                            <Text 
+                            <Card
                                 style={styles.item}
                                 onPress={() => {
                                     alert("You selected " + item);
                                 }}>
                                 {item}
-                            </Text>}
+                            </Card>}
                         keyExtractor={(item, index) => index}
-                    />
+                            />*/}
               </View>
             </View>
         );

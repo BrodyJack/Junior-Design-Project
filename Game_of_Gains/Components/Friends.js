@@ -65,9 +65,11 @@ class FriendsScreen extends React.Component {
                 //     })
                 // });
                 // 
-                snap.val().forEach(function(friendObj) {
-                    items.push(friendObj);
-                })
+                if (snap != null && snap.val() != null) {
+                    snap.val().forEach(function(friendObj) {
+                        items.push(friendObj);
+                    })
+                }
                 this.setState({
                     currentUserFriends: items
                 });

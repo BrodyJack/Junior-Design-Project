@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, Button, SectionList, StyleSheet } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
+import { Card, ListItem } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import { SegmentedControls } from 'react-native-radio-buttons'
 import * as firebase from 'firebase';
@@ -143,13 +144,24 @@ class ChallengesScreen extends React.Component {
                             return returnValues;
                         }(this.state)}
                     renderItem={({item, section}) =>
-                      <Text
-                          style={styles.item}
-                            onPress={() => {
-                                alert("Challenge View!");
-                            }}>
-                            {item.challengeName}
-                      </Text>}
+                    //   <Text
+                    //       style={styles.item}
+                    //         onPress={() => {
+                    //             alert("Challenge View!");
+                    //         }}>
+                    //         {item.challengeName}
+                    //   </Text>
+                    <Card containerStyle={{padding: 0, margin: 0}}>
+                        <ListItem
+                            key={item.key}
+                            roundAvatar
+                            title={item.challengeName}
+                            subtitle={'Awards ' + item.challengePoints + ' points'}
+                            avatar={require('./../img/user.png')}
+                            onPress={() => alert('Challenge View!')}
+                        />
+                    </Card>
+                    }
                     renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
                     keyExtractor={(item, index) => index}
                   />
@@ -172,7 +184,7 @@ const styles = StyleSheet.create({
       paddingLeft: 10,
       paddingRight: 10,
       paddingBottom: 2,
-      fontSize: 18,
+      fontSize: 30,
       fontWeight: 'bold',
       backgroundColor: 'rgba(247,247,247,1.0)',
     },
