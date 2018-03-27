@@ -44,7 +44,6 @@ class NotificationsScreen extends React.Component {
     render() {
 
         dataSource = this.state.dataSource;
-        console.log(dataSource);
         if (dataSource.length == 0) {
             return (
                 <Card containerStyle={{padding: 0}}>
