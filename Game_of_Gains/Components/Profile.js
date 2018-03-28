@@ -8,6 +8,10 @@ import * as firebase from 'firebase';
 
 class ProfileScreen extends React.Component {
 
+    componentDidMount() {
+        this.listenForEvents(this.userRef);
+    }
+    
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'Profile',
@@ -16,10 +20,24 @@ class ProfileScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        this.userRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/');
+        this.state = {
+            currentUserObj: {
+                displayName: ''
+            }
+        };
+    }
+
+    listenForEvents(ref) {
+        ref.on('value', (snap) => {
+            console.log("Snap: " + JSON.stringify(snap.val()))
+            this.setState({
+                currentUserObj: snap.val()
+            });
+        });
     }
 
     render() {
-
         const users = [
             {
                name: 'brynn',
@@ -37,7 +55,7 @@ class ProfileScreen extends React.Component {
                 <Row>
                 <Col onPress={() => console.log('attach something useful')}>
                     {/*// implemented without image with header*/}
-                    <Card title="CARD WITH DIVIDER">
+                    <Card title= {this.state.currentUserObj.displayName}>
                     {
                         users.map((u, i) => {
                         return (

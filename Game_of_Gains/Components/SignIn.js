@@ -75,7 +75,7 @@ class SignInScreen extends React.Component {
                     <Button
                         title="Brandon"
                         textStyle={{ fontSize: 10 }}
-                        onPress={() => this.login('', '')}
+                        onPress={() => this.login('brandon@gmail.com', '123456')}
                     />
                     <Button
                         title="Jessica"
