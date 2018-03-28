@@ -18,46 +18,74 @@ class RecentActivityScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            dataSource: [],
             BadgeCount: 0
         }
     }
 
+    componentDidMount() {
+        this.loadMessage(2000, "Brody followed Brandon!");
+        this.loadMessage(2500, "Jessica just logged a one-hour run!");
+        this.loadMessage(3700, "Grayson just broke his deadlift record!");
+        this.loadMessage(4300, "Will hit his goal of 30 pull-ups!");
+        this.loadMessage(1150, "Brandon completed this week's challenge!");
+    }
+
+    loadMessage(waitTime, message) {
+        setTimeout(function(theThis) {
+            tmp = theThis.state.dataSource;
+            tmp.push(message);
+            theThis.setState({
+                dataSource: tmp
+            })
+        }, waitTime, this);
+    }
+
     render() {
 
-        const users = [
-            {
-               name: 'brynn',
-               avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brody',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            }
-           ];
-
         return (
-            <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',}}>
-            <IconBadge
-                MainElement={
-                <Card title="test"/>
-                    
+            <ScrollView>
+                <Card containerStyle={{padding: 0}}>
+                {
+                    this.state.dataSource.map((u, i) => {
+                    return (
+                        <ListItem
+                        key={i}
+                        roundAvatar
+                        title={u}
+                        onPress={() => console.log('test')}
+                        hideChevron
+                        />
+                    );
+                    })
                 }
-                BadgeElement={
-                <Text style={{color:'#FFFFFF'}}>{this.state.BadgeCount}</Text>
-                }
-                IconBadgeStyle={
-                {width:20,
-                height:20,
-                backgroundColor: '#FF00EE'}
-                }
-                Hidden={this.state.BadgeCount==0}
-                />
-            <Button
-                title="Increment"
-                onPress={() => this.setState(prevState => { return { BadgeCount: prevState.BadgeCount+1};})}
-            />
-            </View>
+                </Card>
+            </ScrollView>
         );
+
+        // return (
+        //     <View style={{flexDirection: 'row',alignItems: 'center',justifyContent: 'center',}}>
+        //     <IconBadge
+        //         MainElement={
+        //         <Card title="test"/>
+                    
+        //         }
+        //         BadgeElement={
+        //         <Text style={{color:'#FFFFFF'}}>{this.state.BadgeCount}</Text>
+        //         }
+        //         IconBadgeStyle={
+        //         {width:20,
+        //         height:20,
+        //         backgroundColor: '#FF00EE'}
+        //         }
+        //         Hidden={this.state.BadgeCount==0}
+        //         />
+        //     <Button
+        //         title="Increment"
+        //         onPress={() => this.setState(prevState => { return { BadgeCount: prevState.BadgeCount+1};})}
+        //     />
+        //     </View>
+        // );
     }
 }
 
