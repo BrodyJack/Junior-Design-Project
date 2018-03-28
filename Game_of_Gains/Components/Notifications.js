@@ -53,6 +53,7 @@ class NotificationsScreen extends React.Component {
                         <ListItem
                         key={i}
                         roundAvatar
+                        hideChevron
                         title={u}
                         />
                     );
@@ -71,6 +72,7 @@ class NotificationsScreen extends React.Component {
                                 key={i}
                                 roundAvatar
                                 title={u.val().details}
+                                hideChevron
                                 onPress={() => firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/notifications/' + u.key).remove()}
                                 />
                             );
