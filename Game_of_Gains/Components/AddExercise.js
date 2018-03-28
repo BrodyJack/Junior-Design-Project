@@ -24,7 +24,6 @@ class AddExercise extends React.Component {
     }
 
     render() {
-        wwidth = Dimensions.get('window').width;
         if (this.state.type == 'body') {
             return (
                 <Card title={this.state.name}>
@@ -32,9 +31,9 @@ class AddExercise extends React.Component {
                     <KeyboardAvoidingView>
                         <TextInput
                             keyboardType="numeric"
-                            defaultValue={this.state.reps.toString()}
-                            style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                            defaultValue={this.state.reps}
+                            style={styles.editText}
+                            onChangeText={(text) => this.setState({reps: text})}
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25}
@@ -52,14 +51,14 @@ class AddExercise extends React.Component {
                         <TextInput
                             keyboardType="numeric"
                             defaultValue={this.state.reps}
-                            style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
+                            style={styles.editText}
                             onChangeText={(text) => this.setState({reps: text})}
                         />
                         <Text style={styles.cardText}>Weight</Text>
                         <TextInput
                             keyboardType="numeric"
                             defaultValue={this.state.weight}
-                            style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
+                            style={styles.editText}
                             onChangeText={(text) => this.setState({weight: text})}
                         />
                     </KeyboardAvoidingView>
@@ -85,8 +84,15 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     editText: {
+        borderWidth: 1,
+        borderRadius: 5,
+        borderColor: 'black',
+        width: Dimensions.get('window').width - 80,
+        height: 35,
+        backgroundColor: 'white',
+        marginBottom: 20,
         textAlign: 'center',
-        color: 'gray'
+        alignSelf:'center'
     },
     quickPick: {
 
