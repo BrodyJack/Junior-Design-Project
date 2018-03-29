@@ -23,6 +23,24 @@ class AddExercise extends React.Component {
         }
     }
 
+    async logExercise(currState) {
+        console.log(currState);
+        uid = firebase.auth().currentUser.uid;
+        nowDate = Date.now().toString();
+        
+        var updates = {};
+        updates['history/' + uid + '/alltime/' + nowDate + '/'] = currState;
+
+        try {
+            firebase.database().ref().update(updates);
+            Alert.alert("Success!", "Logged a " + currState.name);
+            this.props.navigation.goBack();
+        } catch (error) {
+            console.log(error.toString());
+        }
+
+    }
+
     render() {
         wwidth = Dimensions.get('window').width;
         if (this.state.type == 'body') {
@@ -38,7 +56,7 @@ class AddExercise extends React.Component {
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25}
-                        onPress={() => alert("pressed")}/>
+                        onPress={() => this.logExercise(this.state)}/>
                     <Text></Text>
                     <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={75}
                         onPress={() => this.props.navigation.goBack()}/>
@@ -64,7 +82,7 @@ class AddExercise extends React.Component {
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25} marginBottom={25}
-                        onPress={() => alert("pressed")}/>
+                        onPress={() => this.logExercise(this.state)}/>
                     <Text></Text>
                     <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={75}
                         onPress={() => this.props.navigation.goBack()}/>
