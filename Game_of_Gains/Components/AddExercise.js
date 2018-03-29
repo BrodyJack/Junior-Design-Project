@@ -19,7 +19,8 @@ class AddExercise extends React.Component {
             name: this.props.navigation.state.params.name,
             type: this.props.navigation.state.params.type,
             reps: this.props.navigation.state.params.reps,
-            weight: this.props.navigation.state.params.weight
+            weight: this.props.navigation.state.params.weight,
+            currentUserId: firebase.auth().currentUser.uid
         }
     }
 
@@ -43,7 +44,7 @@ class AddExercise extends React.Component {
 
     render() {
         wwidth = Dimensions.get('window').width;
-        if (this.state.type == 'body') {
+        if (this.state.type == 'cardio') {
             return (
                 <Card title={this.state.name}>
                     <Text style={styles.cardText}>Reps</Text>
@@ -62,7 +63,7 @@ class AddExercise extends React.Component {
                         onPress={() => this.props.navigation.goBack()}/>
                 </Card>
             );
-        } else if (this.state.type == 'weight') {
+        } else if (this.state.type == 'lifting') {
             return (
                 <Card title={this.state.name}>
                     <Text style={styles.cardText}>Reps</Text>
