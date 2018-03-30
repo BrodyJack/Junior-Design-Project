@@ -9,19 +9,44 @@ import { ImagePicker } from 'expo'
 import b64 from 'base64-js'
 
 
-async function takeAndUploadPhotoAsync() {
-    const result = await ImagePicker.launchImageLibraryAsync({
-        base64: true
-    })
-    const byteArray = b64.toByteArray(result.base64)
-    const metadata = {contentType: 'image/jpg'};
-    firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').put(byteArray, metadata).then(snapshot => {
-       console.log("uploaded image!")
-    })
-}
+
 
 class ProfileScreen extends React.Component {
-
+    async uploadPhotoAsyncPhotos() {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            base64: true,
+            mediaTypes: 'Images'
+        })
+        if (result.cancelled) { 
+            return;
+        };
+        const byteArray = b64.toByteArray(result.base64)
+        const metadata = {contentType: 'image/jpg'};
+        firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').put(byteArray, metadata).then(snapshot => {
+           console.log("uploaded image!");
+           firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').getDownloadURL().then((url) => {
+               this.setState({img: {uri: url}});
+           })
+        })
+    };
+    async uploadPhotoAsyncCamera() {
+        const result = await ImagePicker.launchCameraAsync({
+            base64: true,
+            mediaTypes: 'Images'
+        })
+        if (result.cancelled) { 
+            return;
+        };
+        const byteArray = b64.toByteArray(result.base64)
+        const metadata = {contentType: 'image/jpg'};
+        firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').put(byteArray, metadata).then(snapshot => {
+           console.log("uploaded image!");
+           firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').getDownloadURL().then((url) => {
+               this.setState({img: {uri: url}});
+           })
+        })
+    };
+    
     componentDidMount() {
         this.listenForEvents('user', this.userRef);
         this.listenForEvents('history', this.historyRef);
@@ -48,8 +73,11 @@ class ProfileScreen extends React.Component {
             },
             historyObj: {
                 alltime: ''
-            }
+            },
         };
+        firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').getDownloadURL().then((url) => {
+            this.setState({img: {uri: url}});
+        })
         this.getHistory = function() {
             mostRecent = [];
             if (this.state.historyObj != null) {
@@ -116,14 +144,25 @@ class ProfileScreen extends React.Component {
                     title={
                     <View>
                         <Image 
-                            source={require('../img/user.png')}
+                            source={this.state.img}
                             style={styles.profilePicture}
                         />
                     </View>
                     }
+
                     subtitle="Profile Picture"
-                    onPress={() => takeAndUploadPhotoAsync()}
-                    hideChevron
+                    onPress={() => 
+                        Alert.alert(
+                          'Add Photo',
+                          'Select a Photo Upload Option',
+                          [
+                            {text: 'Camera', onPress: () => this.uploadPhotoAsyncCamera()},
+                            {text: 'Upload from Photos', onPress: () => this.uploadPhotoAsyncPhotos()},
+                            {text: 'Cancel', onPress: () => console.log("Cancelled"), style: 'cancel'}
+                          ],
+                        )
+                        
+                        }
                 />
                 <ListItem
                     title={this.state.currentUserObj.exerciseInfo.pointsAllTime}
