@@ -111,18 +111,9 @@ class HomeScreen extends React.Component {
             <Col onPress={() => this.props.navigation.navigate('Profile')}>
                 <Card title="Profile">
                 {
-                    users.map((u, i) => {
-                    return (
-                        <View key={i} style={styles.user}>
-                        <Image
-                            style={styles.image}
-                            resizeMode="cover"
-                            source={{ uri: u.avatar }}
-                        />
-                        <Text style={styles.name}>{u.name}</Text>
-                        </View>
-                    );
-                    })
+                    <Text>
+                        View and Edit your Profile
+                    </Text>
                 }
                 </Card>
             </Col>

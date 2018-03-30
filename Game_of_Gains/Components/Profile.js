@@ -5,11 +5,26 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
+import { ImagePicker } from 'expo'
+import b64 from 'base64-js'
+
+
+async function takeAndUploadPhotoAsync() {
+    const result = await ImagePicker.launchImageLibraryAsync({
+        base64: true
+    })
+    const byteArray = b64.toByteArray(result.base64)
+    const metadata = {contentType: 'image/jpg'};
+    firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').put(byteArray, metadata).then(snapshot => {
+       console.log("uploaded image!")
+    })
+}
 
 class ProfileScreen extends React.Component {
 
     componentDidMount() {
-        this.listenForEvents(this.userRef);
+        this.listenForEvents('user', this.userRef);
+        this.listenForEvents('history', this.historyRef);
     }
     
     static navigationOptions = ({ navigation }) => {
@@ -21,98 +36,129 @@ class ProfileScreen extends React.Component {
     constructor(props) {
         super(props);
         this.userRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/');
+        this.historyRef = firebase.database().ref('history/' + firebase.auth().currentUser.uid + '/');
         this.state = {
             currentUserObj: {
-                displayName: ''
+                displayName: '',
+                exerciseInfo: {
+                    pointsAllTime: '',
+                    pointsToday: '',
+                    pointsWeek: ''
+                }
+            },
+            historyObj: {
+                alltime: ''
             }
+        };
+        this.getHistory = function() {
+            mostRecent = [];
+            timeStamps = Object.keys(this.state.historyObj.alltime);
+            // console.log("Timestamps: " + timeStamps);
+            timeStamps.sort(function(a, b) {
+                return (parseInt(b) - parseInt(a));
+            });
+            // console.log("Timestamps: " + timeStamps);
+            for (var i = 0; i < timeStamps.length; i++) {
+                curr = String(timeStamps[i]);
+                // console.log("Curr: " + curr);
+                // console.log(this.state.historyObj.alltime[curr]);
+                mostRecent.push(this.state.historyObj.alltime[curr]);
+            };
+            mostRecent = mostRecent.splice(0, 5);
         };
     }
 
-    listenForEvents(ref) {
-        ref.on('value', (snap) => {
-            console.log("Snap: " + JSON.stringify(snap.val()))
-            this.setState({
-                currentUserObj: snap.val()
+    listenForEvents(type, ref) {
+        if (type == 'user') {
+            ref.on('value', (snap) => {
+                console.log("Snap: " + JSON.stringify(snap.val()))
+                this.setState({
+                    currentUserObj: snap.val()
+                });
             });
-        });
+        } else if (type == 'history') {
+            ref.on('value', (snap) => {
+                console.log("Snap: " + JSON.stringify(snap.val()))
+                this.setState({
+                    historyObj: snap.val()
+                });
+            });
+        }
     }
 
     render() {
-        const users = [
-            {
-               name: 'brynn',
-               avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            },
-            {
-                name: 'brody',
-                avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-            }
-           ];
-
         return (
             <ScrollView>
-            <Grid>
-                <Row>
-                <Col onPress={() => console.log('attach something useful')}>
+            <Card containerStyle={{padding: 0}}>
                     {/*// implemented without image with header*/}
-                    <Card title= {this.state.currentUserObj.displayName}>
-                    {
-                        users.map((u, i) => {
-                        return (
-                            <View key={i} style={styles.user}>
-                            <Image
-                                style={styles.image}
-                                resizeMode="cover"
-                                source={{ uri: u.avatar }}
-                            />
-                            <Text style={styles.name}>{u.name}</Text>
-                            </View>
-                        );
-                        })
+                    {// <Card title= {this.state.currentUserObj.displayName}>
+                    // {
+                    //     users.map((u, i) => {
+                    //     return (
+                    //         <View key={i} style={styles.user}>
+                    //         <Image
+                    //             style={styles.image}
+                    //             resizeMode="cover"
+                    //             source={{ uri: u.avatar }}
+                    //         />
+                    //         <Text style={styles.name}>{u.name}</Text>
+                    //         </View>
+                    //     );
+                    //     })
+                    // }
+                    // </Card>
+                }
+                <ListItem
+                    title={this.state.currentUserObj.displayName}
+                    titleStyle={{fontWeight: 'bold', fontSize:20}}
+                    subtitle={"Username"}
+                    subtitleStyle={{fontSize: 18}}
+                    onPress={() => console.log('attach something useful')}
+                    hideChevron
+                />
+                <ListItem
+                    title={
+                    <View>
+                        <Image 
+                            source={require('../img/user.png')}
+                            style={styles.profilePicture}
+                        />
+                    </View>
                     }
-                    </Card>
-                </Col>
-                </Row>
-
-                <Row>
-                <Col>
-                    {/*// implemented without image without header, using ListItem component*/}
-                    <Card containerStyle={{padding: 0}}>
-                    {
-                        users.map((u, i) => {
-                        return (
-                            <ListItem
-                            key={i}
-                            roundAvatar
-                            title={u.name}
-                            avatar={{uri:u.avatar}}
-                            onPress={() => console.log(u.name)}
-                            />
-                        );
-                        })
-                    }
-                    </Card>
-                </Col>
-                </Row>
-
-                <Row>
-                <Col onPress={() => console.log('attach something useful')}>
-                     {/*// implemented with Text and Button as children*/}
-                    <Card
-                    title='HELLO WORLD'
-                    image={require('./../img/user.png')}>
-                    <Text style={{marginBottom: 10}}>
-                        The idea with React Native Elements is more about component structure than actual design.
-                    </Text>
-                    <Button
-                        icon={{name: 'code'}}
-                        backgroundColor='#03A9F4'
-                        buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                        title='VIEW NOW' />
-                    </Card>
-                </Col>
-                </Row>
-            </Grid>
+                    subtitle="Profile Picture"
+                    onPress={() => takeAndUploadPhotoAsync()}
+                    hideChevron
+                />
+                <ListItem
+                    title={this.state.currentUserObj.exerciseInfo.pointsAllTime}
+                    titleStyle={{fontWeight: 'bold', fontSize:18}}
+                    subtitle={"Total Points"}
+                    subtitleStyle={{fontSize: 16}}
+                    onPress={() => console.log('attach something useful')}
+                    hideChevron
+                />
+                {
+                    this.getHistory()
+                }
+                </Card>
+                <Card>
+                <Text style={{fontSize: 20}}>
+                    Recent history
+                </Text>
+                {
+                    mostRecent.map((u, i) => {
+                    return (
+                        <ListItem
+                        key={i}
+                        roundAvatar
+                        title={u.name}
+                        subtitle={u.reps + ' reps'}
+                        hideChevron
+                        />
+                    );
+                    })
+                }
+                </Card>
             </ScrollView>
 
         );
@@ -123,6 +169,10 @@ const styles = StyleSheet.create({
     sheet: {
         backgroundColor: 'rgba(47, 76, 112, 1)',
         flex: 1
+    },
+    profilePicture: {
+        height: 200,
+        width: 200
     }
 });
 
