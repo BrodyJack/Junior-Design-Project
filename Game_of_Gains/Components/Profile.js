@@ -52,33 +52,29 @@ class ProfileScreen extends React.Component {
         };
         this.getHistory = function() {
             mostRecent = [];
-            timeStamps = Object.keys(this.state.historyObj.alltime);
-            // console.log("Timestamps: " + timeStamps);
-            timeStamps.sort(function(a, b) {
-                return (parseInt(b) - parseInt(a));
-            });
-            // console.log("Timestamps: " + timeStamps);
-            for (var i = 0; i < timeStamps.length; i++) {
-                curr = String(timeStamps[i]);
-                // console.log("Curr: " + curr);
-                // console.log(this.state.historyObj.alltime[curr]);
-                mostRecent.push(this.state.historyObj.alltime[curr]);
-            };
-            mostRecent = mostRecent.splice(0, 5);
+            if (this.state.historyObj != null) {
+                timeStamps = Object.keys(this.state.historyObj.alltime);
+                timeStamps.sort(function(a, b) {
+                    return (parseInt(b) - parseInt(a));
+                });
+                for (var i = 0; i < timeStamps.length; i++) {
+                    curr = String(timeStamps[i]);
+                    mostRecent.push(this.state.historyObj.alltime[curr]);
+                };
+                mostRecent = mostRecent.splice(0, 5);
+            }
         };
     }
 
     listenForEvents(type, ref) {
         if (type == 'user') {
-            ref.on('value', (snap) => {
-                console.log("Snap: " + JSON.stringify(snap.val()))
+            ref.once('value', (snap) => {
                 this.setState({
                     currentUserObj: snap.val()
                 });
             });
         } else if (type == 'history') {
-            ref.on('value', (snap) => {
-                console.log("Snap: " + JSON.stringify(snap.val()))
+            ref.once('value', (snap) => {
                 this.setState({
                     historyObj: snap.val()
                 });
@@ -146,17 +142,24 @@ class ProfileScreen extends React.Component {
                     Recent history
                 </Text>
                 {
-                    mostRecent.map((u, i) => {
-                    return (
-                        <ListItem
-                        key={i}
-                        roundAvatar
-                        title={u.name}
-                        subtitle={u.reps + ' reps'}
-                        hideChevron
+                    mostRecent.length > 0 
+                        ? 
+                        mostRecent.map((u, i) => {
+                            return (
+                                <ListItem
+                                key={i}
+                                roundAvatar
+                                title={u.name}
+                                subtitle={u.reps + ' reps'}
+                                hideChevron
+                                />
+                            );
+                            })
+                        : 
+                        <ListItem 
+                            title={"No recent exercises"}
+                            hideChevron
                         />
-                    );
-                    })
                 }
                 </Card>
             </ScrollView>
