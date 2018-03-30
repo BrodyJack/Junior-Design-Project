@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Alert, TouchableHighlight, ScrollView, FlatList} from 'react-native';
-import { Card, ListItem, Button } from 'react-native-elements';
+import { Card, ListItem, Button, List } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
@@ -8,6 +8,9 @@ import * as firebase from 'firebase';
 
 class ExercisesScreen extends React.Component {
 
+    componentDidMount() {
+        this.listenForEvents(this.exerciseRef);
+    }
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'Exercises',
@@ -16,28 +19,27 @@ class ExercisesScreen extends React.Component {
 
     constructor(props) {
         super(props);
+        this.exerciseRef = firebase.database().ref('exercises/');
+        this.state = {
+            exercises: [],
+            currentUserId: firebase.auth().currentUser.uid
+        };
+    }
+
+    listenForEvents(ref, navigation) {
+        ref.on('value', (snap) => {
+            var items = [];
+            snap.forEach((child) => {
+                items.push(child);
+            });
+
+            this.setState({
+                exercises: items
+            });
+        });
     }
 
     render() {
-
-        const users = [
-            {
-               name: 'Pull-Ups',
-               num: '10 Reps'
-            },
-            {
-                name: 'Push-Ups',
-                num: '15 Reps'
-            },
-            {
-                name: 'Sit-Ups',
-                num: '15 Reps'
-            },
-            {
-                name: 'Bench Press',
-                num: '15 Reps'
-            }
-           ];
 
         return (
             <ScrollView>
@@ -45,17 +47,17 @@ class ExercisesScreen extends React.Component {
                 <Row>
                 <Col>
                     {/*// implemented without image with header*/}
-                    <Card title="Quick Picks">
+                    <Card title="Quick Picks" style={styles.quickPick}>
                     {
                         <Grid>
                             <Row>
-                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Push-Up', reps: 10, type: 'body', weight: null})}>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Push-Up', reps: 10, type: 'cardio', weight: null})}>
                                 <Card>
                                     <Text style={styles.cardText}>Push-Up</Text>
                                     <Text style={styles.cardText1}>10 Reps</Text>
                                 </Card>
                             </Col>
-                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Pull-Up', reps: 15, type: 'body', weight: null})}>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Pull-Up', reps: 15, type: 'lifting', weight: null})}>
                                 <Card>
                                     <Text style={styles.cardText}>Pull-Up</Text>
                                     <Text style={styles.cardText1}>15 Reps</Text>
@@ -63,15 +65,29 @@ class ExercisesScreen extends React.Component {
                             </Col>
                             </Row>
                             <Row>
-                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Sit-Up', reps: 15, type: 'body', weight: null})}>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Sit-Up', reps: 15, type: 'cardio', weight: null})}>
                                 <Card>
                                     <Text style={styles.cardText}>Sit-Up</Text>
                                     <Text style={styles.cardText1}>15 Reps</Text>
                                 </Card>
                             </Col>
-                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Bench Press', reps: 15, type: 'weight', weight: 150})}>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Bench Press', reps: 15, type: 'lifting', weight: 150})}>
                                 <Card>
                                     <Text style={styles.cardText}>Bench Press</Text>
+                                    <Text style={styles.cardText1}>15 Reps</Text>
+                                </Card>
+                            </Col>
+                            </Row>
+                            <Row>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Elliptical', reps: 15, type: 'cardio', weight: 150})}>
+                                <Card>
+                                    <Text style={styles.cardText}>Elliptical</Text>
+                                    <Text style={styles.cardText1}>15 Reps</Text>
+                                </Card>
+                            </Col>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Squats', reps: 15, type: 'lifting', weight: 150})}>
+                                <Card>
+                                    <Text style={styles.cardText}>Squats</Text>
                                     <Text style={styles.cardText1}>15 Reps</Text>
                                 </Card>
                             </Col>
@@ -86,18 +102,23 @@ class ExercisesScreen extends React.Component {
                 <Col>
                     {/*// implemented without image without header, using ListItem component*/}
                     <Card title="Exercise List">
-                    {
-                        users.map((u, i) => {
-                        return (
-                            <ListItem
-                            key={i}
-                            title={u.name}
-                            onPress={() => console.log(u.name)}
-                            rightTitle={u.num}
-                            />
-                        );
-                        })
-                    }
+                        <FlatList
+                            data={this.state.exercises}
+                            renderItem={({item}) =>
+                                <ListItem
+                                    title={item.val().display}
+                                    onPress={() =>
+                                        this.props.navigation.navigate('AddExercise',
+                                        {
+                                            name: item.val().display,
+                                            reps: 15,
+                                            type: item.val().type,
+                                            weight: 10
+                                        })
+                                    }
+                                />
+                            }
+                        />
                     </Card>
                 </Col>
                 </Row>
@@ -121,7 +142,7 @@ const styles = StyleSheet.create({
         color: 'gray'
     },
     quickPick: {
-
+        paddingBottom: '50px'
     }
 });
 

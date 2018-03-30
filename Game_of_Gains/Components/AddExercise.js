@@ -19,13 +19,32 @@ class AddExercise extends React.Component {
             name: this.props.navigation.state.params.name,
             type: this.props.navigation.state.params.type,
             reps: this.props.navigation.state.params.reps,
-            weight: this.props.navigation.state.params.weight
+            weight: this.props.navigation.state.params.weight,
+            currentUserId: firebase.auth().currentUser.uid
         }
+    }
+
+    async logExercise(currState) {
+        console.log(currState);
+        uid = firebase.auth().currentUser.uid;
+        nowDate = Date.now().toString();
+        
+        var updates = {};
+        updates['history/' + uid + '/alltime/' + nowDate + '/'] = currState;
+
+        try {
+            firebase.database().ref().update(updates);
+            Alert.alert("Success!", "Logged a " + currState.name);
+            this.props.navigation.goBack();
+        } catch (error) {
+            console.log(error.toString());
+        }
+
     }
 
     render() {
         wwidth = Dimensions.get('window').width;
-        if (this.state.type == 'body') {
+        if (this.state.type == 'cardio') {
             return (
                 <Card title={this.state.name}>
                     <Text style={styles.cardText}>Reps</Text>
@@ -38,13 +57,13 @@ class AddExercise extends React.Component {
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25}
-                        onPress={() => alert("pressed")}/>
+                        onPress={() => this.logExercise(this.state)}/>
                     <Text></Text>
                     <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={75}
                         onPress={() => this.props.navigation.goBack()}/>
                 </Card>
             );
-        } else if (this.state.type == 'weight') {
+        } else if (this.state.type == 'lifting') {
             return (
                 <Card title={this.state.name}>
                     <Text style={styles.cardText}>Reps</Text>
@@ -64,7 +83,7 @@ class AddExercise extends React.Component {
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25} marginBottom={25}
-                        onPress={() => alert("pressed")}/>
+                        onPress={() => this.logExercise(this.state)}/>
                     <Text></Text>
                     <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={75}
                         onPress={() => this.props.navigation.goBack()}/>
