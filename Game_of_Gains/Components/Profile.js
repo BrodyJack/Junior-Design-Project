@@ -77,7 +77,10 @@ class ProfileScreen extends React.Component {
         };
         firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').getDownloadURL().then((url) => {
             this.setState({img: {uri: url}});
-        })
+        }, (error) => {
+            this.setState({img: require('./../img/user.png')});
+        });
+
         this.getHistory = function() {
             mostRecent = [];
             if (this.state.historyObj != null) {

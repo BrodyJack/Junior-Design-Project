@@ -33,13 +33,13 @@ class HomeScreen extends React.Component {
 
         const users = [
             {
-               name: 'brandon',
+               name: 'Push-Ups',
             },
             {
-                name: 'brody',
+                name: 'Pull-Ups',
             },
             {
-                name: 'jessica',
+                name: 'Chest Press',
             }
            ];
 
