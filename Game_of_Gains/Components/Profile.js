@@ -83,7 +83,8 @@ class ProfileScreen extends React.Component {
 
         this.getHistory = function() {
             mostRecent = [];
-            if (this.state.historyObj != null) {
+            if (this.state.historyObj != null && this.state.historyObj.alltime != '') {
+                console.log("here: " + this.state.historyObj.alltime);
                 timeStamps = Object.keys(this.state.historyObj.alltime);
                 timeStamps.sort(function(a, b) {
                     return (parseInt(b) - parseInt(a));
