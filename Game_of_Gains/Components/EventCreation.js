@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Button, SectionList, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
+import { Alert, View, Text, SectionList, StyleSheet, TextInput, KeyboardAvoidingView } from 'react-native';
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
+import { Card, ListItem, Button } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
 import './Global.js';
@@ -24,6 +25,10 @@ class EventCreationScreen extends React.Component {
     }
 
     async createEvent(state) {
+        if (!this.eventIsValid(state)) { 
+            Alert.alert("Oops!", "You haven't filled out all of the event details!");
+            return;
+        }
         state.contactDetails.uid = firebase.auth().currentUser.uid;
         state.participants.push(state.contactDetails.uid);
         eventKey = Date.now().toString() + Math.floor(Math.random() * 1000);
@@ -42,6 +47,13 @@ class EventCreationScreen extends React.Component {
 
     }
 
+    eventIsValid(state) {
+        return (state.eventName != "" &&
+            state.eventDate != "" &&
+            state.eventLocation != "" &&
+            state.eventDetails != "");
+    }
+
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'Create Event'
@@ -51,34 +63,34 @@ class EventCreationScreen extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.page} behavior="padding">
-                <Text>Event Name</Text>
+                <Card>
+                <Text style={styles.cardText}>Event Name</Text>
                 <TextInput
                     placeholder="Event Name" 
-                    style={{borderBottomWidth: 1, width: 350, margin: 10}}
+                    style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
                     onChangeText={(text) => this.setState({eventName: text})}
                 />
-                <Text>Event Date (**/**/**)</Text>
+                <Text style={styles.cardText}>Event Date (**/**/**)</Text>
                 <TextInput 
                     placeholder="Event Date" 
-                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
-                    onChangeText={(text) => this.setState({eventDate: text})}
+                    style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
                 />
-                <Text>Event Location</Text>
+                <Text style={styles.cardText}>Event Location</Text>
                 <TextInput 
                     placeholder="Event Location" 
-                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
-                    onChangeText={(text) => this.setState({eventLocation: text})}
+                    style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
                 />
-                <Text>Event Details</Text>
+                <Text style={styles.cardText}>Event Details</Text>
                 <TextInput 
-                    placeholder="Event Date" 
-                    style={{borderBottomWidth: 1, width: 350, margin: 10, marginBottom: 50}}
-                    onChangeText={(text) => this.setState({eventDetails: text})}
+                    placeholder="Event Details" 
+                    style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
                 />
-                <Button
-                    onPress={() => this.createEvent(this.state)}
-                    title="Create Event!"
-                />
+                <Button raised rounded title="Create Event!" backgroundColor='#007aff' marginTop={25}
+                        onPress={() => this.createEvent(this.state)}/>
+                <Text></Text>
+                <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={25}
+                        onPress={() => this.props.navigation.goBack()}/>
+                </Card>
             </KeyboardAvoidingView>
         );
     }
@@ -105,6 +117,11 @@ const styles = StyleSheet.create({
       padding: 10,
       fontSize: 14,
       height: 44,
+    },
+    cardText: {
+        textAlign: 'center',
+        marginBottom: 10,
+        fontSize: 16
     },
   })
 
