@@ -87,10 +87,6 @@ class FriendsScreen extends React.Component {
             {
                 label: 'All',
                 value: 'all'
-            },
-            {
-                label: 'Suggested',
-                value: 'suggested'
             }
         ]
         function setSelectedOption(selectedOption){
@@ -181,10 +177,8 @@ class FriendsScreen extends React.Component {
                                         returnValues.push({data: [friend.displayName]});
                                     });
                                     return returnValues;
-                                } else if (state.selectedOption.value == "suggested") {
-                                    alert("Suggested Friends");
-                                    return [];
                                 }
+                                
                         }(this.state)}
                         
                         renderItem={({item}) => 

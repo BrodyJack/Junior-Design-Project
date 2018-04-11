@@ -20,14 +20,16 @@ class ProfileScreen extends React.Component {
         if (result.cancelled) { 
             return;
         };
-        const byteArray = b64.toByteArray(result.base64)
-        const metadata = {contentType: 'image/jpg'};
-        firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').put(byteArray, metadata).then(snapshot => {
-           console.log("uploaded image!");
-           firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').getDownloadURL().then((url) => {
-               this.setState({img: {uri: url}});
-           })
-        })
+        // firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid).putString('data:image/jpeg;base64,' + result.base64).then(snapshot => {
+        var updates = {};
+        picData = [];
+        newString = 'data:image/jpeg;base64,' + result.base64;
+        toPush = {base64 : newString};
+        picData.push(toPush);
+        updates['users/' + firebase.auth().currentUser.uid + '/profilePicture/'] = picData;
+        firebase.database().ref().update(updates);
+        finalString = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/profilePicture/')[0];
+        // this.setState({img: {uri: finalString}});
     };
     async uploadPhotoAsyncCamera() {
         const result = await ImagePicker.launchCameraAsync({
@@ -37,19 +39,28 @@ class ProfileScreen extends React.Component {
         if (result.cancelled) { 
             return;
         };
-        const byteArray = b64.toByteArray(result.base64)
-        const metadata = {contentType: 'image/jpg'};
-        firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').put(byteArray, metadata).then(snapshot => {
-           console.log("uploaded image!");
-           firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').getDownloadURL().then((url) => {
-               this.setState({img: {uri: url}});
-           })
-        })
+        var updates = {};
+        picData = [];
+        newString = 'data:image/jpeg;base64,' + result.base64;
+        toPush = {base64 : newString};
+        picData.push(toPush);
+        updates['users/' + firebase.auth().currentUser.uid + '/profilePicture/'] = picData;
+        firebase.database().ref().update(updates);
+        finalString = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/profilePicture/')[0];
+        // this.setState({img: {uri: finalString}});
     };
     
     componentDidMount() {
         this.listenForEvents('user', this.userRef);
         this.listenForEvents('history', this.historyRef);
+        this.listenForEvents('profilePicture', this.profilePictureRef);
+        finalString = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/profilePicture/');
+        console.log("String: " + finalString);
+        // this.setState({img: {uri: finalString}});
+    }
+    
+    componentWillUnmount() {
+        this.profilePictureRef.off('value');
     }
     
     static navigationOptions = ({ navigation }) => {
@@ -62,6 +73,7 @@ class ProfileScreen extends React.Component {
         super(props);
         this.userRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/');
         this.historyRef = firebase.database().ref('history/' + firebase.auth().currentUser.uid + '/');
+        this.profilePictureRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/profilePicture');
         this.state = {
             currentUserObj: {
                 displayName: '',
@@ -73,18 +85,13 @@ class ProfileScreen extends React.Component {
             },
             historyObj: {
                 alltime: ''
-            },
+            }
         };
-        firebase.storage().ref('/profilePictures').child(firebase.auth().currentUser.uid + '.jpg').getDownloadURL().then((url) => {
-            this.setState({img: {uri: url}});
-        }, (error) => {
-            this.setState({img: require('./../img/user.png')});
-        });
+        
 
         this.getHistory = function() {
             mostRecent = [];
             if (this.state.historyObj != null && this.state.historyObj.alltime != '') {
-                console.log("here: " + this.state.historyObj.alltime);
                 timeStamps = Object.keys(this.state.historyObj.alltime);
                 timeStamps.sort(function(a, b) {
                     return (parseInt(b) - parseInt(a));
@@ -111,6 +118,18 @@ class ProfileScreen extends React.Component {
                     historyObj: snap.val()
                 });
             });
+        } else if (type == 'profilePicture') {
+            ref.on('value', (snap) => {
+                if (snap.val() == null) {
+                    this.setState({
+                        img: require('./../img/user.png')
+                    })
+                } else {
+                    this.setState({
+                        img: {uri: snap.val()[0].base64}
+                    })
+                }
+            })
         }
     }
 
@@ -148,8 +167,8 @@ class ProfileScreen extends React.Component {
                     title={
                     <View>
                         <Image 
-                            source={this.state.img}
                             style={styles.profilePicture}
+                            source={this.state.img}
                         />
                     </View>
                     }
