@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, Alert, TouchableHighlight, ScrollView, FlatList} from 'react-native';
-import { Card, ListItem, Button, List } from 'react-native-elements';
+import { View, Text, Image, StyleSheet, Alert, TouchableHighlight, ScrollView, FlatList, KeyboardAvoidingView } from 'react-native';
+import { Card, ListItem, Button, List, SearchBar } from 'react-native-elements';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { TabNavigator } from 'react-navigation'; // 1.0.0-beta.14
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Supported builtin module
 import * as firebase from 'firebase';
@@ -21,6 +22,7 @@ class ExercisesScreen extends React.Component {
         super(props);
         this.exerciseRef = firebase.database().ref('exercises/');
         this.state = {
+            search: "",
             exercises: [],
             currentUserId: firebase.auth().currentUser.uid
         };
@@ -42,7 +44,7 @@ class ExercisesScreen extends React.Component {
     render() {
 
         return (
-            <ScrollView>
+            <KeyboardAwareScrollView extraScrollHeight={20}>
             <Grid>
                 <Row>
                 <Col>
@@ -100,10 +102,31 @@ class ExercisesScreen extends React.Component {
 
                 <Row>
                 <Col>
+                    <Text></Text>
+                    <SearchBar
+                        lightTheme
+                        placeholder="Search for an Exercise"
+                        onChangeText={(text) => this.setState({search: text})}
+                        round
+                        containerStyle={styles.searchbarContainer}
+                    />
+                    <Text></Text>
                     {/*// implemented without image without header, using ListItem component*/}
                     <Card title="Exercise List">
                         <FlatList
-                            data={this.state.exercises}
+                            data={function(state) {
+                                if (state.search == "") {
+                                    return state.exercises;
+                                }
+                                returnExercises = [];
+                                exercises = state.exercises;
+                                exercises.forEach(function(item) {
+                                    if (item.val()["display"].toUpperCase().includes(state.search.toUpperCase().trim())) {
+                                        returnExercises.push(item);
+                                    }
+                                });
+                                return returnExercises;
+                            }(this.state)}
                             renderItem={({item}) =>
                                 <ListItem
                                     title={item.val().display}
@@ -123,8 +146,7 @@ class ExercisesScreen extends React.Component {
                 </Col>
                 </Row>
             </Grid>
-            </ScrollView>
-
+        </KeyboardAwareScrollView>
         );
     }
 }
@@ -143,6 +165,11 @@ const styles = StyleSheet.create({
     },
     quickPick: {
         paddingBottom: '50px'
+    },
+    searchbarContainer: {
+        backgroundColor: '#EAE9EF',
+        borderTopWidth: 0,
+        borderBottomWidth: 0
     }
 });
 
