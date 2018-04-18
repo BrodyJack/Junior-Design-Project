@@ -75,7 +75,6 @@ class EventDetailsScreen extends React.Component {
                 # Going: {this.state.going}
             </Text>
             <Button
-                icon={{name: 'code'}}
                 backgroundColor='#03A9F4'
                 onPress={() => this.joinEvent(this.state)}
                 buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}

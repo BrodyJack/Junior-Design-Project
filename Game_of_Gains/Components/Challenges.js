@@ -158,7 +158,7 @@ class ChallengesScreen extends React.Component {
                             title={item.challengeName}
                             subtitle={'Awards ' + item.challengePoints + ' points'}
                             avatar={require('./../img/user.png')}
-                            onPress={() => alert('Challenge View!')}
+                            onPress={() => this.props.navigation.navigate('ChallengeDetails', { reference: item })}
                         />
                     </Card>
                     }
