@@ -24,7 +24,7 @@ class HomeScreen extends React.Component {
                 <Button title="Settings" onPress={() => navigation.navigate('Settings')}/>
             ),
             headerRight: (
-                <Button title="Quick Log" onPress={() => {navigation.navigate('Exercises')}}/>
+                <Button title="Quick Log" onPress={() => {navigation.navigate('QuickLog')}}/>
             )
         }
     };

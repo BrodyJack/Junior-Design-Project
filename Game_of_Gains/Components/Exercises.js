@@ -53,13 +53,13 @@ class ExercisesScreen extends React.Component {
                     {
                         <Grid>
                             <Row>
-                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Push-Up', reps: 10, type: 'cardio', weight: null})}>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Push-Up', reps: 10, type: 'cardio', weight: 0})}>
                                 <Card>
                                     <Text style={styles.cardText}>Push-Up</Text>
                                     <Text style={styles.cardText1}>10 Reps</Text>
                                 </Card>
                             </Col>
-                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Pull-Up', reps: 15, type: 'lifting', weight: null})}>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Pull-Up', reps: 15, type: 'lifting', weight: 0})}>
                                 <Card>
                                     <Text style={styles.cardText}>Pull-Up</Text>
                                     <Text style={styles.cardText1}>15 Reps</Text>
@@ -67,7 +67,7 @@ class ExercisesScreen extends React.Component {
                             </Col>
                             </Row>
                             <Row>
-                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Sit-Up', reps: 15, type: 'cardio', weight: null})}>
+                            <Col onPress={() => this.props.navigation.navigate('AddExercise', {name: 'Sit-Up', reps: 15, type: 'cardio', weight: 0})}>
                                 <Card>
                                     <Text style={styles.cardText}>Sit-Up</Text>
                                     <Text style={styles.cardText1}>15 Reps</Text>

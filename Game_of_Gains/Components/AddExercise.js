@@ -28,7 +28,7 @@ class AddExercise extends React.Component {
         console.log(currState);
         uid = firebase.auth().currentUser.uid;
         nowDate = Date.now().toString();
-        
+
         var updates = {};
         updates['history/' + uid + '/alltime/' + nowDate + '/'] = currState;
 
