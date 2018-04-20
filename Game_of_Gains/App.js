@@ -20,6 +20,7 @@ import ExercisesScreen from './Components/Exercises'
 import RecentActivityScreen from './Components/RecentActivity'
 import AddExercise from './Components/AddExercise'
 import QuickLogScreen from './Components/QuickLog'
+import ChallengeDetailsScreen from './Components/ChallengeDetails'
 
 const RootTabs = TabNavigator({
     Events: {
@@ -85,6 +86,9 @@ const InitialNav = StackNavigator({
     },
     QuickLog: {
         screen: QuickLogScreen
+    },
+    ChallengeDetails: {
+        screen: ChallengeDetailsScreen
     }
 }, {
     headerMode: 'float'
