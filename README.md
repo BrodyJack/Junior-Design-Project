@@ -79,6 +79,8 @@ Wait for the packager to finish, and then either:
 2) Press 'i' to open in iOS emulator
 3) Press 'a' to open in either Android emulator or connected Android device
 
+NOTE: You may need to have your devices on the same network as one another for the expo project to successfully build and run on your mobile device.
+
 ## Native App
 - If you want to run a native application outside of Expo, please read through <a href="https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md" title="Eject Link">Expo's instructions</a>, specifically noting the section which describes Ejecting to ExpoKit
 
