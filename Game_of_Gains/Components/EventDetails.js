@@ -58,7 +58,7 @@ class EventDetailsScreen extends React.Component {
         return (
             <Card
             title={this.props.navigation.state.params.reference.eventName}
-            image={require('../img/user.png')}>
+            image={require('../img/techgreen.jpg')}>
             <Text style={{marginBottom: 10}}>
                 Creator: {this.props.navigation.state.params.reference.contactDetails.display}
             </Text>
