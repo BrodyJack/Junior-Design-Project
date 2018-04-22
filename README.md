@@ -50,33 +50,38 @@ This section details the new features in version 0.1, the fixed bugs from older 
 Since the application is still in an early state, we recommend utilizing <a href="https://expo.io/" title="Expo Link">
 expo</a> as a means to quickly build and demo the app. If you would rather build natively to iOS or Android, a link with instructions will be provided at the end of this section.
 ## Pre-requisites
-- hi 
-- hello
-- wassup
+- an Android or iOS device (or emulator)
+- <a href="https://nodejs.org/en/" title-"Node Link">Node.js</a>
+- <a href="https://www.npmjs.com/" title="NPM Link">Node Package Manager (npm)</a>
+- <a href="https://git-scm.com/downloads" title="Git Link">git</a>
 
 ## Dependencies
-- hi 
-- hello
-- wassup
+- a full list of dependencies can be found in Junior-Design-Project/Game_of_Gains/package.json
 
 ## Download Instructions
-- hi 
-- hello
-- wassup
+- Navigate to the filepath in which you want to create the project, and run:
+```
+git clone https://github.com/BrodyJack/Junior-Design-Project.git
+```
 
 ## Build Instructions
-- hi 
-- hello
-- wassup
+- Once you have downloaded the project, you need to download all dependencies. This can be done by navigating to the projectory and running:
+```
+npm install
+```
 
 ## Run Instructions
-- hi 
-- hello
-- wassup
+- After installing and dependencies, run the project with
+```
+npm start
+```
+Wait for the packager to finish, and then either:
+1) Download the expo client app on your mobile device, scan the QR code from your terminal, and open in Expo
+2) Press 'i' to open in iOS emulator
+3) Press 'a' to open in either Android emulator or connected Android device
 
 ## Troubleshooting
-- hi 
-- hello
-- wassup
+- Typing "R" in terminal after the packager finishes will restart the packager and clear the cache, fixing occasional issues that may occur with the app hanging or otherwise crashing
+- Email inquiries can be directed to "brodyjackj@gatech.edu"
 
 -------------
