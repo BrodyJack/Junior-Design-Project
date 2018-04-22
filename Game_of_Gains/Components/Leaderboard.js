@@ -180,7 +180,6 @@ class LeaderboardScreen extends React.Component {
                             title={u.name}
                             subtitle={u.points}
                             avatar={require('./../img/user.png')}
-                            onPress={() => alert('hi')}
                             />
                         );
                         })
