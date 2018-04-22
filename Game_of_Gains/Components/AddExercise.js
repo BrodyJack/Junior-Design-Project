@@ -31,10 +31,43 @@ class AddExercise extends React.Component {
 
         var updates = {};
         updates['history/' + uid + '/alltime/' + nowDate + '/'] = currState;
+        
+        var repsPR = 0;
+        var weightPR = 0;
+        await firebase.database().ref('history/' + uid + '/alltime/').once('value', (snap) => {
+            snap.forEach((child) => {
+                if (child.val().name === currState.name ) {
+                    if (currState.type == 'cardio' && child.val().reps > repsPR) {
+                        repsPR = child.val().reps;
+                    }
+                    else if ((child.val().weight >= weightPR && child.val().reps > repsPR) || (child.val().weight > weightPR && child.val().reps >= repsPR)) {
+                        repsPR = child.val().reps;
+                        weightPR = child.val().weight;
+                    }
+                }
+            })
+        });
+
+        //This should eventually be based on sets for lifting, time for cardio
+        if (currState.reps > repsPR) {
+            currState.points = currState.reps * 2;
+        } else {
+            currState.points = currState.reps;
+        }
+        
+        var currPoints;
+        firebase.database().ref('users/' + uid + '/exerciseInfo/pointsAllTime/').once('value', (snap) => {
+            currPoints = snap.val(); 
+        });
+        updates['users/' + uid + '/exerciseInfo/pointsAllTime/'] = currState.points + currPoints;
 
         try {
             firebase.database().ref().update(updates);
-            Alert.alert("Success!", "Logged a " + currState.name);
+            if (currState.reps > repsPR) {
+                Alert.alert("New PR!", "Logged " + currState.name + " for " + currState.points + " points! You have " + (currState.points + currPoints) + " total points!" );
+            } else {
+                Alert.alert("Success!", "Logged " + currState.name + " for " + currState.points + " points! You have " + (currState.points + currPoints) + " total points!" );
+            }
             this.props.navigation.goBack();
         } catch (error) {
             console.log(error.toString());
