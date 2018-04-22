@@ -16,21 +16,24 @@ class AddExercise extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: this.props.navigation.state.params.name,
-            type: this.props.navigation.state.params.type,
-            reps: this.props.navigation.state.params.reps,
-            weight: this.props.navigation.state.params.weight,
+            name: this.props.navigation.state.params.name.toString(),
+            type: this.props.navigation.state.params.type.toString(),
+            reps: this.props.navigation.state.params.reps.toString(),
+            weight: this.props.navigation.state.params.weight.toString(),
             currentUserId: firebase.auth().currentUser.uid
         }
     }
 
     async logExercise(currState) {
         console.log(currState);
+        const newState = {...currState};
+        newState.reps = parseInt(newState.reps) || 0;
+        newState.weight = parseInt(newState.weight) || 0;
         uid = firebase.auth().currentUser.uid;
         nowDate = Date.now().toString();
 
         var updates = {};
-        updates['history/' + uid + '/alltime/' + nowDate + '/'] = currState;
+        updates['history/' + uid + '/alltime/' + nowDate + '/'] = newState;
 
         try {
             firebase.database().ref().update(updates);
@@ -51,9 +54,9 @@ class AddExercise extends React.Component {
                     <KeyboardAvoidingView>
                         <TextInput
                             keyboardType="numeric"
-                            defaultValue={this.state.reps.toString()}
+                            defaultValue={this.state.reps}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                            onChangeText={(text) => this.setState({reps: text})}
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25}
@@ -72,14 +75,14 @@ class AddExercise extends React.Component {
                             keyboardType="numeric"
                             defaultValue={this.state.reps.toString()}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                            onChangeText={(text) => this.setState({reps: text})}
                         />
                         <Text style={styles.cardText}>Weight</Text>
                         <TextInput
                             keyboardType="numeric"
                             defaultValue={this.state.weight.toString()}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({weight: parseInt(text)})}
+                            onChangeText={(text) => this.setState({weight: text})}
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25} marginBottom={25}
