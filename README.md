@@ -64,7 +64,7 @@ git clone https://github.com/BrodyJack/Junior-Design-Project.git
 ```
 
 ## Build Instructions
-- Once you have downloaded the project, you need to download all dependencies. This can be done by navigating to the projectory and running:
+- Once you have downloaded the project, you need to download all dependencies. This can be done by navigating to Junior-Design-Project/Game_of_Gains and running:
 ```
 npm install
 ```
