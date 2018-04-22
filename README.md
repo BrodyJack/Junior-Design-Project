@@ -80,6 +80,9 @@ Wait for the packager to finish, and then either:
 2) Press 'i' to open in iOS emulator
 3) Press 'a' to open in either Android emulator or connected Android device
 
+## Native App
+- If you want to run a native application outside of Expo, please read through <a href="https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md" title="Eject Link">Expo's instructions</a>, specifically noting the section which describes Ejecting to ExpoKit
+
 ## Troubleshooting
 - Typing "R" in terminal after the packager finishes will restart the packager and clear the cache, fixing occasional issues that may occur with the app hanging or otherwise crashing
 - Email inquiries can be directed to "brodyjackj@gatech.edu"
