@@ -51,7 +51,7 @@ Since the application is still in an early state, we recommend utilizing <a href
 expo</a> as a means to quickly build and demo the app. If you would rather build natively to iOS or Android, a link with instructions will be provided at the end of this section.
 ## Pre-requisites
 - an Android or iOS device (or emulator)
-- <a href="https://nodejs.org/en/" title-"Node Link">Node.js</a>
+- <a href="https://nodejs.org/en/" title="Node Link">Node.js</a>
 - <a href="https://www.npmjs.com/" title="NPM Link">Node Package Manager (npm)</a>
 - <a href="https://git-scm.com/downloads" title="Git Link">git</a>
 
