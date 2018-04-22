@@ -2,7 +2,7 @@
 
 App Name:  Game of Gains
 
-Version: 1.0
+Version: 0.1
 
 -------------
 
