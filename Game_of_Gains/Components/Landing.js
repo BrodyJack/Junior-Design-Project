@@ -33,7 +33,7 @@ class LandingScreen extends React.Component {
 
         return (
             <View style={styles.page}>
-                <Image style={{width: wwidth - 100, height: wwidth - 100, marginBottom: 50 }} source={require('./../img/template_icon.png')}/>
+                <Image style={{width: wwidth - 100, height: wwidth - 100, marginBottom: 50 }} source={require('./../img/template_icon_update.png')}/>
                 <Button
                     title="Sign In"
                     loadingProps={{ size: "large", color: "rgba(111, 202, 186, 1)" }}

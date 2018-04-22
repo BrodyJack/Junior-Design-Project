@@ -97,7 +97,7 @@ class ChallengeDetailsScreen extends React.Component {
         return (
             <Card
             title={this.state.item.challengeName + '\n\n' + this.state.item.challengePoints + ' points!'}
-            image={require('../img/user.png')}>
+            image={require('../img/challenge.png')}>
             <Text style={{marginBottom: 10}}>
                 Creator: Game of Gains
             </Text>

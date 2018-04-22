@@ -68,7 +68,7 @@ class SignUpScreen extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.page} behavior="padding">
-                <Image style={{width: wwidth - 100, height: wwidth - 100, marginBottom: 50 }} source={require('./../img/template_icon.png')}/>
+                <Image style={{width: wwidth - 100, height: wwidth - 100, marginBottom: 50 }} source={require('./../img/template_icon_update.png')}/>
                 <TextInput
                     placeholder="Email"
                     style={{borderWidth: 1, borderRadius: 5, borderColor: 'white', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20}}
