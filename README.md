@@ -47,7 +47,8 @@ This section details the new features in version 0.1, the fixed bugs from older 
 -------------
 
 # Install Information
-Something something something
+Since the application is still in an early state, we recommend utilizing <a href="https://expo.io/" title="Expo Link">
+expo</a> as a means to quickly build and demo the app. If you would rather build natively to iOS or Android, a link with instructions will be provided at the end of this section.
 ## Pre-requisites
 - hi 
 - hello
