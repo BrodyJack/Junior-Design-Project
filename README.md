@@ -84,6 +84,9 @@ NOTE: You may need to have your devices on the same network as one another for t
 ## Native App
 - If you want to run a native application outside of Expo, please read through <a href="https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md" title="Eject Link">Expo's instructions</a>, specifically noting the section which describes Ejecting to ExpoKit
 
+## Backend Information
+- The backend of our application uses <a href="https://firebase.google.com/" title="Firebase">Firebase</a>. This is where information about users, exercises, and more is stored. Please contact "brodyjackj@gatech.edu" if you would like access to this. Currently, the team uses their Google accounts to like into Firebase as it is a Google product, but the owner of the app's instance is Brody and therefore he must grant access for other users to read/write to the server.
+
 ## Troubleshooting
 - Typing "R" in terminal after the packager finishes will restart the packager and clear the cache, fixing occasional issues that may occur with the app hanging or otherwise crashing
 - Email inquiries can be directed to "brodyjackj@gatech.edu"
