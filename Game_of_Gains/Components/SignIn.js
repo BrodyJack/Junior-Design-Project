@@ -66,6 +66,7 @@ class SignInScreen extends React.Component {
                         marginTop: 40
                     }}
                     />
+                    {/*
                 <View style={{flex: 1, flexDirection: 'row', marginTop: 150}}>
                     <Button
                         title="Brody"
@@ -93,6 +94,7 @@ class SignInScreen extends React.Component {
                         onPress={() => this.login('', '')}
                     />
                 </View>
+                    */}
             </KeyboardAvoidingView>
         );
     }
