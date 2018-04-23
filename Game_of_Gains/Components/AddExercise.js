@@ -18,9 +18,10 @@ class AddExercise extends React.Component {
         this.state = {
             name: this.props.navigation.state.params.name.toString(),
             type: this.props.navigation.state.params.type.toString(),
-            reps: this.props.navigation.state.params.reps.toString(),
-            weight: this.props.navigation.state.params.weight.toString(),
-            currentUserId: firebase.auth().currentUser.uid
+            reps: this.props.navigation.state.params.reps ? this.props.navigation.state.params.reps.toString() : 0,
+            weight: this.props.navigation.state.params.weight ? this.props.navigation.state.params.weight.toString() : 0,
+            currentUserId: firebase.auth().currentUser.uid,
+            distance: this.props.navigation.state.params.distance ? this.props.navigation.state.params.distance.toString() : 0
         }
     }
 
@@ -85,13 +86,13 @@ class AddExercise extends React.Component {
         if (this.state.type == 'cardio') {
             return (
                 <Card title={this.state.name}>
-                    <Text style={styles.cardText}>Reps</Text>
+                    <Text style={styles.cardText}>Distance (Miles)</Text>
                     <KeyboardAvoidingView>
                         <TextInput
                             keyboardType="numeric"
-                            defaultValue={this.state.reps}
+                            defaultValue={this.state.distance}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({reps: text})}
+                            onChangeText={(text) => this.setState({distance: text})}
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25}
@@ -118,6 +119,25 @@ class AddExercise extends React.Component {
                             defaultValue={this.state.weight.toString()}
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
                             onChangeText={(text) => this.setState({weight: text})}
+                        />
+                    </KeyboardAvoidingView>
+                    <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25} marginBottom={25}
+                        onPress={() => this.logExercise(this.state)}/>
+                    <Text></Text>
+                    <Button raised rounded title="Cancel" backgroundColor='#ff3b30' marginTop={75}
+                        onPress={() => this.props.navigation.goBack()}/>
+                </Card>
+            );
+        } else if (this.state.type == 'body') {
+            return (
+                <Card title={this.state.name}>
+                    <Text style={styles.cardText}>Reps</Text>
+                    <KeyboardAvoidingView>
+                        <TextInput
+                            keyboardType="numeric"
+                            defaultValue={this.state.reps.toString()}
+                            style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
+                            onChangeText={(text) => this.setState({reps: text})}
                         />
                     </KeyboardAvoidingView>
                     <Button raised rounded title="Log" backgroundColor='#007aff' marginTop={25} marginBottom={25}

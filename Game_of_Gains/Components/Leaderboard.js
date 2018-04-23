@@ -122,29 +122,17 @@ class LeaderboardScreen extends React.Component {
                 list = this.state.userData;
             }
         }
-        var sortedData = [];
-        var isSorted = [];
-        for (var i = 0; i < list.length; i++) {
-            isSorted.push(false);
-        }
-        while (sortedData.length != list.length * 2) {
-            var maxScore = 0;
-            var idxToAdd = 0;
-            for (var i = 0; i < list.length; i++) {
-                if (!isSorted[i] && list[i].pointsAllTime > maxScore) {
-                    maxScore = list[i].pointsAllTime;
-                    idxToAdd = i;
-                }
-            }
-            var toAdd = list[idxToAdd];
-            sortedData.push(toAdd.name);
-            sortedData.push(toAdd.pointsAllTime);
-            isSorted[idxToAdd] = true;
-        }
+        
         dataSource = [];
-        for (var i = 0; i < list.length; i += 2) {
-            dataSource.push({name: sortedData[i], points: sortedData[i+1]});
+        if (list != null) {
+            for (var i = 0; i < list.length; i++) {
+                dataSource.push({name: list[i].name, points: list[i].pointsAllTime});
+            }
         }
+
+        dataSource.sort(function(a, b) {
+            return b.points - a.points;
+        });
         
         // sortedData is the finalized data
 
@@ -180,6 +168,7 @@ class LeaderboardScreen extends React.Component {
                             title={u.name}
                             subtitle={u.points}
                             avatar={require('./../img/user.png')}
+                            hideChevron
                             />
                         );
                         })

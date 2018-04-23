@@ -45,9 +45,9 @@ class SignUpScreen extends React.Component {
                         }
                     },
                     favoriteExercises: ['crunch', 'pullup'],
-                    pointsAllTime: 1000,
-                    pointsToday: 10,
-                    pointsWeek: 100,
+                    pointsAllTime: 0,
+                    pointsToday: 0,
+                    pointsWeek: 0,
                     savedRoutines: ['Monday', 'Abs Day']
                 },
                 friends: [{

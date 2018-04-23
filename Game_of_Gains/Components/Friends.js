@@ -196,6 +196,7 @@ class FriendsScreen extends React.Component {
                                     title={item}
                                     avatar={require('./../img/user.png')}
                                     onPress={() => console.log('test')}
+                                    hideChevron
                                 />
                             </Card>
                             }

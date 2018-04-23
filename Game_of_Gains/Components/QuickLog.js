@@ -36,6 +36,7 @@ class QuickLogScreen extends React.Component {
 
     async logExercise(currState) {
         console.log(currState);
+        currState.value == 0 ? currState.type = "cardio" : currState.type = "lifting";
         uid = firebase.auth().currentUser.uid;
         nowDate = Date.now().toString();
 
@@ -64,7 +65,7 @@ class QuickLogScreen extends React.Component {
                             placeholder="Time"
                             keyboardType="numeric"
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                            onChangeText={(text) => this.setState({time: parseInt(text)})}
                         />
                     </Row>
                     <Row style={{'justifyContent': 'center', 'paddingBottom': 20}}>
@@ -72,7 +73,7 @@ class QuickLogScreen extends React.Component {
                             placeholder="Laps"
                             keyboardType="numeric"
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                            onChangeText={(text) => this.setState({sets: parseInt(text)})}
                         />
                     </Row>
                     <Row style={{'justifyContent': 'center', 'paddingBottom': 20}}>
@@ -80,7 +81,7 @@ class QuickLogScreen extends React.Component {
                             placeholder="Distance"
                             keyboardType="numeric"
                             style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                            onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                            onChangeText={(text) => this.setState({distance: parseInt(text)})}
                         />
                     </Row>
                     </Col>
@@ -96,7 +97,7 @@ class QuickLogScreen extends React.Component {
                                 placeholder="Weight"
                                 keyboardType="numeric"
                                 style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                                onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                                onChangeText={(text) => this.setState({weight: parseInt(text)})}
                             />
                         </Row>
                         <Row style={{'justifyContent': 'center', 'paddingBottom': 20}} size={1}>
@@ -112,7 +113,7 @@ class QuickLogScreen extends React.Component {
                                 placeholder="Sets"
                                 keyboardType="numeric"
                                 style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                                onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                                onChangeText={(text) => this.setState({sets: parseInt(text)})}
                             />
                         </Row>
                     </Col>
@@ -129,7 +130,7 @@ class QuickLogScreen extends React.Component {
                                 <TextInput
                                     placeholder="Exercise Name"
                                     style={{borderWidth: 1, borderRadius: 5, borderColor: 'black', width: wwidth - 80, height: 35, backgroundColor: 'white', marginBottom: 20, textAlign: 'center', alignSelf:'center'}}
-                                    onChangeText={(text) => this.setState({reps: parseInt(text)})}
+                                    onChangeText={(text) => this.setState({name: text})}
                                 />
                             </Row>
                             <Row style={{'justifyContent': 'center', 'paddingBottom': 20}}>

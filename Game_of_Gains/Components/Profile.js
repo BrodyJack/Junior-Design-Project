@@ -212,7 +212,7 @@ class ProfileScreen extends React.Component {
                                 key={i}
                                 roundAvatar
                                 title={u.name}
-                                subtitle={u.reps + ' reps'}
+                                subtitle={u.type != 'cardio' ? u.reps + ' reps' : u.distance + ' miles'}
                                 hideChevron
                                 />
                             );

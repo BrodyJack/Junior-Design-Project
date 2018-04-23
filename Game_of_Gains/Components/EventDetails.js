@@ -30,17 +30,23 @@ class EventDetailsScreen extends React.Component {
                 Alert.alert('Unable to Join', 'You are the creator of this event!');
                 return;
         } 
+
+        let testing = 4;
  
         firebase.database().ref(eventPath).once('value').then(function(snapshot) {
             var participants = snapshot.val();
             if (participants.includes(firebase.auth().currentUser.uid)) {
                 // User is already participating
                 Alert.alert('Oops!', 'You have already joined this event')
+                console.log(testing);
+                testing++;
+                console.log(testing);
                 return;
             }
             participants.push(firebase.auth().currentUser.uid);
             // Update Event Participants
             firebase.database().ref(eventPath).set(participants);
+            
             // Update User's Joined Events
             firebase.database().ref(userPath).once('value')
                 .then(function(joinedEvents) {
@@ -48,9 +54,10 @@ class EventDetailsScreen extends React.Component {
                     updated.push(eventKey);
                     firebase.database().ref(userPath).set(updated);
             });
-
-            Alert.alert('Success!', 'You joined ' + this.props.navigation.state.params.reference.eventName);
+            Alert.alert('Success!', 'You joined the event!');
         });
+
+        this.props.navigation.goBack();
     }
 
     render() {
